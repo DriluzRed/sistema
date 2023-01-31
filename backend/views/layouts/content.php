@@ -58,6 +58,9 @@ $anho = date('Y');
 
 $CSS = <<<CSS
 /*This is modifying the btn-primary colors but you could create your own .btn-something class as well*/
+.content-wrapper{
+    background-color:#f1f5f9;
+}
 .btn-primary{
     color: #000000;
     background-color: #e3e3e3;
@@ -77,18 +80,18 @@ $CSS = <<<CSS
 .btn-success {
     color: #000000;
     background-color: #e3e3e3;
-    border-color: #008d4c; /*set the color you want here*/
+    border-color: #1F396A; /*set the color you want here*/
 }
 
 .btn-success:focus {
     color: #000000;
     background-color: #fafafa;
-    border-color: #008d4c; /*set the color you want here*/
+    border-color: #1F396A   ; /*set the color you want here*/
 }
 .btn-success:hover, .btn-success:active, .btn-success.active, .open > .dropdown-toggle.btn-success {
     color: #fff;
-    background-color: #00a65a;
-    border-color: #008d4c; /*set the color you want here*/
+    background-color: #1F396A;
+    border-color: #1F396A; /*set the color you want here*/
 }
 
 .btn-danger {

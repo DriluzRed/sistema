@@ -12,12 +12,12 @@ use yii\widgets\Pjax;
 $perfil = User::find()->where(['id' => Yii::$app->user->id])->one();
 ?>
 
-<header class="main-header">
+<header class="main-header navbar-azul ">
 <?php $nombre_sistema = 'Nora Ruoti & Asoc.' ?>
-    <?= Html::a('<span class="logo-mini">Sys</span><span class="logo-lg">' . $nombre_sistema . '</span>', Yii::$app->homeUrl, ['class' => 'logo']) ?>
-    <nav class="navbar navbar-static-top" role="navigation">
+    <?= Html::a('<span class="logo-mini blanco">Sys</span><span class="logo-lg blanco">' . $nombre_sistema . '</span>', Yii::$app->homeUrl, ['class' => 'logo']) ?>
+    <nav class="navbar navbar-static-top navbar-azul" role="navigation">
     
-        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+        <a href="#" class="sidebar-toggle blanco" data-toggle="offcanvas" role="button">
             <span class="sr-only">Toggle navigation</span>
         </a>
         <?php
@@ -30,14 +30,14 @@ $perfil = User::find()->where(['id' => Yii::$app->user->id])->one();
 
                 
             
-            <li class="dropdown user user-menu">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <li class="dropdown user user-menu navbar-azul">
+                    <a href="#" class="dropdown-toggle azul" data-toggle="dropdown">
 
-                        <span class="hidden-xs"><?= $user =  Yii::$app->user->identity->username ?></span>
+                        <span class="hidden-xs blanco "><?= $user =  Yii::$app->user->identity->username ?></span>
                     </a>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu navbar-azul">
                         <!-- User image -->
-                        <li class="user-header">
+                        <li class="user-header  ">
                             <?php if (Yii::$app->session->get('user') == null) ?>
                                 <img src="../web/img/avatar_neutro.png" class="user-image" alt="User Image"/>
 
@@ -52,7 +52,7 @@ $perfil = User::find()->where(['id' => Yii::$app->user->id])->one();
                         </li>
                         <!-- Menu Body -->
                         <!-- Menu Footer-->
-                        <li class="user-footer" style="background: #8aa4af">
+                        <li class="user-footer " style="background: #8aa4af">
                             
                             <div class="pull-right">
                                 <?= Html::a(
@@ -72,6 +72,29 @@ $perfil = User::find()->where(['id' => Yii::$app->user->id])->one();
 <?php
 $logout = Url::to(['/site/logout']);
 
+
+
+$CSS = <<<CSS
+/*This is modifying the btn-primary colors but you could create your own .btn-something class as well*/
+.navbar-azul{
+    background-color: #0f172a   ;
+   
+}
+.dropdown-toggle:active, .open .dropdown-toggle, .dropdown-toggle:hover, .dropdown-toggle:focus:not(:hover) {
+        background:#0f172a !important; 
+        color:#000 !important;
+    }
+.blanco{
+    color: white;
+    
+}
+
+CSS;
+
+$this->registerCss($CSS);
+
+
+
 $script = <<<JS
 $(document).on('click', '#logout_id', (function () {
     //eliminamos la empresa actual del localstorage
@@ -84,3 +107,5 @@ $(document).on('click', '#logout_id', (function () {
 }));
 JS;
 $this->registerJs($script);
+
+
