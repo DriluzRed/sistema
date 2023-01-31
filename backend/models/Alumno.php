@@ -89,4 +89,10 @@ class Alumno extends \yii\db\ActiveRecord
             'finded_ruc' => 'Finded Ruc',
         ];
     }
+    public function getPais(){
+        return $this->hasOne(Pais::className(), ['id' => 'country_id']);
+    }
+    public function getPrograma(){
+        return $this->hasOne(Programa::className(), ['id' => 'programa_id']);
+    }
 }

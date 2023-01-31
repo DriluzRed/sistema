@@ -8,7 +8,7 @@ use yii\helpers\Url;
 /* @var $searchModel backend\models\search\SearchAlumnos */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Alumno';
+$this->title = 'Alumnos';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="alumno-index">
@@ -20,37 +20,24 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Añadir nuevo alumno', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?php
+    $template = '';
+    $template = $template . '{view}';
+    $template = $template . '{update}';
+    $template = $template . '{delete}';
     /** @var Alumno $model */
     echo GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            [
-                'class' => 'yii\grid\ActionColumn',
-                'buttons'=>[
-                    'view'=>function ($url, $model) {
-                        $t = 'index.php?r=alumno/view&id='.$model->id;
-                        return Html::button('<span class="glyphicon glyphicon-eye-open"></span>', ['value'=>Url::to($t), 'class' => 'btn btn-default btn-xs custom_button']);
-                    },
-                    'update'=>function ($url, $model) {
-                        $t = 'index.php?r=alumno/update&id='.$model->id;
-                        return Html::button('<span class="glyphicon glyphicon-pencil"></span>', ['value'=>Url::to($t), 'class' => 'btn btn-default btn-xs custom_button']);
-                    },
-                ],
-            ],
-            [
-                'label' => 'ID',
-                'headerOptions' => [
-                    'width' => '5%'
-                ],
-                'value' => 'id',
-                'attribute' => 'id',
-            ],
             'first_name:ntext',
             'last_name:ntext',
             'ci:ntext',
-            'country_id',
+            [
+                'label' => 'Pais',
+                'attribute' => 'country_name',
+                'value' => 'pais.nombre',
+            ],
             'low_line_number:ntext',
             'phone:ntext',
             'email:ntext',
@@ -66,7 +53,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'finded_ips:ntext',
             'finded_ruc:ntext',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn',
+            'options' => ['style' => 'width:100px'],
+            'buttonOptions' => ['class' => 'btn btn-default'],
+            'header' => 'Acciones',
+            'template' => $template,
+            ],
         ],
     ]); ?>
 </div>

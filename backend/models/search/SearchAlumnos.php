@@ -11,6 +11,7 @@ use backend\models\Alumno;
  */
 class SearchAlumnos extends Alumno
 {
+    public $country_name;
     /**
      * {@inheritdoc}
      */
@@ -18,7 +19,7 @@ class SearchAlumnos extends Alumno
     {
         return [
             [['id', 'country_id', 'programa_id', 'campus', 'subsidiary'], 'integer'],
-            [['first_name', 'last_name', 'ci', 'low_line_number', 'phone', 'email', 'address', 'age', 'enrrolment_date', 'contract_number', 'year', 'promotion_year', 'born_at', 'promotion', 'document_front_file', 'document_back_file', 'status', 'study_certificate_file', 'finded_ips', 'finded_ruc'], 'safe'],
+            [['first_name', 'last_name', 'ci', 'low_line_number', 'phone', 'email', 'address', 'age', 'enrrolment_date', 'contract_number', 'year', 'promotion_year', 'born_at', 'promotion', 'document_front_file', 'document_back_file', 'status', 'study_certificate_file', 'finded_ips', 'finded_ruc', 'country_name'], 'safe'],
         ];
     }
 
@@ -41,13 +42,19 @@ class SearchAlumnos extends Alumno
     public function search($params)
     {
         $query = Alumno::find();
+        $query->alias('alumno');
+        $query->joinWith('pais');
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => ['defaultOrder' => ['last_name' => SORT_ASC]]
         ]);
-
+        $dataProvider->sort->attributes['country_name'] = [
+            'asc' => ['pais.nombre' => SORT_ASC],
+            'desc' => ['pais.nombre' => SORT_DESC],
+        ];
         $this->load($params);
 
         if (!$this->validate()) {
@@ -84,7 +91,8 @@ class SearchAlumnos extends Alumno
             ->andFilterWhere(['like', 'status', $this->status])
             ->andFilterWhere(['like', 'study_certificate_file', $this->study_certificate_file])
             ->andFilterWhere(['like', 'finded_ips', $this->finded_ips])
-            ->andFilterWhere(['like', 'finded_ruc', $this->finded_ruc]);
+            ->andFilterWhere(['like', 'finded_ruc', $this->finded_ruc])
+            ->andFilterWhere(['like', 'pais.nombre', $this->country_name]);
 
         return $dataProvider;
     }

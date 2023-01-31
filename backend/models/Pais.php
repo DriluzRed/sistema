@@ -1,6 +1,7 @@
 <?php
 
 namespace backend\models;
+use yii\helpers\ArrayHelper;
 
 use Yii;
 
@@ -42,5 +43,10 @@ class Pais extends \yii\db\ActiveRecord
             'id' => 'ID',
             'nombre' => 'Nombre',
         ];
+    }
+    public static function getPaisLista()
+    {
+        $active_query = Pais::find();
+        return ArrayHelper::map($active_query->asArray()->all(), 'id', 'nombre');
     }
 }
