@@ -35,6 +35,11 @@ return [
         ],
     ],
     'components' => [
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+            // uncomment if you want to cache RBAC items hierarchy
+            // 'cache' => 'cache',
+        ],
         'log' => [
             'targets' => [
                 [
@@ -43,7 +48,9 @@ return [
                 ],
             ],
         ],
+        
     ],
+    
     'modules' => [
         'audit' => [
             'class' => 'bedezign\yii2\audit\Audit',
