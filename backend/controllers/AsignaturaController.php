@@ -8,8 +8,7 @@ use backend\models\search\SearchAsignatura;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\bootstrap\Alert ;
-use yii\filters\AccessControl;
+
 /**
  * AsignaturaController implements the CRUD actions for Asignatura model.
  */
@@ -21,16 +20,6 @@ class AsignaturaController extends Controller
     public function behaviors()
     {
         return [
-            'access' => [
-                'class' => AccessControl::class,
-                'rules' =>[
-                    [
-                        'allow' => true,
-                        'actions' => ['index'],
-                        'roles' => ['borrarAlumno'],
-                    ]
-                ]
-            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -115,23 +104,11 @@ class AsignaturaController extends Controller
      */
     public function actionDelete($id)
     {
-        if (\Yii::$app->user->can('borrarAlumno')) {
         $this->findModel($id)->delete();
 
-
-       
         return $this->redirect(['index']);
-    
-    }else{
-        echo Alert::widget([
-            'options' => [
-                'class' => 'alert-info',
-            ],
-            'body' => 'No tiene permisos para borrar',
-        ]);
     }
-    }
-    
+
     /**
      * Finds the Asignatura model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
