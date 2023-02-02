@@ -24,10 +24,31 @@ class AlumnoController extends Controller
             'access'=>[
                         'class' => AccessControl::className(),
                         'rules'=> [
+                         
                             [
-                               'allow'=>true,
-                               'roles'=>['@']
-                            ]
+                                'allow' => false,
+                                'actions' => ['index'],
+                                'roles' => ['alumno'],
+                            ],
+                            [
+                                'allow' => false,
+                                'actions' => ['create'],
+                                'roles' => ['alumno'],
+                            ],
+                            [
+                                'allow' => false,
+                                'actions' => ['update'],
+                                'roles' => ['alumno'],
+                            ],
+                            [
+                                'allow' => false,
+                                'actions' => ['delete'],
+                                'roles' => ['alumno'],
+                            ],
+                            [
+                                'allow'=>true,
+                                'roles'=>['@']
+                             ],
                         ]
             ],
             'verbs' => [

@@ -30,12 +30,20 @@ $this->params['breadcrumbs'][] = $this->title;
                 'class' => 'yii\grid\ActionColumn',
                 'buttons'=>[
                     'view'=>function ($url, $model) {
-                        $t = 'index.php?r=alumno/view&id='.$model->id;
-                        return Html::button('<span class="glyphicon glyphicon-eye-open"></span>', ['value'=>Url::to($t), 'class' => 'btn btn-default btn-xs custom_button']);
+                        $url = 'index.php?r=alumno/view&id='.$model->id;
+                        return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url,  ['class' => 'btn btn-default btn-xs custom_button']);
                     },
                     'update'=>function ($url, $model) {
-                        $t = 'index.php?r=alumno/update&id='.$model->id;
-                        return Html::button('<span class="glyphicon glyphicon-pencil"></span>', ['value'=>Url::to($t), 'class' => 'btn btn-default btn-xs custom_button']);
+                        $url = 'index.php?r=alumno/update&id='.$model->id;
+                        return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url,   ['class' => 'btn btn-default btn-xs custom_button']);
+                    },
+                    'delete'=>function ($url, $model) {
+                        $url = 'index.php?r=user/delete&id='.$model->id;
+                        return (\Yii::$app->user->can('borrarAlumno')) ? Html::a('<span class="glyphicon glyphicon-trash"></span>', $url,  ['class' => 'btn btn-default btn-xs custom_button',
+
+                        'data-confirm' => Yii::t('yii', 'Are you sure you want to delete this item?'),
+                        'data-method'  => 'post',
+                ]): '';
                     },
                 ],
             ],
@@ -66,7 +74,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'finded_ips:ntext',
             'finded_ruc:ntext',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            
         ],
     ]); ?>
 </div>
