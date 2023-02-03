@@ -11,37 +11,69 @@ use kartik\builder\FormGrid;
 use kartik\form\ActiveForm;
 use kartik\select2\Select2;
 use yii\helpers\ArrayHelper;
+use yii\rbac\Item;
 
 
 
 
 $this->title = 'Registro de Usuario';
 $this->params['breadcrumbs'][] = $this->title;
+// Get the authorization manager
+$auth = Yii::$app->authManager;
+$userRoles = $auth->getRolesByUser(Yii::$app->user->id);
+$allRoles = Yii::$app->authManager->getRoles();
+$available_roles = $allRoles;
+$roleParents = [];
 
-$current_user_roles  = [];
-$current_user_roles2  = [];
-if( (\Yii::$app->user->can('coordinacion'))  ||  (\Yii::$app->user->can('administracion'))  ){
-$current_user_roles = Yii::$app->authManager->getRolesByUser(11);
-$current_user_roles2 = Yii::$app->authManager->getRolesByUser(15);
+// Get all parent roles
+foreach ($userRoles as $userRole) {
+    $role = Yii::$app->authManager->getRole($userRole->name);
 
-}else if(\Yii::$app->user->can('coordinacion')){
-$current_user_roles3 = Yii::$app->authManager->getRolesByUser(15);
-}
-$Containt= array_merge($current_user_roles,$current_user_roles2);
-
-
-$available_roles = Yii::$app->authManager->getRoles();
-foreach($Containt as $role){
-    if(in_array($role,$available_roles)){
-        $index = array_search($role,$available_roles);
-        \yii\helpers\ArrayHelper::remove($available_roles,$index);
+    // Get all parent roles of this user role
+    foreach ($allRoles as $r) {
+        $children = Yii::$app->authManager->getChildren($r->name);
+        foreach ($children as $child) {
+            if ($child->name == $role->name) {
+                $roleParents[] = $r->name;
+                break;
+            }
+        }
     }
 }
 
- $listData=ArrayHelper::map($available_roles,'name','name');
-/* echo "<pre>";
-var_dump($listData);
-exit; */
+// Get all parent of parent roles
+$roleParentParents = [];
+foreach ($roleParents as $roleParent) {
+    foreach ($allRoles as $r) {
+        $children = Yii::$app->authManager->getChildren($r->name);
+        foreach ($children as $child) {
+            if ($child->name == $roleParent) {
+                $roleParentParents[] = $r->name;
+                break;
+            }
+        }
+    }
+}
+
+// Remove all parent roles and parent of parent roles from available roles
+$roleParents = array_merge($roleParents, $roleParentParents);
+$roleParents = array_unique($roleParents);
+foreach ($roleParents as $parentRole) {
+    $index = array_search($parentRole, ArrayHelper::getColumn($available_roles, 'name'));
+    if ($index !== false) {
+        \yii\helpers\ArrayHelper::remove($available_roles, $index);
+    }
+}
+
+// Map available roles to list data
+$listData = ArrayHelper::map($available_roles, 'name', 'name');
+
+
+
+
+
+
+
 ?>
 <div class="site-signup">
     <h1><?= Html::encode($this->title) ?></h1>
