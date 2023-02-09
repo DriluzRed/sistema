@@ -1,10 +1,15 @@
 <?php
 
+use backend\models\AlumnoPrograma;
+use kartik\widgets\FileInput;
 use backend\models\Pais;
+use backend\models\Programa;
 use kartik\builder\Form;
 use kartik\builder\FormGrid;
 use kartik\form\ActiveForm;
 use kartik\select2\Select2;
+use yii\db\Query;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\JsExpression;
@@ -15,10 +20,23 @@ use yii\web\JsExpression;
 ?>
 
 <div class="alumno-form">
+<?php
+$query = Programa::find()
+->alias('programas')
+->leftJoin('alumno alumnos', 'alumnos.programa_id=programas.id')
+->select(['programa_id'=>'programas.id',
+            'nombre' => 'programas.nombre',
+        ])
+->orderBy('nombre');
 
+
+$programas = ArrayHelper::map($query->asArray()->all(),'programa_id', 'nombre');
+// var_dump($programas);exit;
+?>
     <?php $form = ActiveForm::begin(); ?>
 
     <?=
+    
     FormGrid::widget([
         'model' => $model,
         'form' => $form,
@@ -57,12 +75,12 @@ use yii\web\JsExpression;
                 'attributes' => [
                     'country_id' => [
                         'type' => Form::INPUT_RAW,
-                        'value' => $form->field($model->country_id == NULL ? $model : $model->country_id, 'country_id')->widget(Select2::className(), [
+                        'value' => $form->field($model, 'country_id')->widget(Select2::className(), [
                             'data' => Pais::getPaisLista(true),
                             'options' => ['placeholder' => 'Seleccione un Pais ...'],
                             'pluginOptions' => [
                                 'allowClear' => true
-                            ],
+                            ]
                         ])
                     ],
                 ]
@@ -85,57 +103,78 @@ use yii\web\JsExpression;
                     ],
                 ]
             ],
-            
-        ]
-    ]) ?>
-
-<?= $form->field($model, 'first_name')->textarea(['rows' => 6]) ?>
-
-<?= $form->field($model, 'last_name')->textarea(['rows' => 6]) ?>
-
-<?= $form->field($model, 'ci')->textarea(['rows' => 6]) ?>
-
-<?= $form->field($model, 'country_id')->textInput() ?>
-
-<?= $form->field($model, 'low_line_number')->textarea(['rows' => 6]) ?>
-
-<?= $form->field($model, 'phone')->textarea(['rows' => 6]) ?>
-
-<?= $form->field($model, 'email')->textarea(['rows' => 6]) ?>
-
-<?= $form->field($model, 'address')->textarea(['rows' => 6]) ?>
-
-<?= $form->field($model, 'age')->textarea(['rows' => 6]) ?>
-
-<?= $form->field($model, 'programa_id')->textInput() ?>
-
-<?= $form->field($model, 'campus')->textInput() ?>
-
-<?= $form->field($model, 'subsidiary')->textInput() ?>
-
-<?= $form->field($model, 'enrrolment_date')->textarea(['rows' => 6]) ?>
-
-<?= $form->field($model, 'contract_number')->textarea(['rows' => 6]) ?>
-
-<?= $form->field($model, 'year')->textarea(['rows' => 6]) ?>
-
-<?= $form->field($model, 'promotion_year')->textarea(['rows' => 6]) ?>
-
-<?= $form->field($model, 'born_at')->textarea(['rows' => 6]) ?>
-
-<?= $form->field($model, 'promotion')->textarea(['rows' => 6]) ?>
-
-<?= $form->field($model, 'document_front_file')->textarea(['rows' => 6]) ?>
-
-<?= $form->field($model, 'document_back_file')->textarea(['rows' => 6]) ?>
-
-<?= $form->field($model, 'status')->textarea(['rows' => 6]) ?>
-
-<?= $form->field($model, 'study_certificate_file')->textarea(['rows' => 6]) ?>
-
-<?= $form->field($model, 'finded_ips')->textarea(['rows' => 6]) ?>
-
-<?= $form->field($model, 'finded_ruc')->textarea(['rows' => 6]) ?>
+            [
+                'attributes' => [
+                    'phone' => [
+                        'type' => Form::INPUT_TEXT,
+                        'options' => ['placeholder' => 'Numero de telefono'],
+                        'columnOptions' => ['colspan' => '3']
+                    ],
+                ]
+            ],
+            [
+                'attributes' => [
+                    'email' => [
+                        'type' => Form::INPUT_TEXT,
+                        'options' => ['placeholder' => 'email'],
+                        'columnOptions' => ['colspan' => '3']
+                    ],
+                ]
+            ],
+            [
+                'attributes' => [
+                    'address' => [
+                        'type' => Form::INPUT_TEXT,
+                        'options' => ['placeholder' => 'Direccion'],
+                        'columnOptions' => ['colspan' => '3']
+                    ],
+                ]
+            ],
+            [
+                'attributes' => [
+                    'programas' => [
+                        'type' => Form::INPUT_RAW,
+                        'value' => $form->field($model, 'programas')->widget(Select2::className(), [
+                            'data' => Programa::getProgramaLista(true),
+                            'options' => ['placeholder' => 'Seleccione un Programa ...'],
+                            'pluginOptions' => [
+                                'allowClear' => true,
+                                'multiple' => true,
+                            ]
+                        ])
+                    ],
+                ]
+            ],
+            [
+                'attributes' => [
+                    'campus' => [
+                        'type' => Form::INPUT_TEXT,
+                        'options' => ['placeholder' => 'Sede'],
+                        'columnOptions' => ['colspan' => '3']
+                    ],
+                ]
+            ],
+            [
+                'attributes' => [
+                    'cohorte' => [
+                        'type' => Form::INPUT_TEXT,
+                        'options' => ['placeholder' => 'Cohorte'],
+                        'columnOptions' => ['colspan' => '3']
+                    ],
+                ]
+            ],
+            [
+                'attributes' => [
+                    'subsidiary' => [
+                        'type' => Form::INPUT_TEXT,
+                        'options' => ['placeholder' => 'Filial'],
+                        'columnOptions' => ['colspan' => '3']
+                    ],
+                ]
+            ],
+            ]
+        ]);
+        ?> 
 
 <div class="form-group">
     <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

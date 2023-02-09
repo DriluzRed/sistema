@@ -18,9 +18,12 @@ use Yii;
  * @property string $promotion_year
  * @property string $seller
  * @property string $charge
+ * @property Alumno $alumno
+ * @property Programa $programa
  */
 class AlumnoPrograma extends \yii\db\ActiveRecord
 {
+    // public $programas = [];
     /**
      * {@inheritdoc}
      */
@@ -35,9 +38,10 @@ class AlumnoPrograma extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'alumno_id', 'programa_id', 'cohort', 'estado_programa_id', 'estado_titulo_id', 'resolution', 'resolution_date', 'promotion_year', 'seller', 'charge'], 'required'],
-            [['id', 'alumno_id', 'programa_id', 'cohort', 'estado_programa_id', 'estado_titulo_id'], 'integer'],
-            [['resolution', 'resolution_date', 'promotion_year', 'seller', 'charge'], 'string'],
+            [['id', 'cohort', 'estado_programa_id', 'estado_titulo_id', 'resolution', 'resolution_date', 'promotion_year', 'seller', 'charge'], 'required'],
+            [['id', 'cohort', 'estado_titulo_id'], 'integer'],
+            [['resolution', 'estado_programa_id', 'resolution_date', 'promotion_year', 'seller', 'charge'], 'string'],
+            [['programa_id', 'alumno_id'], 'safe'],
             [['id'], 'unique'],
         ];
     }
@@ -60,5 +64,11 @@ class AlumnoPrograma extends \yii\db\ActiveRecord
             'seller' => 'Seller',
             'charge' => 'Charge',
         ];
+    }
+    public function getAlumno(){
+        return $this->hasMany(Alumno::className(), ['id' => 'alumno_id']);
+    }
+    public function getPrograma(){
+        return $this->hasMany(Programa::className(), ['id' => 'programas']);
     }
 }

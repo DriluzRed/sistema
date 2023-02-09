@@ -19,12 +19,6 @@ return [
         'administracion' => [
             'class' => 'backend\modules\administracion\MainModule',
         ],
-        'contabilidad' => [
-            'class' => 'backend\modules\contabilidad\MainModule',
-        ],
-        'calendario' => [
-            'class' => 'backend\modules\calendario\MainModule',
-        ],
         'audit' => [
             'class' => 'bedezign\yii2\audit\Audit',
             'accessRoles' => null,
@@ -36,9 +30,6 @@ return [
                 //'audit/request',
                 //'audit/error',
             ],
-        ],
-        'atc' => [
-            'class' => 'backend\modules\atc\MainModule',
         ],
         'datecontrol' => [
             'class' => 'kartik\datecontrol\Module',
@@ -86,6 +77,7 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
+        
         /*
         'urlManager' => [
             'enablePrettyUrl' => true,

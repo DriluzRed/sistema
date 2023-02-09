@@ -9,7 +9,7 @@ use backend\models\Programa;
 /**
  * SearchProgamas represents the model behind the search form of `backend\models\Programa`.
  */
-class SearchProgamas extends Programa
+class SearchProgramas extends Programa
 {
     /**
      * {@inheritdoc}
@@ -18,7 +18,7 @@ class SearchProgamas extends Programa
     {
         return [
             [['id'], 'integer'],
-            [['nombre', 'desc'], 'safe'],
+            [['nombre', 'desc', 'asignaturas'], 'safe'],
         ];
     }
 
@@ -62,6 +62,7 @@ class SearchProgamas extends Programa
         ]);
 
         $query->andFilterWhere(['like', 'nombre', $this->nombre])
+        // ->andFilterWhere(['like', 'asignaturas', $this->asignaturas])
             ->andFilterWhere(['like', 'desc', $this->desc]);
 
         return $dataProvider;

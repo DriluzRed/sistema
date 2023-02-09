@@ -151,11 +151,11 @@ $CSS = <<<CSS
 /* Para mouseover sobre las tablas */
 
 .kv-grid-table tbody tr:hover {
-    background-color: #ebffdd;
+    background-color: #D4EBFF;
 }
 
 .table tbody tr:hover {
-    background-color: #ebffdd;
+    background-color: #D4EBFF;
 }
 
 CSS;

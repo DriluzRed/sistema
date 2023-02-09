@@ -15,7 +15,7 @@ use Yii;
  * Class FlashMessageHelpsers
  * @package common
  */
-class FlashMessageHelpsers
+class FlashMessageHelpers
 {
     /**
      * Genera un mensaje tipo growl

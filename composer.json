@@ -55,7 +55,8 @@
     "yii2tech/csv-grid": "1.0.4",
     "mdmsoft/yii2-autonumber": "~1.0",
     "kartik-v/yii2-widget-timepicker": "1.0.3",
-    "vxm/yii2-async": "^1.0"
+    "vxm/yii2-async": "^1.0",
+    "mirocow/yii2-file-input-widget": "*"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.0.0",

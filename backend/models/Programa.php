@@ -1,6 +1,7 @@
 <?php
 
 namespace backend\models;
+use yii\helpers\ArrayHelper;
 
 use Yii;
 
@@ -30,7 +31,7 @@ class Programa extends \yii\db\ActiveRecord
     {
         return [
             [['id'], 'integer'],
-            [['nombre', 'desc'], 'string'],
+            [['nombre', 'desc', 'asignaturas'], 'string'],
             [['id'], 'unique'],
         ];
     }
@@ -55,5 +56,13 @@ class Programa extends \yii\db\ActiveRecord
     public function getProgramaAsignaturas()
     {
         return $this->hasMany(ProgramaAsignatura::class, ['programa_id' => 'id']);
+    }
+    public static function getProgramaLista(){
+        $active_query = Programa::find();
+        return ArrayHelper::map($active_query->asArray()->all(), 'id', 'nombre');
+    }
+    public function getAsignaturas(){
+        $active_query = Asignatura::find();
+        return ArrayHelper::map($active_query->asArray()->all(), 'id', 'nombre');
     }
 }

@@ -4,7 +4,10 @@ namespace backend\controllers;
 
 use Yii;
 use backend\models\Alumno;
+use backend\models\AlumnoPrograma;
 use backend\models\search\SearchAlumnos;
+use common\helpers\FlashMessageHelpers;
+use Exception;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -65,13 +68,30 @@ class AlumnoController extends Controller
     public function actionCreate()
     {
         $model = new Alumno();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $trans = Yii::$app->db->beginTransaction();
+            try{
+                $model->save(false);
+                $model_ap = new AlumnoPrograma();
+                $model_ap->programa_id = $model->programa;
+                
+                $model_ap->alumno_id = $model->id;
+                $model_ap->cohort = $model->cohorte;
+                var_dump($model_ap->cohort);exit;
+                $model_ap->save();
+                $trans->commit();
+            }catch(\Exception $e){
+                $trans->rollBack();
+                throw new Exception($e);
+                // FlashMessageHelpers::createWarningMessage($e->getMessage());
+                return $this->redirect(['create']);
+            }
+            return $this->redirect(['index']);
         }
 
         return $this->render('create', [
             'model' => $model,
+
         ]);
     }
 

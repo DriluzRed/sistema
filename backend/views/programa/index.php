@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 /* @var $this yii\web\View */
-/* @var $searchModel backend\models\search\SearchProgamas */
+/* @var $searchModel backend\models\search\SearchProgramas */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Programas';
@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            // 'id',
             'nombre:ntext',
             'desc:ntext',
 
