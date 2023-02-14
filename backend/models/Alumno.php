@@ -39,6 +39,19 @@ use Yii;
  */
 class Alumno extends \yii\db\ActiveRecord
 {
+    public $enrrolment_date;
+    // public $country_id;
+    // public $programa_id;
+    public $programas = [];
+    public $cohorte;
+    public $estado_programa_id;
+    public $estado_titulo_id;
+    public $resolution;
+    public $resolution_date;
+    public $promotion_year;
+    public $seller;
+    public $charge;
+
     // public $programas = [];
     /**
      * {@inheritdoc}

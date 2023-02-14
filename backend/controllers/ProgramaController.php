@@ -4,10 +4,12 @@ namespace backend\controllers;
 
 use Yii;
 use backend\models\Programa;
+use backend\models\ProgramaAsignatura;
 use backend\models\search\SearchProgramas;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use Exception;
 
 /**
  * ProgramaController implements the CRUD actions for Programa model.
@@ -67,13 +69,37 @@ class ProgramaController extends Controller
         $model = new Programa();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $trans = Yii::$app->db->beginTransaction();
+            try{
+                $model->save(false);
+                
+                $asigArray= $model->asignaturas;
+                foreach($asigArray as $array){
+                $model_ap = new ProgramaAsignatura();
+                $model_ap->asignatura_id = $array;
+                
+                $model_ap->programa_id = $model->id;
+                $model_ap->save(false);
+                if (!$model_ap->save()) {
+                    throw new \Exception('Failed to save ProgramaAsignatura model: ' . print_r($model_ap->errors, true));
+                }
+                }
+                $trans->commit();
+            }catch(\Exception $e){
+                $trans->rollBack();
+                throw new Exception($e);
+                // FlashMessageHelpers::createWarningMessage($e->getMessage());
+                return $this->redirect(['create']);
+            }
             return $this->redirect(['index']);
         }
 
         return $this->render('create', [
             'model' => $model,
+
         ]);
     }
+    
 
     /**
      * Updates an existing Programa model.

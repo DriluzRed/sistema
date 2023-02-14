@@ -23,7 +23,6 @@ use Yii;
  */
 class AlumnoPrograma extends \yii\db\ActiveRecord
 {
-    // public $programas = [];
     /**
      * {@inheritdoc}
      */

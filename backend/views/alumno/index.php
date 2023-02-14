@@ -42,7 +42,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'email:ntext',
             [
                 'label' => 'Programas',
-                'attribute' => 'programa',
+                'attribute' => 'programas',
                 
                 // 'format' => 'raw',
                 'value' => function($model) {
@@ -52,18 +52,23 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
                 
             ],
+            'campus',
             // 'cohorte',
+            'subsidiary',
+            'enrrolment_date:ntext',
+            'contract_number:ntext',
             'year:ntext',
             'promotion_year:ntext',
             'promotion:ntext',
             'status:ntext',
 
             ['class' => 'yii\grid\ActionColumn',
-            'options' => ['style' => 'width:100px'],
-            'buttonOptions' => ['class' => 'btn btn-default'],
-            'header' => 'Acciones',
-            'template' => $template,
+                'options' => ['style' => 'width:100px'],
+                'buttonOptions' => ['class' => 'btn btn-default'],
+                'header' => 'Acciones',
+                'template' => $template,
             ],
         ],
+        
     ]); ?>
 </div>

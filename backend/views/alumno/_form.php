@@ -155,9 +155,77 @@ use yii\web\JsExpression;
                     ],
                 ]
             ],
+            [
+                'attributes' => [
+                    'estado_programa_id' => [
+                        'type' => Form::INPUT_TEXT,
+                        'options' => ['placeholder' => 'Estado programa'],
+                        'columnOptions' => ['colspan' => '3']
+                    ],
+                ]
+            ],
+            [
+                'attributes' => [
+                    'estado_titulo_id' => [
+                        'type' => Form::INPUT_TEXT,
+                        'options' => ['placeholder' => 'Estado titulo'],
+                        'columnOptions' => ['colspan' => '3']
+                    ],
+                ]
+            ],
+            [
+                'attributes' => [
+                    'resolution' => [
+                        'type' => Form::INPUT_TEXT,
+                        'options' => ['placeholder' => 'Resolucion'],
+                        'columnOptions' => ['colspan' => '3']
+                    ],
+                ]
+            ],
+            [
+                'attributes' => [
+                    'resolution_date' => [
+                        'type' => Form::INPUT_TEXT,
+                        'options' => ['placeholder' => 'fecha resolucion'],
+                        'columnOptions' => ['colspan' => '3']
+                    ],
+                ]
+            ],
+            [
+                'attributes' => [
+                    'promotion_year' => [
+                        'type' => Form::INPUT_TEXT,
+                        'options' => ['placeholder' => ' Ano promocion'],
+                        'columnOptions' => ['colspan' => '3']
+                    ],
+                ]
+            ],
+            [
+                'attributes' => [
+                    'seller' => [
+                        'type' => Form::INPUT_TEXT,
+                        'options' => ['placeholder' => ' vendedor'],
+                        'columnOptions' => ['colspan' => '3']
+                    ],
+                ]
+            ],
+            [
+                'attributes' => [
+                    'charge' => [
+                        'type' => Form::INPUT_TEXT,
+                        'options' => ['placeholder' => ' cargo'],
+                        'columnOptions' => ['colspan' => '3']
+                    ],
+                ]
+            ],
+
             ]
         ]);
         ?> 
+
+
+
+
 
 <div class="form-group">
     <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

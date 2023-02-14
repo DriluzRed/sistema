@@ -33,7 +33,8 @@ class Programa extends \yii\db\ActiveRecord
     {
         return [
             [['id'], 'integer'],
-            [['nombre', 'desc', 'asignaturas'], 'string'],
+            [['nombre', 'desc', ], 'string'],
+            [['asignaturas',],'safe'],
             [['id'], 'unique'],
         ];
     }
@@ -50,8 +51,13 @@ class Programa extends \yii\db\ActiveRecord
         ];
     }
 
+    public function getAsignatura()
+    {
+        return $this->hasOne(Asignatura::class, ['id' => 'asignatura_id']);
+    }
+
     /**
-     * Gets query for [[ProgramaAsignaturas]].
+     * Gets query for [[Programa]].
      *
      * @return \yii\db\ActiveQuery
      */
