@@ -145,15 +145,7 @@ use yii\web\JsExpression;
                     ],
                 ]
             ],
-            [
-                'attributes' => [
-                    'cohorte' => [
-                        'type' => Form::INPUT_TEXT,
-                        'options' => ['placeholder' => 'Cohorte'],
-                        'columnOptions' => ['colspan' => '3']
-                    ],
-                ]
-            ],
+
             [
                 'attributes' => [
                     'subsidiary' => [
