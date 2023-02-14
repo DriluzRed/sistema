@@ -24,33 +24,7 @@ use yii\web\JsExpression;
 <?php $form = ActiveForm::begin(); ?>
 
     <?php
-                echo FormGrid::widget([
-                    'model' => $model,
-                    'form' => $form,
-                    'autoGenerateColumns' => true,
-                    'rows' => [
-                        [
-                            'autoGenerateColumns' => false,
-                            'columns' => 12,
-                            'attributes' => [
-                                'asignaturas' => [
-                                    'type' => Form::INPUT_WIDGET,
-                                    'widgetClass' => Select2::className(),
-                                    'options' => [
-                                        'data' => Asignatura::getAsignaturas(true),
-                                        'options' => [
-                                            'placeholder' => 'Por favor Seleccione una o mas asignaturas',
-                                        ],
-                                        'pluginOptions' => [
-                                            'allowClear' => false,
-                                            'multiple' => true,
-                                        ],
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ]
-                    ]);
+               
                     echo FormGrid::widget([
                         'model' => $model,
                         'form' => $form,
@@ -73,6 +47,20 @@ use yii\web\JsExpression;
                                         'type' => Form::INPUT_TEXT,
                                         'options' => ['placeholder' => 'Descripcion del programa'],
                                         'columnOptions' => ['colspan' => '3']
+                                    ],
+                                ]
+                            ],
+                            [
+                                'attributes' => [
+                                    'programas' => [
+                                        'type' => Form::INPUT_RAW,
+                                        'value' => $form->field($model, 'asignaturas')->widget(Select2::className(), [
+                                            'data' => Asignatura::getAsignaturas(true),                                            'options' => ['placeholder' => 'Seleccione un Programa ...'],
+                                            'pluginOptions' => [
+                                                'allowClear' => true,
+                                                'multiple' => true,
+                                            ]
+                                        ])
                                     ],
                                 ]
                             ],

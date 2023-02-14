@@ -70,3 +70,4 @@ class ProgramaAsignatura extends \yii\db\ActiveRecord
         return $this->hasOne(Programa::class, ['id' => 'programa_id']);
     }
 }
+
