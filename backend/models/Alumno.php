@@ -41,7 +41,13 @@ class Alumno extends \yii\db\ActiveRecord
     // public $programa_id;
     public $programas = [];
     public $cohorte;
-
+    public $estado_programa_id;
+    public $estado_titulo_id;
+    public $resolution;
+    public $resolution_date;
+    public $promotion_year;
+    public $seller;
+    public $charge;
 
     /**
      * {@inheritdoc}
@@ -61,6 +67,7 @@ class Alumno extends \yii\db\ActiveRecord
             [['id', 'campus', 'subsidiary'], 'integer'],
             [['first_name', 'last_name', 'ci','enrrolment_date', 'low_line_number', 'phone', 'email', 'address', 'age', 'contract_number', 'year', 'promotion_year', 'born_at', 'promotion', 'document_front_file', 'document_back_file', 'status', 'study_certificate_file', 'finded_ips', 'finded_ruc'], 'string'],
             [['first_name', 'last_name', 'ci','enrrolment_date', 'low_line_number', 'phone', 'email', 'address', 'age', 'contract_number', 'year', 'promotion_year', 'born_at', 'promotion', 'document_front_file', 'document_back_file', 'status', 'study_certificate_file', 'finded_ips', 'finded_ruc', 'programas', 'country_id', 'cohorte'], 'safe'],
+            [['estado_programa_id', 'estado_titulo_id', 'resolution', 'resolution_date', 'promotion_year', 'seller', 'charge'], 'safe'],
             [['id'], 'unique'],
         ];
     }
@@ -101,10 +108,13 @@ class Alumno extends \yii\db\ActiveRecord
     public function getPais(){
         return $this->hasOne(Pais::className(), ['id' => 'country_id']);
     }
-    public function getPrograma(){
-        return $this->hasOne(Programa::className(), ['id' => 'programa_id']);
+    public function getProgramas()
+    {
+        return $this->hasMany(AlumnoPrograma::className(), ['alumno_id' => 'id']);
     }
-    public function getAlumnoprograma(){
-        return $this->hasOne(AlumnoPrograma::className(), ['id' => 'id']);
-    }
+    public function getAlumnoprograma()
+{
+    return $this->hasMany(Programa::className(), ['id' => 'programa_id']);
+}
+    
 }

@@ -42,12 +42,18 @@ $this->params['breadcrumbs'][] = $this->title;
             'phone:ntext',
             'email:ntext',
             [
-                'label' => 'Programa',
-                'attribute' => 'programa_id',
-                'value' => 'programa.nombre',
+                'label' => 'Programas',
+                'attribute' => 'programas',
+                
+                // 'format' => 'raw',
+                'value' => function($model) {
+                    return implode(',', array_map(function($programas) {
+                        return $programas->nombre; // Nombre del programa
+                    }, $model->programas));
+                }
+                
             ],
             'campus',
-            // 'cohorte',
             'subsidiary',
             'enrrolment_date:ntext',
             'contract_number:ntext',
@@ -57,13 +63,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'status:ntext',
             'finded_ips:ntext',
             'finded_ruc:ntext',
-
             ['class' => 'yii\grid\ActionColumn',
-            'options' => ['style' => 'width:100px'],
-            'buttonOptions' => ['class' => 'btn btn-default'],
-            'header' => 'Acciones',
-            'template' => $template,
+                'options' => ['style' => 'width:100px'],
+                'buttonOptions' => ['class' => 'btn btn-default'],
+                'header' => 'Acciones',
+                'template' => $template,
             ],
         ],
+        
     ]); ?>
 </div>

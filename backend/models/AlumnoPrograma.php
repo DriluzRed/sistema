@@ -23,7 +23,6 @@ use Yii;
  */
 class AlumnoPrograma extends \yii\db\ActiveRecord
 {
-    // public $programas = [];
     /**
      * {@inheritdoc}
      */
@@ -38,11 +37,11 @@ class AlumnoPrograma extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'cohort', 'estado_programa_id', 'estado_titulo_id', 'resolution', 'resolution_date', 'promotion_year', 'seller', 'charge'], 'required'],
-            [['id', 'cohort', 'estado_titulo_id'], 'integer'],
+            [['alumno_id', 'programa_id', 'cohort', 'estado_programa_id', 'estado_titulo_id', 'resolution', 'resolution_date', 'promotion_year', 'seller', 'charge'], 'required'],
+            [['alumno_id', 'programa_id', 'cohort', 'estado_titulo_id'], 'integer'],
             [['resolution', 'estado_programa_id', 'resolution_date', 'promotion_year', 'seller', 'charge'], 'string'],
-            [['programa_id', 'alumno_id'], 'safe'],
-            [['id'], 'unique'],
+            [['alumno_id'], 'exist', 'skipOnError' => true, 'targetClass' => Alumno::className(), 'targetAttribute' => ['alumno_id' => 'id']],
+            [['programa_id'], 'exist', 'skipOnError' => true, 'targetClass' => Programa::className(), 'targetAttribute' => ['programa_id' => 'id']],
         ];
     }
 
@@ -65,10 +64,15 @@ class AlumnoPrograma extends \yii\db\ActiveRecord
             'charge' => 'Charge',
         ];
     }
-    public function getAlumno(){
-        return $this->hasMany(Alumno::className(), ['id' => 'alumno_id']);
+    
+    public function getAlumno()
+    {
+        return $this->hasOne(Alumno::className(), ['id' => 'alumno_id']);
     }
-    public function getPrograma(){
-        return $this->hasMany(Programa::className(), ['id' => 'programas']);
+
+    
+    public function getPrograma()
+    {
+        return $this->hasMany(Programa::class, ['id' => 'programa_id']);
     }
 }
