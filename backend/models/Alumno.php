@@ -1,6 +1,7 @@
 <?php
 
 namespace backend\models;
+use backend\models\Pais;
 
 use Yii;
 
@@ -8,41 +9,37 @@ use Yii;
  * This is the model class for table "alumno".
  *
  * @property int $id
- * @property string|null $first_name
- * @property string|null $last_name
- * @property string|null $ci
- * @property string|null $country_id
- * @property string|null $low_line_number
- * @property string|null $phone
- * @property string|null $email
- * @property string|null $address
- * @property string|null $age
- * @property int|null $programa_id
- * @property int|null $campus
- * @property int|null $subsidiary
- * @property string|null $enrrolment_date
- * @property string|null $contract_number
- * @property string|null $year
- * @property string|null $promotion_year
- * @property string|null $born_at
- * @property string|null $promotion
- * @property string|null $document_front_file
- * @property string|null $document_back_file
- * @property string|null $status
- * @property string|null $study_certificate_file
- * @property string|null $finded_ips
- * @property string|null $finded_ruc
- 
+ * @property string $first_name
+ * @property string $last_name
+ * @property string $ci
+ * @property int $country_id
+ * @property string $low_line_number
+ * @property string $phone
+ * @property string $email
+ * @property string $address
+ * @property string $age
+ * @property int $campus
+ * @property int $subsidiary
+ * @property string $enrollment_date
+ * @property string $contract_number
+ * @property string $year
+ * @property string $promotion_year
+ * @property string $born_at
+ * @property string $promotion
+ * @property string $document_front_file
+ * @property string $document_back_file
+ * @property string $status
+ * @property string $study_certificate_file
+ * @property string $finded_ips
+ * @property string $finded_ruc
+ * @property int $programa_id
+ * @property string $sex
+ * @property string $created_at
+ * @property string $updated_at
  */
 class Alumno extends \yii\db\ActiveRecord
 {
-    public $enrrolment_date;
-    // public $country_id;
-    // public $programa_id;
-    public $programas = [];
-    public $cohorte;
-
-
+    // public $programas = [];
     /**
      * {@inheritdoc}
      */
@@ -57,11 +54,9 @@ class Alumno extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['ci','first_name', 'last_name'], 'required'],
-            [['id', 'campus', 'subsidiary'], 'integer'],
-            [['first_name', 'last_name', 'ci','enrrolment_date', 'low_line_number', 'phone', 'email', 'address', 'age', 'contract_number', 'year', 'promotion_year', 'born_at', 'promotion', 'document_front_file', 'document_back_file', 'status', 'study_certificate_file', 'finded_ips', 'finded_ruc'], 'string'],
-            [['first_name', 'last_name', 'ci','enrrolment_date', 'low_line_number', 'phone', 'email', 'address', 'age', 'contract_number', 'year', 'promotion_year', 'born_at', 'promotion', 'document_front_file', 'document_back_file', 'status', 'study_certificate_file', 'finded_ips', 'finded_ruc', 'programas', 'country_id', 'cohorte'], 'safe'],
-            [['id'], 'unique'],
+            [['first_name', 'last_name', 'ci', 'low_line_number', 'phone', 'email', 'address', 'age', 'enrollment_date', 'contract_number', 'year', 'promotion_year', 'born_at', 'promotion', 'document_front_file', 'document_back_file', 'status', 'study_certificate_file', 'finded_ips', 'finded_ruc', 'sex'], 'string'],
+            [['country_id', 'campus', 'subsidiary', 'programa_id'], 'integer'],
+            [['created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -72,22 +67,21 @@ class Alumno extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'first_name' => 'Nombre',
-            'last_name' => 'Apellido',
+            'first_name' => 'Nombres',
+            'last_name' => 'Apellidos',
             'ci' => 'Ci',
             'country_id' => 'Pais',
             'low_line_number' => 'Linea Baja',
             'phone' => 'Telefono',
             'email' => 'Email',
-            'address' => 'Direccion',
+            'address' => 'Address',
             'age' => 'Edad',
-            'programas' => 'Programa',
             'campus' => 'Sede',
             'subsidiary' => 'Filial',
-            'enrrolment_date' => 'Fecha Inscripcion',
+            'enrollment_date' => 'Enrollment Date',
             'contract_number' => 'Contract Number',
-            'year' => 'Year',
-            'promotion_year' => 'Promotion Year',
+            'year' => 'Año',
+            'promotion_year' => 'Año de promocion',
             'born_at' => 'Born At',
             'promotion' => 'Promotion',
             'document_front_file' => 'Document Front File',
@@ -96,15 +90,24 @@ class Alumno extends \yii\db\ActiveRecord
             'study_certificate_file' => 'Study Certificate File',
             'finded_ips' => 'Finded Ips',
             'finded_ruc' => 'Finded Ruc',
+            'programa_id' => 'Programa ID',
+            'sex' => 'Sex',
+            'created_at' => 'Created At',
+            'updated_at' => 'Updated At',
         ];
     }
+
     public function getPais(){
         return $this->hasOne(Pais::className(), ['id' => 'country_id']);
     }
-    public function getPrograma(){
-        return $this->hasOne(Programa::className(), ['id' => 'programa_id']);
+    public function getAlumnoProgramas()
+    {
+        return $this->hasMany(AlumnoPrograma::class, ['alumno_id' => 'id']);
     }
-    public function getAlumnoprograma(){
-        return $this->hasOne(AlumnoPrograma::className(), ['id' => 'id']);
+    
+    public function getProgramas()
+    {
+        return $this->hasMany(Programa::class, ['id' => 'programa_id'])
+            ->via('alumnoProgramas');
     }
 }

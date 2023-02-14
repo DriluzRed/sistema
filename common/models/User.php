@@ -25,6 +25,9 @@ use yii\web\IdentityInterface;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
+    public $rol_id;
+
+
     const STATUS_DELETED = 0;
     const STATUS_INACTIVE = 9;
     const STATUS_ACTIVE = 10;
@@ -209,5 +212,25 @@ class User extends ActiveRecord implements IdentityInterface
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;
+    }
+    public static function isUserAdmin($id)
+    {
+       if (User::findOne(['id' => $id, 'rol_id' => 1])){
+        return true;
+       } else {
+
+        return false;
+       }
+
+    }
+    public static function isUserMod($id)
+    {
+       if (User::findOne(['id' => $id,'rol_id' => 3])){
+        return true;
+       } else {
+
+        return false;
+       }
+
     }
 }

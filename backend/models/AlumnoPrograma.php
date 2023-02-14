@@ -38,10 +38,10 @@ class AlumnoPrograma extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id', 'cohort', 'estado_programa_id', 'estado_titulo_id', 'resolution', 'resolution_date', 'promotion_year', 'seller', 'charge'], 'required'],
+            [['id', 'cohort'], 'required'],
             [['id', 'cohort', 'estado_titulo_id'], 'integer'],
             [['resolution', 'estado_programa_id', 'resolution_date', 'promotion_year', 'seller', 'charge'], 'string'],
-            [['programa_id', 'alumno_id'], 'safe'],
+            [['programa_id', 'alumno_id', 'estado_programa_id', 'estado_titulo_id', 'resolution', 'resolution_date', 'promotion_year', 'seller', 'charge'], 'safe'],
             [['id'], 'unique'],
         ];
     }
@@ -65,10 +65,13 @@ class AlumnoPrograma extends \yii\db\ActiveRecord
             'charge' => 'Charge',
         ];
     }
-    public function getAlumno(){
-        return $this->hasMany(Alumno::className(), ['id' => 'alumno_id']);
+    public function getAlumno()
+    {
+        return $this->hasOne(Alumno::class, ['id' => 'alumno_id']);
     }
-    public function getPrograma(){
-        return $this->hasMany(Programa::className(), ['id' => 'programas']);
+
+    public function getPrograma()
+    {
+        return $this->hasOne(Programa::class, ['id' => 'programa_id']);
     }
 }

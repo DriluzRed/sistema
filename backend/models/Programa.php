@@ -15,7 +15,9 @@ use Yii;
  * @property ProgramaAsignatura[] $programaAsignaturas
  */
 class Programa extends \yii\db\ActiveRecord
+
 {
+    public $asignaturas = [];
     /**
      * {@inheritdoc}
      */
@@ -53,10 +55,10 @@ class Programa extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getProgramaAsignaturas()
-    {
-        return $this->hasMany(ProgramaAsignatura::class, ['programa_id' => 'id']);
-    }
+    // public function getProgramaAsignaturas()
+    // {
+    //     return $this->hasMany(ProgramaAsignatura::class, ['programa_id' => 'id']);
+    // }
     public static function getProgramaLista(){
         $active_query = Programa::find();
         return ArrayHelper::map($active_query->asArray()->all(), 'id', 'nombre');
@@ -64,5 +66,10 @@ class Programa extends \yii\db\ActiveRecord
     public function getAsignaturas(){
         $active_query = Asignatura::find();
         return ArrayHelper::map($active_query->asArray()->all(), 'id', 'nombre');
+    }
+    public function getAlumnos()
+    {
+        return $this->hasMany(Alumno::class, ['id' => 'alumno_id'])
+            ->viaTable('alumno_programa', ['programa_id' => 'id']);
     }
 }

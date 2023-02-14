@@ -21,16 +21,7 @@ use yii\web\JsExpression;
 
 <div class="alumno-form">
 <?php
-$query = Programa::find()
-->alias('programas')
-->leftJoin('alumno alumnos', 'alumnos.programa_id=programas.id')
-->select(['programa_id'=>'programas.id',
-            'nombre' => 'programas.nombre',
-        ])
-->orderBy('nombre');
 
-
-$programas = ArrayHelper::map($query->asArray()->all(),'programa_id', 'nombre');
 // var_dump($programas);exit;
 ?>
     <?php $form = ActiveForm::begin(); ?>

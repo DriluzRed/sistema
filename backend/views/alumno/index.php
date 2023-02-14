@@ -38,25 +38,25 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'country_id',
                 'value' => 'pais.nombre',
             ],
-            'low_line_number:ntext',
             'phone:ntext',
             'email:ntext',
             [
-                'label' => 'Programa',
-                'attribute' => 'programa_id',
-                'value' => 'programa.nombre',
+                'label' => 'Programas',
+                'attribute' => 'programa',
+                
+                // 'format' => 'raw',
+                'value' => function($model) {
+                    return implode(',', array_map(function($programas) {
+                        return $programas->nombre; // Nombre del programa
+                    }, $model->programas));
+                }
+                
             ],
-            'campus',
             // 'cohorte',
-            'subsidiary',
-            'enrrolment_date:ntext',
-            'contract_number:ntext',
             'year:ntext',
             'promotion_year:ntext',
             'promotion:ntext',
             'status:ntext',
-            'finded_ips:ntext',
-            'finded_ruc:ntext',
 
             ['class' => 'yii\grid\ActionColumn',
             'options' => ['style' => 'width:100px'],

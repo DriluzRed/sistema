@@ -11,15 +11,15 @@ use backend\models\Alumno;
  */
 class SearchAlumnos extends Alumno
 {
-    public $country_name;
+    public $programa;
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['id', 'country_id', 'programa_id', 'campus', 'subsidiary'], 'integer'],
-            [['first_name', 'last_name', 'ci', 'low_line_number', 'phone', 'email', 'address', 'age', 'enrrolment_date', 'contract_number', 'year', 'promotion_year', 'born_at', 'promotion', 'document_front_file', 'document_back_file', 'status', 'study_certificate_file', 'finded_ips', 'finded_ruc', 'country_name'], 'safe'],
+            [['id', 'country_id', 'campus', 'subsidiary'], 'integer'],
+            [['first_name', 'last_name', 'ci', 'low_line_number', 'phone', 'email', 'address', 'age', 'enrollment_date','programa', 'contract_number', 'year', 'promotion_year', 'born_at', 'promotion', 'document_front_file', 'document_back_file', 'status', 'study_certificate_file', 'finded_ips', 'finded_ruc', 'sex', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -42,20 +42,14 @@ class SearchAlumnos extends Alumno
     public function search($params)
     {
         $query = Alumno::find();
-        $query->alias('alumno');
-        $query->joinWith('pais');
-        $query->joinWith('alumnoprograma');
+        $query->joinWith(['alumnoProgramas.programa']);
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort' => ['defaultOrder' => ['last_name' => SORT_ASC]]
         ]);
-        $dataProvider->sort->attributes['country_name'] = [
-            'asc' => ['pais.nombre' => SORT_ASC],
-            'desc' => ['pais.nombre' => SORT_DESC],
-        ];
+
         $this->load($params);
 
         if (!$this->validate()) {
@@ -68,9 +62,11 @@ class SearchAlumnos extends Alumno
         $query->andFilterWhere([
             'id' => $this->id,
             'country_id' => $this->country_id,
-            'programa_id' => $this->programa_id,
             'campus' => $this->campus,
             'subsidiary' => $this->subsidiary,
+            // 'programa_id' => $this->programa_id,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ]);
 
         $query->andFilterWhere(['like', 'first_name', $this->first_name])
@@ -80,21 +76,21 @@ class SearchAlumnos extends Alumno
             ->andFilterWhere(['like', 'phone', $this->phone])
             ->andFilterWhere(['like', 'email', $this->email])
             ->andFilterWhere(['like', 'address', $this->address])
-            // ->andFilterWhere(['like', 'age', $this->age])
-            ->andFilterWhere(['like', 'enrrolment_date', $this->enrrolment_date])
+            ->andFilterWhere(['like', 'age', $this->age])
+            ->andFilterWhere(['like', 'enrollment_date', $this->enrollment_date])
             ->andFilterWhere(['like', 'contract_number', $this->contract_number])
-            // ->andFilterWhere(['like', 'year', $this->year])
+            ->andFilterWhere(['like', 'year', $this->year])
             ->andFilterWhere(['like', 'promotion_year', $this->promotion_year])
-            // ->andFilterWhere(['like', 'born_at', $this->born_at])
+            ->andFilterWhere(['like', 'born_at', $this->born_at])
             ->andFilterWhere(['like', 'promotion', $this->promotion])
-            // ->andFilterWhere(['like', 'document_front_file', $this->document_front_file])
-            // ->andFilterWhere(['like', 'document_back_file', $this->document_back_file])
+            ->andFilterWhere(['like', 'document_front_file', $this->document_front_file])
+            ->andFilterWhere(['like', 'document_back_file', $this->document_back_file])
             ->andFilterWhere(['like', 'status', $this->status])
-            // ->andFilterWhere(['like', 'study_certificate_file', $this->study_certificate_file])
-            // ->andFilterWhere(['like', 'finded_ips', $this->finded_ips])
-            // ->andFilterWhere(['like', 'finded_ruc', $this->finded_ruc])
-            ->andFilterWhere(['like', 'pais.nombre', $this->country_name]);
-            // ->andFilterWhere(['like', 'cohorte', $this->cohorte]);
+            ->andFilterWhere(['like', 'study_certificate_file', $this->study_certificate_file])
+            ->andFilterWhere(['like', 'finded_ips', $this->finded_ips])
+            ->andFilterWhere(['like', 'finded_ruc', $this->finded_ruc])
+            ->andFilterWhere(['like', 'sex', $this->sex])
+            ->andFilterWhere(['like', 'programa.nombre', $this->programa]);
 
         return $dataProvider;
     }
