@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use Yii;
 use backend\models\Alumno;
+use backend\models\AlumnoPrograma;
 use backend\models\search\SearchAlumnos;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -93,7 +94,7 @@ class AlumnoController extends Controller
                 $trans->commit();
             }catch(\Exception $e){
                 $trans->rollBack();
-                throw new Exception($e);
+                throw new \Exception($e);
                 // FlashMessageHelpers::createWarningMessage($e->getMessage());
                 return $this->redirect(['create']);
             }

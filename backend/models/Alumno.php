@@ -42,7 +42,7 @@ class Alumno extends \yii\db\ActiveRecord
     public $enrrolment_date;
     // public $country_id;
     // public $programa_id;
-    public $programas = [];
+    // public $programas = [];
     public $cohorte;
     public $estado_programa_id;
     public $estado_titulo_id;
@@ -52,7 +52,6 @@ class Alumno extends \yii\db\ActiveRecord
     public $seller;
     public $charge;
 
-    // public $programas = [];
     /**
      * {@inheritdoc}
      */
@@ -67,9 +66,12 @@ class Alumno extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['first_name', 'last_name', 'ci', 'low_line_number', 'phone', 'email', 'address', 'age', 'enrollment_date', 'contract_number', 'year', 'promotion_year', 'born_at', 'promotion', 'document_front_file', 'document_back_file', 'status', 'study_certificate_file', 'finded_ips', 'finded_ruc', 'sex'], 'string'],
-            [['country_id', 'campus', 'subsidiary', 'programa_id'], 'integer'],
-            [['created_at', 'updated_at'], 'safe'],
+            [['ci','first_name', 'last_name'], 'required'],
+            [['id', 'campus', 'subsidiary'], 'integer'],
+            [['first_name', 'last_name', 'ci','enrrolment_date', 'low_line_number', 'phone', 'email', 'address', 'age', 'contract_number', 'year', 'promotion_year', 'born_at', 'promotion', 'document_front_file', 'document_back_file', 'status', 'study_certificate_file', 'finded_ips', 'finded_ruc'], 'string'],
+            [['first_name', 'last_name', 'ci','enrrolment_date', 'low_line_number', 'phone', 'email', 'address', 'age', 'contract_number', 'year', 'promotion_year', 'born_at', 'promotion', 'document_front_file', 'document_back_file', 'status', 'study_certificate_file', 'finded_ips', 'finded_ruc', 'programas', 'country_id', 'cohorte'], 'safe'],
+            [['estado_programa_id', 'estado_titulo_id', 'resolution', 'resolution_date', 'promotion_year', 'seller', 'charge'], 'safe'],
+            [['id'], 'unique'],
         ];
     }
 
@@ -121,6 +123,7 @@ class Alumno extends \yii\db\ActiveRecord
     public function getProgramas()
     {
         return $this->hasMany(Programa::class, ['id' => 'programa_id'])
-            ->via('alumnoProgramas');
+            ->viaTable('alumno_programa', ['alumno_id' => 'id']);
     }
+    
 }

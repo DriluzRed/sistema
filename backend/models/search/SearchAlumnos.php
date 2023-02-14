@@ -11,7 +11,7 @@ use backend\models\Alumno;
  */
 class SearchAlumnos extends Alumno
 {
-    public $programa;
+    public $programas;
     /**
      * {@inheritdoc}
      */
@@ -19,7 +19,7 @@ class SearchAlumnos extends Alumno
     {
         return [
             [['id', 'country_id', 'campus', 'subsidiary'], 'integer'],
-            [['first_name', 'last_name', 'ci', 'low_line_number', 'phone', 'email', 'address', 'age', 'enrollment_date','programa', 'contract_number', 'year', 'promotion_year', 'born_at', 'promotion', 'document_front_file', 'document_back_file', 'status', 'study_certificate_file', 'finded_ips', 'finded_ruc', 'sex', 'created_at', 'updated_at'], 'safe'],
+            [['first_name', 'last_name', 'ci', 'low_line_number', 'phone', 'email', 'address', 'age', 'enrollment_date','programas', 'contract_number', 'year', 'promotion_year', 'born_at', 'promotion', 'document_front_file', 'document_back_file', 'status', 'study_certificate_file', 'finded_ips', 'finded_ruc', 'sex', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -90,7 +90,7 @@ class SearchAlumnos extends Alumno
             ->andFilterWhere(['like', 'finded_ips', $this->finded_ips])
             ->andFilterWhere(['like', 'finded_ruc', $this->finded_ruc])
             ->andFilterWhere(['like', 'sex', $this->sex])
-            ->andFilterWhere(['like', 'programa.nombre', $this->programa]);
+            ->andFilterWhere(['like', 'programas.nombre', $this->programas]);
 
         return $dataProvider;
     }

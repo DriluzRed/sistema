@@ -41,16 +41,13 @@ $this->params['breadcrumbs'][] = $this->title;
             'phone:ntext',
             'email:ntext',
             [
-                'label' => 'Programas',
                 'attribute' => 'programas',
-                
-                // 'format' => 'raw',
+                'format' => 'raw',
                 'value' => function($model) {
-                    return implode(',', array_map(function($programas) {
+                    return implode('<br>', array_map(function($programas) {
                         return $programas->nombre; // Nombre del programa
                     }, $model->programas));
                 }
-                
             ],
             'campus',
             // 'cohorte',
