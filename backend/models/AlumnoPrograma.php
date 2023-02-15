@@ -38,8 +38,8 @@ class AlumnoPrograma extends \yii\db\ActiveRecord
     {
         return [
             [['alumno_id', 'programa_id', 'cohort', 'estado_programa_id', 'estado_titulo_id', 'resolution', 'resolution_date', 'promotion_year', 'seller', 'charge'], 'required'],
-            [['alumno_id', 'programa_id', 'cohort', 'estado_titulo_id'], 'integer'],
-            [['resolution', 'estado_programa_id', 'resolution_date', 'promotion_year', 'seller', 'charge'], 'string'],
+            [['alumno_id', 'programa_id', 'cohort'], 'integer'],
+            [['resolution', 'estado_programa_id', 'resolution_date', 'promotion_year', 'seller', 'charge', 'estado_titulo_id'], 'string'],
             [['alumno_id'], 'exist', 'skipOnError' => true, 'targetClass' => Alumno::className(), 'targetAttribute' => ['alumno_id' => 'id']],
             [['programa_id'], 'exist', 'skipOnError' => true, 'targetClass' => Programa::className(), 'targetAttribute' => ['programa_id' => 'id']],
         ];

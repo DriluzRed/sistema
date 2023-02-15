@@ -34,7 +34,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'last_name:ntext',
             'ci:ntext',
             'phone:ntext',
-            'email:ntext',
             // [
             //     'label' => 'Pais',
             //     'attribute' => 'programas',
