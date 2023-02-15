@@ -12,6 +12,7 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use yii\helpers\ArrayHelper;
 
 /**
  * Site controller
@@ -31,7 +32,7 @@ class SiteController extends Controller
                     [
                         'actions' => ['signup'],
                         'allow' => true,
-                        'roles' => ['?'],
+                        'roles' => ['admin', 'direccion', 'coordinacion', 'administracion'],
                     ],
                     [
                         'actions' => ['logout'],
@@ -148,6 +149,7 @@ class SiteController extends Controller
      */
     public function actionSignup()
     {
+
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post())) {
             if ($user = $model->signup()) {
@@ -159,6 +161,7 @@ class SiteController extends Controller
 
         return $this->render('signup', [
             'model' => $model,
+           
         ]);
     }
 

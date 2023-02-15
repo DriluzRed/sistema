@@ -6,6 +6,7 @@ use Yii;
 use backend\models\Alumno;
 use backend\models\AlumnoPrograma;
 use backend\models\search\SearchAlumnos;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -21,6 +22,36 @@ class AlumnoController extends Controller
     public function behaviors()
     {
         return [
+            'access'=>[
+                'class' => AccessControl::className(),
+                'rules'=> [
+                 
+                    [
+                        'allow' => false,
+                        'actions' => ['index'],
+                        'roles' => ['alumno'],
+                    ],
+                    [
+                        'allow' => false,
+                        'actions' => ['create'],
+                        'roles' => ['alumno'],
+                    ],
+                    [
+                        'allow' => false,
+                        'actions' => ['update'],
+                        'roles' => ['alumno'],
+                    ],
+                    [
+                        'allow' => false,
+                        'actions' => ['delete'],
+                        'roles' => ['alumno'],
+                    ],
+                    [
+                        'allow'=>true,
+                        'roles'=>['@']
+                     ],
+                ]
+    ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
