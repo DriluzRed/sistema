@@ -12,7 +12,8 @@ use backend\models\Alumno;
 class SearchAlumnos extends Alumno
 {
     public $programas;
-    public $promoyear;
+    public $promo;
+    public $cohorte;
     /**
      * {@inheritdoc}
      */
@@ -20,7 +21,7 @@ class SearchAlumnos extends Alumno
     {
         return [
             [['id', 'country_id', 'campus', 'subsidiary'], 'integer'],
-            [['first_name', 'last_name', 'ci', 'low_line_number', 'phone', 'email', 'address', 'age', 'enrollment_date','programas', 'contract_number', 'year', 'promotion_year', 'born_at', 'promotion', 'document_front_file', 'document_back_file', 'status', 'study_certificate_file', 'finded_ips', 'finded_ruc', 'sex', 'created_at', 'updated_at'], 'safe'],
+            [['first_name', 'last_name', 'ci', 'low_line_number', 'phone', 'email', 'address', 'age', 'enrollment_date','programas','cohorte', 'contract_number', 'year', 'promotion_year', 'born_at', 'promotion', 'document_front_file', 'document_back_file', 'status', 'study_certificate_file', 'finded_ips', 'finded_ruc', 'sex', 'created_at', 'updated_at'], 'safe'],
         ];
     }
 
@@ -44,7 +45,9 @@ class SearchAlumnos extends Alumno
     {
         $query = Alumno::find();
         $query->joinWith(['alumnoProgramas.programa']);
-        $query->joinWith(['alumnoProgramas']);
+        
+        
+        // $query->joinWith(['alumnoProgramas']);
 
         // add conditions that should always apply here
 
@@ -82,7 +85,8 @@ class SearchAlumnos extends Alumno
             ->andFilterWhere(['like', 'enrollment_date', $this->enrollment_date])
             ->andFilterWhere(['like', 'contract_number', $this->contract_number])
             ->andFilterWhere(['like', 'year', $this->year])
-            ->andFilterWhere(['like', 'alumnoProgramas.promotion_year', $this->promotion_year])
+            ->andFilterWhere(['like', 'alumno_programa.promotion_year', $this->promotion_year])
+            ->andFilterWhere(['like', 'alumno_programa.cohort', $this->cohorte])
             ->andFilterWhere(['like', 'born_at', $this->born_at])
             ->andFilterWhere(['like', 'promotion', $this->promotion])
             ->andFilterWhere(['like', 'document_front_file', $this->document_front_file])

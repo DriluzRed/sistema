@@ -33,11 +33,6 @@ $this->params['breadcrumbs'][] = $this->title;
             'first_name:ntext',
             'last_name:ntext',
             'ci:ntext',
-            [
-                'label' => 'Pais',
-                'attribute' => 'country_id',
-                'value' => 'pais.nombre',
-            ],
             'phone:ntext',
             'email:ntext',
             // [
@@ -57,7 +52,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'format' => 'raw',
             ],
-            'campus',
             [
                 'label' => 'Cohorte',
                 'attribute' => 'cohorte',
@@ -70,7 +64,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'format' => 'raw',
             ],
-            'subsidiary',
             'year:ntext',
          
             [
