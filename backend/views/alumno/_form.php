@@ -1,6 +1,8 @@
 <?php
 
 use backend\models\AlumnoPrograma;
+use backend\models\EstadoPrograma;
+use backend\models\EstadoTitulo;
 use kartik\widgets\FileInput;
 use backend\models\Pais;
 use backend\models\Programa;
@@ -158,18 +160,30 @@ use yii\web\JsExpression;
             [
                 'attributes' => [
                     'estado_programa_id' => [
-                        'type' => Form::INPUT_TEXT,
-                        'options' => ['placeholder' => 'Estado programa'],
-                        'columnOptions' => ['colspan' => '3']
+                        'type' => Form::INPUT_RAW,
+                        'value' => $form->field($model, 'estado_programa_id')->widget(Select2::className(), [
+                            'data' => EstadoPrograma::getEstadoPLista(true),
+                            'options' => ['placeholder' => 'Seleccione el estado ...'],
+                            'pluginOptions' => [
+                                'allowClear' => true,
+                                'multiple' => false,
+                            ]
+                        ])
                     ],
                 ]
             ],
             [
                 'attributes' => [
                     'estado_titulo_id' => [
-                        'type' => Form::INPUT_TEXT,
-                        'options' => ['placeholder' => 'Estado titulo'],
-                        'columnOptions' => ['colspan' => '3']
+                        'type' => Form::INPUT_RAW,
+                        'value' => $form->field($model, 'estado_titulo_id')->widget(Select2::className(), [
+                            'data' => EstadoTitulo::getEstadoTLista(true),
+                            'options' => ['placeholder' => 'Seleccione el estado ...'],
+                            'pluginOptions' => [
+                                'allowClear' => true,
+                                'multiple' => false,
+                            ]
+                        ])
                     ],
                 ]
             ],
@@ -195,7 +209,15 @@ use yii\web\JsExpression;
                 'attributes' => [
                     'promotion_year' => [
                         'type' => Form::INPUT_TEXT,
-                        'options' => ['placeholder' => ' Ano promocion'],
+                        'options' => ['placeholder' => ' Año promocion'],
+                        'columnOptions' => ['colspan' => '3']
+                    ],
+                ]
+            ],[
+                'attributes' => [
+                    'cohorte' => [
+                        'type' => Form::INPUT_TEXT,
+                        'options' => ['placeholder' => 'Cohorte'],
                         'columnOptions' => ['colspan' => '3']
                     ],
                 ]

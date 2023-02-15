@@ -40,20 +40,37 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'phone:ntext',
             'email:ntext',
+            // [
+            //     'label' => 'Pais',
+            //     'attribute' => 'programas',
+            //     'value' => 'programas.nombre',
+            // ],
             [
+                'label' => 'Programas',
                 'attribute' => 'programas',
+                'value' => function ($model) {
+                    $programas = '';
+                    foreach ($model->alumnoProgramas as $alumnoPrograma) {
+                        $programas .= $alumnoPrograma->programa->nombre . '<br>';
+                    }
+                    return $programas;
+                },
                 'format' => 'raw',
-                'value' => function($model) {
-                    return implode('<br>', array_map(function($programas) {
-                        return $programas->nombre; // Nombre del programa
-                    }, $model->programas));
-                }
             ],
             'campus',
-            // 'cohorte',
+            [
+                'label' => 'Cohorte',
+                'attribute' => 'cohorte',
+                'value' => function ($model) {
+                    $cohorte = '';
+                    foreach ($model->alumnoProgramas as $alumnoPrograma) {
+                        $cohorte .= $alumnoPrograma->cohort . '<br>';
+                    }
+                    return $cohorte;
+                },
+                'format' => 'raw',
+            ],
             'subsidiary',
-            'enrrolment_date:ntext',
-            'contract_number:ntext',
             'year:ntext',
             'promotion_year:ntext',
             'promotion:ntext',

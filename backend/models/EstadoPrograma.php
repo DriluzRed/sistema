@@ -1,7 +1,7 @@
 <?php
 
 namespace backend\models;
-
+use yii\helpers\ArrayHelper;
 use Yii;
 
 /**
@@ -42,5 +42,10 @@ class EstadoPrograma extends \yii\db\ActiveRecord
             'id' => 'ID',
             'desc' => 'Desc',
         ];
+    }
+
+    public static function getEstadoPLista(){
+        $active_query = EstadoPrograma::find();
+        return ArrayHelper::map($active_query->asArray()->all(), 'id', 'desc');
     }
 }

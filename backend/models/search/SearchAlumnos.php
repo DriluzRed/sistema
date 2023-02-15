@@ -90,7 +90,7 @@ class SearchAlumnos extends Alumno
             ->andFilterWhere(['like', 'finded_ips', $this->finded_ips])
             ->andFilterWhere(['like', 'finded_ruc', $this->finded_ruc])
             ->andFilterWhere(['like', 'sex', $this->sex])
-            ->andFilterWhere(['like', 'programas.nombre', $this->programas]);
+            ->andFilterWhere(['like', 'programa.nombre', $this->programas]);
 
         return $dataProvider;
     }

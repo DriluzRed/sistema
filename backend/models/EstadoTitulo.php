@@ -1,6 +1,7 @@
 <?php
 
 namespace backend\models;
+use yii\helpers\ArrayHelper;
 
 use Yii;
 
@@ -42,5 +43,9 @@ class EstadoTitulo extends \yii\db\ActiveRecord
             'id' => 'ID',
             'desc' => 'Desc',
         ];
+    }
+    public static function getEstadoTLista(){
+        $active_query = EstadoTitulo::find();
+        return ArrayHelper::map($active_query->asArray()->all(), 'id', 'desc');
     }
 }

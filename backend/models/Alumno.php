@@ -42,7 +42,7 @@ class Alumno extends \yii\db\ActiveRecord
     public $enrrolment_date;
     // public $country_id;
     // public $programa_id;
-    // public $programas = [];
+    public $programas = [];
     public $cohorte;
     public $estado_programa_id;
     public $estado_titulo_id;
@@ -67,8 +67,8 @@ class Alumno extends \yii\db\ActiveRecord
     {
         return [
             [['ci','first_name', 'last_name'], 'required'],
-            [['id', 'campus', 'subsidiary'], 'integer'],
-            [['first_name', 'last_name', 'ci','enrrolment_date', 'low_line_number', 'phone', 'email', 'address', 'age', 'contract_number', 'year', 'promotion_year', 'born_at', 'promotion', 'document_front_file', 'document_back_file', 'status', 'study_certificate_file', 'finded_ips', 'finded_ruc'], 'string'],
+            [['id'], 'integer'],
+            [['first_name', 'last_name', 'ci','enrrolment_date', 'low_line_number', 'phone', 'email', 'address', 'age', 'contract_number', 'year', 'promotion_year', 'born_at', 'promotion', 'document_front_file', 'document_back_file', 'status', 'study_certificate_file', 'finded_ips', 'finded_ruc', 'campus', 'subsidiary'], 'string'],
             [['first_name', 'last_name', 'ci','enrrolment_date', 'low_line_number', 'phone', 'email', 'address', 'age', 'contract_number', 'year', 'promotion_year', 'born_at', 'promotion', 'document_front_file', 'document_back_file', 'status', 'study_certificate_file', 'finded_ips', 'finded_ruc', 'programas', 'country_id', 'cohorte'], 'safe'],
             [['estado_programa_id', 'estado_titulo_id', 'resolution', 'resolution_date', 'promotion_year', 'seller', 'charge'], 'safe'],
             [['id'], 'unique'],
@@ -89,7 +89,7 @@ class Alumno extends \yii\db\ActiveRecord
             'low_line_number' => 'Linea Baja',
             'phone' => 'Telefono',
             'email' => 'Email',
-            'address' => 'Address',
+            'address' => 'Direccion',
             'age' => 'Edad',
             'campus' => 'Sede',
             'subsidiary' => 'Filial',
@@ -109,6 +109,10 @@ class Alumno extends \yii\db\ActiveRecord
             'sex' => 'Sex',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+            'resolution' => 'Resolucion',
+            'resolution_date' => 'Año de Resolucion',
+            'estado_programa_id' => 'Estado del programa',
+            'estado_titulo_id' => 'Estado del titulo',
         ];
     }
 

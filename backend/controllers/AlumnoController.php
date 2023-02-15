@@ -118,7 +118,38 @@ class AlumnoController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            $trans = Yii::$app->db->beginTransaction();
+            try{
+                $model->save(false);
+                
+                $programsArray= $model->programas;
+                foreach($programsArray as $array){
+                $model_ap = new AlumnoPrograma();
+                $model_ap->programa_id = $array;
+                
+                $model_ap->alumno_id = $model->id;
+                $model_ap->cohort = $model->cohorte;
+                $model_ap->estado_programa_id = $model->estado_programa_id;
+             
+                $model_ap->estado_titulo_id = $model->estado_titulo_id;
+                $model_ap->resolution = $model->resolution;
+                $model_ap->resolution_date = $model->resolution_date;
+                $model_ap->promotion_year = $model->promotion_year;
+                $model_ap->seller = $model->seller;
+                $model_ap->charge = $model->charge;
+                $model_ap->save(false);
+                if (!$model_ap->save()) {
+                    throw new \Exception('Failed to save AlumnoPrograma model: ' . print_r($model_ap->errors, true));
+                }
+                }
+                $trans->commit();
+            }catch(\Exception $e){
+                $trans->rollBack();
+                throw new \Exception($e);
+                // FlashMessageHelpers::createWarningMessage($e->getMessage());
+                return $this->redirect(['update']);
+            }
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [
