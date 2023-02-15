@@ -12,6 +12,7 @@ use backend\models\Alumno;
 class SearchAlumnos extends Alumno
 {
     public $programas;
+    public $promoyear;
     /**
      * {@inheritdoc}
      */
@@ -43,6 +44,7 @@ class SearchAlumnos extends Alumno
     {
         $query = Alumno::find();
         $query->joinWith(['alumnoProgramas.programa']);
+        $query->joinWith(['alumnoProgramas']);
 
         // add conditions that should always apply here
 
@@ -80,7 +82,7 @@ class SearchAlumnos extends Alumno
             ->andFilterWhere(['like', 'enrollment_date', $this->enrollment_date])
             ->andFilterWhere(['like', 'contract_number', $this->contract_number])
             ->andFilterWhere(['like', 'year', $this->year])
-            ->andFilterWhere(['like', 'promotion_year', $this->promotion_year])
+            ->andFilterWhere(['like', 'alumnoProgramas.promotion_year', $this->promotion_year])
             ->andFilterWhere(['like', 'born_at', $this->born_at])
             ->andFilterWhere(['like', 'promotion', $this->promotion])
             ->andFilterWhere(['like', 'document_front_file', $this->document_front_file])

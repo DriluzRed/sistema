@@ -72,7 +72,19 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'subsidiary',
             'year:ntext',
-            'promotion_year:ntext',
+         
+            [
+                'label' => 'promotion_year',
+                'attribute' => 'promotion_year',
+                'value' => function ($model) {
+                    $promotion_year = '';
+                    foreach ($model->alumnoProgramas as $alumnoPrograma) {
+                        $promotion_year .= $alumnoPrograma->promotion_year . '<br>';
+                    }
+                    return $promotion_year;
+                },
+                'format' => 'raw',
+            ],
             'promotion:ntext',
             'status:ntext',
 
