@@ -30,7 +30,7 @@ class MainModule extends \yii\base\Module implements ModuleInterface
         $items = array();
         $subitems_entidad = [];
 
-        (\Yii::$app->user->can('borrarAlumno')) ?  array_push($items, ['label' => 'Total de Inscriptos', 'url' => ['alumno/index'], 'icon' => 'fa fa-building','options' =>['class'=>'tarjetas'],  'active' => \Yii::$app->controller->id == 'alumno']):  '';
+        (\Yii::$app->user->can('crearAlumno')) ?  array_push($items, ['label' => 'Total de Inscriptos', 'url' => ['alumno/index'], 'icon' => 'fa fa-building','options' =>['class'=>'tarjetas'],  'active' => \Yii::$app->controller->id == 'alumno']):  '';
         array_push($items, ['label' => 'Asignaturas', 'url' => ['asignatura/index'], 'icon' => 'fa fa-building','options' =>['class'=>'tarjetas'],  'active' => \Yii::$app->controller->id == 'asignatura']);
         array_push($items, ['label' => 'Programas', 'url' => ['programa/index'], 'icon' => 'fa fa-building','options' =>['class'=>'tarjetas'],  'active' => \Yii::$app->controller->id == 'programa']);
         return $items;
