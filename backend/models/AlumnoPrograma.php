@@ -72,4 +72,13 @@ class AlumnoPrograma extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Programa::class, ['id' => 'programa_id']);
     }
+
+    public function getEstadoPrograma()
+    {
+    return $this->hasOne(EstadoPrograma::class, ['id' => 'estado_programa_id']);
+    }
+    public function getEstadoTitulo()
+    {
+        return $this->hasOne(EstadoTitulo::class, ['id' => 'estado_titulo_id']);
+    }
 }

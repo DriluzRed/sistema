@@ -66,7 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'year:ntext',
          
             [
-                'label' => 'promotion_year',
+                'label' => 'Año de Promocion',
                 'attribute' => 'promotion_year',
                 'value' => function ($model) {
                     $promotion_year = '';
@@ -77,9 +77,38 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'format' => 'raw',
             ],
-            'promotion:ntext',
+            // 'promotion:ntext',
             'status:ntext',
+            [
+                'label' => 'Estado del programa',
+                'attribute' => 'estado_programa',
+                'value' => function ($model) {
+                    $estado_programa_nombre = '';
+                    foreach ($model->alumnoProgramas as $alumnoPrograma) {
+                        $estado_programa_nombre .= $alumnoPrograma->estadoPrograma->desc . '<br>';
+                    }
+                    return $estado_programa_nombre;
+                },
+                'format' => 'raw',
+            ],
+            [
+                'label' => 'Estado del titulo',
+                'attribute' => 'estado_titulo',
+                'value' => function ($model) {
+                    $estado_titulo = '';
+                   
+                        foreach ($model->alumnoProgramas as $alumnoPrograma) {
+                            if($alumnoPrograma->estadoTitulo){
+                                $estado_titulo .= $alumnoPrograma->estadoTitulo->desc . '<br>';
+                            }
+                            
+                        }
+                      
 
+                    return $estado_titulo;
+                },
+                'format' => 'raw',
+            ],
             ['class' => 'yii\grid\ActionColumn',
                 'options' => ['style' => 'width:100px'],
                 'buttonOptions' => ['class' => 'btn btn-default'],

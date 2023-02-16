@@ -98,15 +98,6 @@ use yii\web\JsExpression;
             ],
             [
                 'attributes' => [
-                    'phone' => [
-                        'type' => Form::INPUT_TEXT,
-                        'options' => ['placeholder' => 'Numero de telefono'],
-                        'columnOptions' => ['colspan' => '3']
-                    ],
-                ]
-            ],
-            [
-                'attributes' => [
                     'email' => [
                         'type' => Form::INPUT_TEXT,
                         'options' => ['placeholder' => 'email'],

@@ -100,7 +100,7 @@ class Alumno extends \yii\db\ActiveRecord
             'promotion' => 'Promotion',
             'document_front_file' => 'Document Front File',
             'document_back_file' => 'Document Back File',
-            'status' => 'Status',
+            'status' => 'Estado',
             'study_certificate_file' => 'Study Certificate File',
             'finded_ips' => 'Finded Ips',
             'finded_ruc' => 'Finded Ruc',
