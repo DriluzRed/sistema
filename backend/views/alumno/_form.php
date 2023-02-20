@@ -15,6 +15,8 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\JsExpression;
+use yii\bootstrap\Modal;
+use kartik\grid\SerialColumn;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Alumno */
@@ -23,8 +25,6 @@ use yii\web\JsExpression;
 
 <div class="alumno-form">
 <?php
-
-// var_dump($programas);exit;
 ?>
     <?php $form = ActiveForm::begin(); ?>
 
@@ -80,6 +80,20 @@ use yii\web\JsExpression;
             ],
             [
                 'attributes' => [
+                    'status' => [
+                        'type' => Form::INPUT_RAW,
+                        'value' => $form->field($model, 'status')->widget(Select2::className(), [
+                            'data' => ['Activo' => 'Activo', 'Inactivo' => 'Inactivo'],
+                            'options' => ['placeholder' => 'Seleccione un estado ...'],
+                            'pluginOptions' => [
+                                'allowClear' => true
+                            ]
+                        ])
+                    ],
+                ]
+            ],
+            [
+                'attributes' => [
                     'low_line_number' => [
                         'type' => Form::INPUT_TEXT,
                         'options' => ['placeholder' => 'Numero linea baja'],
@@ -116,21 +130,6 @@ use yii\web\JsExpression;
             ],
             [
                 'attributes' => [
-                    'programas' => [
-                        'type' => Form::INPUT_RAW,
-                        'value' => $form->field($model, 'programas')->widget(Select2::className(), [
-                            'data' => Programa::getProgramaLista(true),
-                            'options' => ['placeholder' => 'Seleccione un Programa ...'],
-                            'pluginOptions' => [
-                                'allowClear' => true,
-                                'multiple' => true,
-                            ]
-                        ])
-                    ],
-                ]
-            ],
-            [
-                'attributes' => [
                     'campus' => [
                         'type' => Form::INPUT_TEXT,
                         'options' => ['placeholder' => 'Sede'],
@@ -148,93 +147,11 @@ use yii\web\JsExpression;
                     ],
                 ]
             ],
-            [
-                'attributes' => [
-                    'estado_programa_id' => [
-                        'type' => Form::INPUT_RAW,
-                        'value' => $form->field($model, 'estado_programa_id')->widget(Select2::className(), [
-                            'data' => EstadoPrograma::getEstadoPLista(true),
-                            'options' => ['placeholder' => 'Seleccione el estado ...'],
-                            'pluginOptions' => [
-                                'allowClear' => true,
-                                'multiple' => false,
-                            ]
-                        ])
-                    ],
-                ]
-            ],
-            [
-                'attributes' => [
-                    'estado_titulo_id' => [
-                        'type' => Form::INPUT_RAW,
-                        'value' => $form->field($model, 'estado_titulo_id')->widget(Select2::className(), [
-                            'data' => EstadoTitulo::getEstadoTLista(true),
-                            'options' => ['placeholder' => 'Seleccione el estado ...'],
-                            'pluginOptions' => [
-                                'allowClear' => true,
-                                'multiple' => false,
-                            ]
-                        ])
-                    ],
-                ]
-            ],
-            [
-                'attributes' => [
-                    'resolution' => [
-                        'type' => Form::INPUT_TEXT,
-                        'options' => ['placeholder' => 'Resolucion'],
-                        'columnOptions' => ['colspan' => '3']
-                    ],
-                ]
-            ],
-            [
-                'attributes' => [
-                    'resolution_date' => [
-                        'type' => Form::INPUT_TEXT,
-                        'options' => ['placeholder' => 'fecha resolucion'],
-                        'columnOptions' => ['colspan' => '3']
-                    ],
-                ]
-            ],
-            [
-                'attributes' => [
-                    'promotion_year' => [
-                        'type' => Form::INPUT_TEXT,
-                        'options' => ['placeholder' => ' Año promocion'],
-                        'columnOptions' => ['colspan' => '3']
-                    ],
-                ]
-            ],[
-                'attributes' => [
-                    'cohorte' => [
-                        'type' => Form::INPUT_TEXT,
-                        'options' => ['placeholder' => 'Cohorte'],
-                        'columnOptions' => ['colspan' => '3']
-                    ],
-                ]
-            ],
-            [
-                'attributes' => [
-                    'seller' => [
-                        'type' => Form::INPUT_TEXT,
-                        'options' => ['placeholder' => ' vendedor'],
-                        'columnOptions' => ['colspan' => '3']
-                    ],
-                ]
-            ],
-            [
-                'attributes' => [
-                    'charge' => [
-                        'type' => Form::INPUT_TEXT,
-                        'options' => ['placeholder' => ' cargo'],
-                        'columnOptions' => ['colspan' => '3']
-                    ],
-                ]
-            ],
-
+            
             ]
         ]);
-        ?> 
+        echo $this->render('_form_programas');
+?>
 
 
 

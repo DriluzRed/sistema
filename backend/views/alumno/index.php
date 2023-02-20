@@ -85,7 +85,10 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model) {
                     $estado_programa_nombre = '';
                     foreach ($model->alumnoProgramas as $alumnoPrograma) {
-                        $estado_programa_nombre .= $alumnoPrograma->estadoPrograma->desc . '<br>';
+                        if(isset($alumnoPrograma->estadoPrograma)){
+                            $estado_programa_nombre .= $alumnoPrograma->estadoPrograma['desc'] . '<br>';
+                        }
+                        
                     }
                     return $estado_programa_nombre;
                 },
@@ -98,8 +101,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     $estado_titulo = '';
                    
                         foreach ($model->alumnoProgramas as $alumnoPrograma) {
-                            if($alumnoPrograma->estadoTitulo){
-                                $estado_titulo .= $alumnoPrograma->estadoTitulo->desc . '<br>';
+                            if(isset($alumnoPrograma->estadoTitulo)){
+                                $estado_titulo .= $alumnoPrograma->estadoTitulo['desc'] . '<br>';
                             }
                             
                         }

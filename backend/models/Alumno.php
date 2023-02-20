@@ -128,5 +128,9 @@ class Alumno extends \yii\db\ActiveRecord
         return $this->hasMany(Programa::class, ['id' => 'programa_id'])
             ->viaTable('alumno_programa', ['alumno_id' => 'id']);
     }
-    
+    public function getErrorSummaryAsString()
+    {
+        $msg = implode(', ', $this->getErrorSummary(true));
+        return $msg;
+    }
 }
