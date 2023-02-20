@@ -6,7 +6,7 @@ use backend\helpers\HtmlHelpers;
 use backend\models\EstadoPrograma;
 use backend\models\EstadoTitulo;
 use backend\models\Programa;
-
+use yii\helpers\ArrayHelper;
 /* @var $form kartik\form\ActiveForm */
 /* @var $model Alumno */
 /** @var Programa[] $programas */
@@ -27,6 +27,9 @@ foreach($estado_ts as $estado_t){
     $estado_titu[] = $estado_t->desc;
 }
 // var_dump($nombres_programa);
+
+$estados_pro = [0 => 'Selecciona un estado'] + ArrayHelper::map(EstadoPrograma::find()->all(), 'id', 'desc');
+$estados_titu = [0 => 'Selecciona un estado del titulo'] + ArrayHelper::map(EstadoTitulo::find()->all(), 'id', 'desc');
 
 ?>
 <!-- Formulario -->
@@ -51,8 +54,8 @@ foreach($estado_ts as $estado_t){
                 <tr class="programa-row">
                     <td><?= Html::dropDownList('programa[]', null, $nombres_programa, ['class' => 'form-control programa-select', 'prompt' => 'Selecciona un programa']); ?></td>
                     <td><?= Html::textInput('cohorte[]', null, ['class' => 'form-control cohorte-input', 'placeholder' => 'Cohorte']); ?></td>
-                    <td><?= Html::dropDownList('estadopro[]', null, $estado_pro, ['class' => 'form-control estadopro-select', 'prompt' => 'Selecciona un estado']); ?></td>
-                    <td><?= Html::dropDownList('estadotitu[]', null, $estado_titu, ['class' => 'form-control estadotitu-select', 'prompt' => 'Selecciona un estado del titulo']); ?></td>
+                    <td><?= Html::dropDownList('estadopro[]', null, $estados_pro, ['class' => 'form-control estadopro-select']); ?></td>
+<td><?= Html::dropDownList('estadotitu[]', null, $estados_titu, ['class' => 'form-control estadotitu-select']); ?></td>
                     <td><?= Html::textInput('resolution[]', null, ['class' => 'form-control resolution-input', 'placeholder' => 'Resolucion']); ?></td>
                     <td><?= Html::textInput('fecha_resolucion[]', null, ['class' => 'form-control fecha_resolucion-input', 'placeholder' => 'Fecha de Resolucion']); ?></td>
                     <td><?= Html::textInput('promotion_year[]', null, ['class' => 'form-control promotion_year-input', 'placeholder' => 'Promocion']); ?></td>
@@ -91,8 +94,8 @@ $('form').on('beforeSubmit', function() {
         var programa = {
             nombre: $(this).find('.programa-select').val(),
             cohorte: $(this).find('.cohorte-input').val(),
-            estadopro: $(this).find('.estadopro-select').val(),
-            estadotitu: $(this).find('.estadotitu-select').val(),
+            estadopro: $(this).find('.estadopro-select').val() ,
+            estadotitu: $(this).find('.estadotitu-select').val() ,
             resolution: $(this).find('.resolution-input').val(),
             fecha_resolucion: $(this).find('.fecha_resolucion-input').val(),
             promotion_year: $(this).find('.promotion_year-input').val(),
@@ -100,8 +103,13 @@ $('form').on('beforeSubmit', function() {
             charge: $(this).find('.charge-input').val()
         };
         programas.push(programa);
+       
+   
+   
     });
+    
     $('#programas-json').val(JSON.stringify(programas));
+    console.log(JSON.stringify(programas))
     return true;
 });
 JS;

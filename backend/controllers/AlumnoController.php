@@ -124,11 +124,13 @@ class AlumnoController extends Controller
                             'promotion_year' => $programa['promotion_year'],
                             'seller' => $programa['seller'],
                             'charge' => $programa['charge']]);
+                            print_r($programa); 
                             $alumnoPrograma->created_at = null;
                             $alumnoPrograma->updated_at = null;
                             $alumnoPrograma->deleted_at = null;
+
                         if (!$alumnoPrograma->save()) {
-                            // throw new \Exception($model->getErrorSummaryAsString());
+                            throw new \Exception('Failed to save AlumnoPrograma model: ' . print_r($alumnoPrograma->errors, true));
                         }
                     }
                     $transaction->commit();
@@ -170,47 +172,58 @@ class AlumnoController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $trans = Yii::$app->db->beginTransaction();
-            try{
-                $model->save(false);
-                
-                $programsArray= $model->programas;
-                foreach($programsArray as $array){
-                $model_ap = new AlumnoPrograma();
-                $model_ap->programa_id = $array;
-                
-                $model_ap->alumno_id = $model->id;
-                $model_ap->cohort = $model->cohorte;
-                $model_ap->estado_programa_id = $model->estado_programa_id;
-             
-                $model_ap->estado_titulo_id = $model->estado_titulo_id;
-                $model_ap->resolution = $model->resolution;
-                $model_ap->resolution_date = $model->resolution_date;
-                $model_ap->promotion_year = $model->promotion_year;
-                $model_ap->seller = $model->seller;
-                $model_ap->charge = $model->charge;
-                $model_ap->save(false);
-                if (!$model_ap->save()) {
-                    throw new \Exception('Failed to save AlumnoPrograma model: ' . print_r($model_ap->errors, true));
-                }
-                }
-                $trans->commit();
-            }catch(\Exception $e){
-                $trans->rollBack();
-                throw new \Exception($e);
-                // FlashMessageHelpers::createWarningMessage($e->getMessage());
-                return $this->redirect(['update']);
-            }
-            return $this->redirect(['index']);
+        $model = Alumno::findOne($id);
+        if (!$model) {
+            throw new NotFoundHttpException("Alumno not found: $id");
         }
-
+    
+        $programas = Programa::find()->all();
+        if ($model->load(Yii::$app->request->post())) {
+            $transaction = Yii::$app->db->beginTransaction();
+            try {
+                if ($model->save()) {
+                    // Delete existing Alumnoprograma records
+                    Alumnoprograma::deleteAll(['alumno_id' => $model->id]);
+    
+                    // Save new Alumnoprograma records
+                    $programasJson = Yii::$app->request->post('programas-json');
+                    $programas = Json::decode($programasJson);
+                    foreach ($programas as $programa) {
+                        $programaModel = Programa::findOne(['nombre' => $programa['nombre']]);
+                        $alumnoPrograma = new Alumnoprograma([
+                            'alumno_id' => $model->id,
+                            'programa_id' => $programa['nombre'],
+                            'cohort' => $programa['cohorte'],
+                            'estado_programa_id' => $programa['estadopro'],
+                            'estado_titulo_id' => $programa['estadotitu'],
+                            'resolution' => $programa['resolution'],
+                            'resolution_date' => $programa['fecha_resolucion'],
+                            'promotion_year' => $programa['promotion_year'],
+                            'seller' => $programa['seller'],
+                            'charge' => $programa['charge']
+                        ]);
+    
+                        if (!$alumnoPrograma->save()) {
+                            throw new \Exception('Failed to save AlumnoPrograma model: ' . print_r($alumnoPrograma->errors, true));
+                        }
+                    }
+    
+                    $transaction->commit();
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+            } catch (\Exception $e) {
+                $transaction->rollBack();
+                throw new \Exception($e);
+                // Yii::$app->session->setFlash('error', $e->getMessage());
+            }
+        }
+    
         return $this->render('update', [
             'model' => $model,
+            'programas' => $programas,
         ]);
     }
+    
 
     /**
      * Deletes an existing Alumno model.
