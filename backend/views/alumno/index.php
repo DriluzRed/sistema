@@ -26,6 +26,12 @@ $this->params['breadcrumbs'][] = $this->title;
     $template = $template . '{delete}';
     /** @var Alumno $model */
     echo GridView::widget([
+        'tableOptions' => [
+            'class' => 'table table-striped',
+        ],
+        'options' => [
+            'class' => 'table-responsive',
+        ],
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
