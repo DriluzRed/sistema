@@ -171,58 +171,57 @@ class AlumnoController extends Controller
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
-    {
-        $model = Alumno::findOne($id);
-        if (!$model) {
-            throw new NotFoundHttpException("Alumno not found: $id");
-        }
-    
-        $programas = Programa::find()->all();
-        if ($model->load(Yii::$app->request->post())) {
-            $transaction = Yii::$app->db->beginTransaction();
-            try {
-                if ($model->save()) {
-                    // Delete existing Alumnoprograma records
-                    Alumnoprograma::deleteAll(['alumno_id' => $model->id]);
-    
-                    // Save new Alumnoprograma records
-                    $programasJson = Yii::$app->request->post('programas-json');
-                    $programas = Json::decode($programasJson);
-                    foreach ($programas as $programa) {
-                        $programaModel = Programa::findOne(['nombre' => $programa['nombre']]);
-                        $alumnoPrograma = new Alumnoprograma([
-                            'alumno_id' => $model->id,
-                            'programa_id' => $programa['nombre'],
-                            'cohort' => $programa['cohorte'],
-                            'estado_programa_id' => $programa['estadopro'],
-                            'estado_titulo_id' => $programa['estadotitu'],
-                            'resolution' => $programa['resolution'],
-                            'resolution_date' => $programa['fecha_resolucion'],
-                            'promotion_year' => $programa['promotion_year'],
-                            'seller' => $programa['seller'],
-                            'charge' => $programa['charge']
-                        ]);
-    
-                        if (!$alumnoPrograma->save()) {
-                            throw new \Exception('Failed to save AlumnoPrograma model: ' . print_r($alumnoPrograma->errors, true));
-                        }
+{
+    $model = $this->findModel($id);
+    $programas = Programa::find()->all();
+
+    if ($model->load(Yii::$app->request->post())) {
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            if ($model->save()) {
+                // Eliminar los programas previos
+                Alumnoprograma::deleteAll(['alumno_id' => $model->id]);
+
+                // Guardar los programas seleccionados en la tabla alumnoprograma
+                $programasJson = Yii::$app->request->post('programas-json');
+                $programas = Json::decode($programasJson);
+                var_dump($programas);exit;
+                foreach ($programas as $programa) {
+                    $programaModel = Programa::findOne(['nombre' => $programa['nombre']]);
+                    $alumnoPrograma = new Alumnoprograma([
+                        'alumno_id' => $model->id,
+                        'programa_id' => $programa['nombre'],
+                        'cohort' => $programa['cohorte'],
+                        'estado_programa_id' => $programa['estadopro'],
+                        'estado_titulo_id' => $programa['estadotitu'],
+                        'resolution' => $programa['resolution'],
+                        'resolution_date' => $programa['fecha_resolucion'],
+                        'promotion_year' => $programa['promotion_year'],
+                        'seller' => $programa['seller'],
+                        'charge' => $programa['charge']
+                    ]);
+                    $alumnoPrograma->created_at = null;
+                    $alumnoPrograma->updated_at = null;
+                    $alumnoPrograma->deleted_at = null;
+
+                    if (!$alumnoPrograma->save()) {
+                        throw new \Exception('Failed to save AlumnoPrograma model: ' . print_r($alumnoPrograma->errors, true));
                     }
-    
-                    $transaction->commit();
-                    return $this->redirect(['view', 'id' => $model->id]);
                 }
-            } catch (\Exception $e) {
-                $transaction->rollBack();
-                throw new \Exception($e);
-                // Yii::$app->session->setFlash('error', $e->getMessage());
+                $transaction->commit();
+                return $this->redirect(['view', 'id' => $model->id]);
             }
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            throw new \Exception($e);
         }
-    
-        return $this->render('update', [
-            'model' => $model,
-            'programas' => $programas,
-        ]);
     }
+
+    return $this->render('update', [
+        'model' => $model,
+        'programas' => $programas,
+    ]);
+}
     
 
     /**
