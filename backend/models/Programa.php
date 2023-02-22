@@ -78,4 +78,8 @@ class Programa extends \yii\db\ActiveRecord
         return $this->hasMany(Alumno::class, ['id' => 'alumno_id'])
             ->viaTable('alumno_programa', ['programa_id' => 'id']);
     }
+    public function getProgramaAsignaturas()
+    {
+        return $this->hasMany(ProgramaAsignatura::class, ['programa_id' => 'id']);
+    }
 }
