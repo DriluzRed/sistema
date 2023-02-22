@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'desc:ntext',
             [
                 'label' => 'Asignaturas',
-                'attribute' => 'Asignaturas',
+                'attribute' => 'asignaturas',
                 'value' => function ($model) {
                     $asignaturas = '';
                     foreach ($model->programaAsignaturas as $programaAsignatura) {
