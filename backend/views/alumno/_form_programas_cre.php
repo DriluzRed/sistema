@@ -51,18 +51,18 @@ $estados_titu = [0 => 'Selecciona un estado del titulo'] + ArrayHelper::map(Esta
                 </tr>
             </thead>
             <tbody>
-                <tr class="programa-row">
-                    <td><?= Html::dropDownList('programa[]', null, $nombres_programa, ['class' => 'form-control programa-select', 'prompt' => 'Selecciona un programa']); ?></td>
-                    <td><?= Html::textInput('cohorte[]', null, ['class' => 'form-control cohorte-input', 'placeholder' => 'Cohorte']); ?></td>
-                    <td><?= Html::dropDownList('estadopro[]', null, $estados_pro, ['class' => 'form-control estadopro-select']); ?></td>
-<td><?= Html::dropDownList('estadotitu[]', null, $estados_titu, ['class' => 'form-control estadotitu-select']); ?></td>
-                    <td><?= Html::textInput('resolution[]', null, ['class' => 'form-control resolution-input', 'placeholder' => 'Resolucion']); ?></td>
-                    <td><?= Html::textInput('fecha_resolucion[]', null, ['class' => 'form-control fecha_resolucion-input', 'placeholder' => 'Fecha de Resolucion']); ?></td>
-                    <td><?= Html::textInput('promotion_year[]', null, ['class' => 'form-control promotion_year-input', 'placeholder' => 'Promocion']); ?></td>
-                    <td><?= Html::textInput('seller[]', null, ['class' => 'form-control seller-input', 'placeholder' => 'Vendedor']); ?></td>
-                    <td><?= Html::textInput('charge[]', null, ['class' => 'form-control charge-input', 'placeholder' => 'Cargo']); ?></td>
-                    <td><?= Html::button('Eliminar', ['class' => 'btn btn-danger eliminar-programa']) ?></td>
-                </tr>
+    <tr class="programa-row">
+        <td><?= Html::dropDownList('programa[]', null, $nombres_programa, ['class' => 'form-control programa-select', 'prompt' => 'Selecciona un programa']); ?></td>
+        <td><?= Html::textInput('cohorte[]', null, ['class' => 'form-control cohorte-input', 'placeholder' => 'Cohorte']); ?></td>
+        <td><?= Html::dropDownList('estadopro[]', null, $estados_pro, ['class' => 'form-control estadopro-select']); ?></td>
+        <td><?= Html::dropDownList('estadotitu[]', null, $estados_titu, ['class' => 'form-control estadotitu-select']); ?></td>
+        <td><?= Html::textInput('resolution[]', null, ['class' => 'form-control resolution-input', 'placeholder' => 'Resolucion']); ?></td>
+        <td><?= Html::textInput('fecha_resolucion[]', null, ['class' => 'form-control fecha_resolucion-input', 'placeholder' => 'Fecha de Resolucion']); ?></td>
+        <td><?= Html::textInput('promotion_year[]', null, ['class' => 'form-control promotion_year-input', 'placeholder' => 'Promocion']); ?></td>
+        <td><?= Html::textInput('seller[]', null, ['class' => 'form-control seller-input', 'placeholder' => 'Vendedor']); ?></td>
+        <td><?= Html::textInput('charge[]', null, ['class' => 'form-control charge-input', 'placeholder' => 'Cargo']); ?></td>
+        <td><?= Html::button('Eliminar', ['class' => 'btn btn-danger eliminar-programa']) ?></td>
+    </tr>
             </tbody>
         </table>
         <div>

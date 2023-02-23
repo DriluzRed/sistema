@@ -52,15 +52,15 @@ class AlumnoPrograma extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'alumno_id' => 'Alumno ID',
-            'programa_id' => 'Programa ID',
-            'cohort' => 'Cohort',
-            'estado_programa_id' => 'Estado Programa ID',
-            'estado_titulo_id' => 'Estado Titulo ID',
-            'resolution' => 'Resolution',
-            'resolution_date' => 'Resolution Date',
-            'promotion_year' => 'Promotion Year',
-            'seller' => 'Seller',
-            'charge' => 'Charge',
+            'programa_id' => 'Programa',
+            'cohort' => 'Cohorte',
+            'estado_programa_id' => 'Estado Programa',
+            'estado_titulo_id' => 'Estado Titulo',
+            'resolution' => 'Resolucion',
+            'resolution_date' => 'Fecha de Resolucion',
+            'promotion_year' => 'Año de Promocion',
+            'seller' => 'Vendedor',
+            'charge' => 'Cargo',
         ];
     }
     public function getAlumno()

@@ -150,7 +150,18 @@ use kartik\grid\SerialColumn;
             
             ]
         ]);
-        echo $this->render('_form_programas');
+         if ($model->isNewRecord){
+            echo $this->render('_form_programas_cre', ['model' => $model]);
+         }else{
+            echo $this->render('_form_programas_up',[
+                'model' => $model,
+                'programa_model' => $programa_model,
+                'form' => $form,
+            ]);
+         }
+            
+        
+        
 ?>
 
 

@@ -99,55 +99,59 @@ class AlumnoController extends Controller
      * @return mixed
      */
     public function actionCreate()
-    {
-        $model = new Alumno();
-        $programas = Programa::find()->all();
-        if ($model->load(Yii::$app->request->post())) {
-            $transaction = Yii::$app->db->beginTransaction();
-            try {
-                if ($model->save()) {
-                    // Guardar los programas seleccionados en la tabla alumnoprograma
-                    $programasJson = Yii::$app->request->post('programas-json');
-                    $programas = Json::decode($programasJson);
-                    foreach ($programas as $programa) {
-                        $programaModel = Programa::findOne(['nombre' => $programa['nombre']]);
-                        // $estadopModel = EstadoPrograma::findOne(['desc' => $programa['desc']]);
-                        // $estadotModel = EstadoTitulo::findOne(['desc' => $programa['desc']]);
-                        $alumnoPrograma = new Alumnoprograma([
-                            'alumno_id' => $model->id,
-                            'programa_id' => $programa['nombre'],
-                            'cohort' => $programa['cohorte'],
-                            'estado_programa_id' => $programa['estadopro'],
-                            'estado_titulo_id' => $programa['estadotitu'],
-                            'resolution' => $programa['resolution'],
-                            'resolution_date' => $programa['fecha_resolucion'],
-                            'promotion_year' => $programa['promotion_year'],
-                            'seller' => $programa['seller'],
-                            'charge' => $programa['charge']]);
-                            print_r($programa); 
-                            $alumnoPrograma->created_at = null;
-                            $alumnoPrograma->updated_at = null;
-                            $alumnoPrograma->deleted_at = null;
+{
+    $model = new Alumno();
 
-                        if (!$alumnoPrograma->save()) {
-                            throw new \Exception('Failed to save AlumnoPrograma model: ' . print_r($alumnoPrograma->errors, true));
-                        }
-                    }
-                    $transaction->commit();
-                    return $this->redirect(['view', 'id' => $model->id]);
-                }
-            } catch (\Exception $e) {
-                $transaction->rollBack();
-                throw new \Exception($e);
-                // Yii::$app->session->setFlash('error', $e->getMessage());
+
+    if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $trans = Yii::$app->db->beginTransaction();
+        try{
+        // Agregar programas
+        $programas = Yii::$app->request->post('programa');
+        $cohorte = Yii::$app->request->post('cohorte');
+        $estado_pro = Yii::$app->request->post('estadopro');
+        $estado_titu = Yii::$app->request->post('estadotitu');
+        $resolution = Yii::$app->request->post('resolution');
+        $fecha_resolucion = Yii::$app->request->post('fecha_resolucion');
+        $promotion_year = Yii::$app->request->post('promotion_year');
+        $seller = Yii::$app->request->post('seller');
+        $charge = Yii::$app->request->post('charge');
+
+        if (!empty($programas)) {
+            foreach ($programas as $index => $programa) {
+                $programa_model = new AlumnoPrograma();
+                $programa_model->alumno_id = $model->id;
+                $programa_model->programa_id = $programa;
+                $programa_model->cohort = $cohorte[$index];
+                $programa_model->estado_programa_id = $estado_pro[$index];
+                $programa_model->estado_titulo_id = $estado_titu[$index];
+                $programa_model->resolution = $resolution[$index];
+                $programa_model->resolution_date = $fecha_resolucion[$index];
+                $programa_model->promotion_year = $promotion_year[$index];
+                $programa_model->seller = $seller[$index];
+                $programa_model->charge = $charge[$index];
+                $programa_model->save(false);
             }
+            if (!$programa_model->save()) {
+                throw new \Exception('Failed to save AlumnoPrograma model: ' . print_r($programa_model->errors, true));
+            }
+            }
+            $trans->commit();
+        
+            }catch(\Exception $e){
+            $trans->rollBack();
+            throw new \Exception($e);
+            // FlashMessageHelpers::createWarningMessage($e->getMessage());
+            return $this->redirect(['update']);
         }
-    
-        return $this->render('create', [
-            'model' => $model,
-            'programas' => $programas,
-        ]);
+        return $this->redirect(['index']);
     }
+
+    return $this->render('create', [
+        'model' => $model,
+
+    ]);
+}
 //     public function actionAgregarPrograma($alumno_id)
 // {
 //     $model = new AlumnoPrograma();
@@ -173,53 +177,72 @@ class AlumnoController extends Controller
     public function actionUpdate($id)
 {
     $model = $this->findModel($id);
-    $programas = Programa::find()->all();
+    $programa_model = AlumnoPrograma::findAll(['alumno_id' => $id]);
 
-    if ($model->load(Yii::$app->request->post())) {
-        $transaction = Yii::$app->db->beginTransaction();
-        try {
-            if ($model->save()) {
-                // Eliminar los programas previos
-                Alumnoprograma::deleteAll(['alumno_id' => $model->id]);
+    if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
+        $trans = Yii::$app->db->beginTransaction();
+        try{
+        // Actualizar programas existentes
+        $programas = Yii::$app->request->post('programa');
+        $cohorte = Yii::$app->request->post('cohorte');
+        $estado_pro = Yii::$app->request->post('estadopro');
+        $estado_titu = Yii::$app->request->post('estadotitu');
+        $resolution = Yii::$app->request->post('resolution');
+        $fecha_resolucion = Yii::$app->request->post('fecha_resolucion');
+        $promotion_year = Yii::$app->request->post('promotion_year');
+        $seller = Yii::$app->request->post('seller');
+        $charge = Yii::$app->request->post('charge');
+        $programa_ids = Yii::$app->request->post('programas-json');
+       
 
-                // Guardar los programas seleccionados en la tabla alumnoprograma
-                $programasJson = Yii::$app->request->post('programas-json');
-                $programas = Json::decode($programasJson);
-                var_dump($programas);exit;
-                foreach ($programas as $programa) {
-                    $programaModel = Programa::findOne(['nombre' => $programa['nombre']]);
-                    $alumnoPrograma = new Alumnoprograma([
-                        'alumno_id' => $model->id,
-                        'programa_id' => $programa['nombre'],
-                        'cohort' => $programa['cohorte'],
-                        'estado_programa_id' => $programa['estadopro'],
-                        'estado_titulo_id' => $programa['estadotitu'],
-                        'resolution' => $programa['resolution'],
-                        'resolution_date' => $programa['fecha_resolucion'],
-                        'promotion_year' => $programa['promotion_year'],
-                        'seller' => $programa['seller'],
-                        'charge' => $programa['charge']
-                    ]);
-                    $alumnoPrograma->created_at = null;
-                    $alumnoPrograma->updated_at = null;
-                    $alumnoPrograma->deleted_at = null;
-
-                    if (!$alumnoPrograma->save()) {
-                        throw new \Exception('Failed to save AlumnoPrograma model: ' . print_r($alumnoPrograma->errors, true));
-                    }
+        if (!empty($programas)) {
+            foreach ($programas as $index => $programa) {
+                
+                if (!empty($programa_ids[$index])) {
+                   
+                    $programa_model = AlumnoPrograma::findOne(['alumno_id' => $id]);
+                    
+                } else {
+                    $programa_model = new AlumnoPrograma();
+                    
                 }
-                $transaction->commit();
-                return $this->redirect(['view', 'id' => $model->id]);
+                
+                $programa_model->alumno_id = $model->id;
+                
+                $programa_model->programa_id = $programa;
+                $programa_model->cohort = $cohorte[$index];
+                
+                $programa_model->estado_programa_id = $estado_pro[$index];
+                $programa_model->estado_titulo_id = $estado_titu[$index];
+                $programa_model->resolution = $resolution[$index];
+                $programa_model->resolution_date = $fecha_resolucion[$index];
+                $programa_model->promotion_year = $promotion_year[$index];
+                $programa_model->seller = $seller[$index];
+                $programa_model->charge = $charge[$index];
+                // var_dump($programa_ids);exit;
+                $programa_model->save();
+                // $programa_model->refresh();
+                if (!$programa_model->save()) {
+                    throw new \Exception('Failed to save AlumnoPrograma model: ' . print_r($programa_model->errors, true));
+                }
+                
             }
-        } catch (\Exception $e) {
-            $transaction->rollBack();
-            throw new \Exception($e);
-        }
+            $trans->commit();
+        } 
+    
+        }catch(\Exception $e){
+        $trans->rollBack();
+        throw new \Exception($e);
+        // FlashMessageHelpers::createWarningMessage($e->getMessage());
+        return $this->redirect(['update']);
+    }
+
+        return $this->redirect(['index']);
     }
 
     return $this->render('update', [
         'model' => $model,
-        'programas' => $programas,
+        'programa_model' => $programa_model,
     ]);
 }
     
