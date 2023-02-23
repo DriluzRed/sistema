@@ -34,7 +34,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
             // 'id',
             'nombre:ntext',
-            'desc:ntext',
             [
                 'label' => 'Asignaturas',
                 'attribute' => 'asignaturas',
