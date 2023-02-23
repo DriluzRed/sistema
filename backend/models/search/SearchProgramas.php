@@ -11,6 +11,7 @@ use backend\models\Programa;
  */
 class SearchProgramas extends Programa
 {
+    public $asignaturas;
     /**
      * {@inheritdoc}
      */
@@ -41,6 +42,7 @@ class SearchProgramas extends Programa
     public function search($params)
     {
         $query = Programa::find();
+        $query->joinWith(['programaAsignaturas.asignatura']);
 
         // add conditions that should always apply here
 
@@ -61,9 +63,10 @@ class SearchProgramas extends Programa
             'id' => $this->id,
         ]);
 
-        $query->andFilterWhere(['like', 'nombre', $this->nombre])
+        $query->andFilterWhere(['like', 'programa.nombre', $this->nombre])
         // ->andFilterWhere(['like', 'asignaturas', $this->asignaturas])
-            ->andFilterWhere(['like', 'desc', $this->desc]);
+        ->andFilterWhere(['like', 'programa.desc', $this->desc])
+            ->andFilterWhere(['like', 'asignatura.nombre', $this->asignaturas]);
 
         return $dataProvider;
     }

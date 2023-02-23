@@ -21,6 +21,12 @@ $this->params['breadcrumbs'][] = $this->title;
     </p>
 
     <?= GridView::widget([
+        'tableOptions' => [
+            'class' => 'table table-striped',
+        ],
+        'options' =>[
+            'class' => 'table-responsive',
+        ],
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
@@ -28,7 +34,18 @@ $this->params['breadcrumbs'][] = $this->title;
 
             // 'id',
             'nombre:ntext',
-            'desc:ntext',
+            [
+                'label' => 'Asignaturas',
+                'attribute' => 'asignaturas',
+                'value' => function ($model) {
+                    $asignaturas = '';
+                    foreach ($model->programaAsignaturas as $programaAsignatura) {
+                        $asignaturas .= $programaAsignatura->asignatura->nombre . '<br>';
+                    }
+                    return $asignaturas;
+                },
+                'format' => 'raw',
+            ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
