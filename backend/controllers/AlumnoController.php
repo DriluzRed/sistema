@@ -175,68 +175,72 @@ class AlumnoController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-  public function actionUpdate($id)
-{
-    $model = $this->findModel($id);
-    $programa_model = AlumnoPrograma::findAll(['alumno_id' => $id]);
-
-    if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
-        $programa_ids = json_decode(Yii::$app->request->post('programas-json'), true);
-        // add this line to check the value of $programa_ids
-        $existing_programas = AlumnoPrograma::findAll(['alumno_id' => $id]);
-        $existing_programa_ids = ArrayHelper::getColumn($existing_programas, 'id');
-        $programa_ids = array_map('intval', $programa_ids);
-        $existing_programa_ids = array_map('intval', $existing_programa_ids);
-        $programas_to_delete = array_diff($existing_programa_ids, $programa_ids);
-        
-        $programas_to_delete = array_diff($existing_programa_ids, $programa_ids);
-        
-
-        $trans = Yii::$app->db->beginTransaction();
-        try {
-            foreach ($programas_to_delete as $programa_id) {
-                $programa_model = AlumnoPrograma::findOne(['id' => $programa_id]);
-                $programa_model->delete();
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+        $programa_model = AlumnoPrograma::findAll(['alumno_id' => $id]);
+    
+        if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
+            $programa_data = json_decode(Yii::$app->request->post('programas-json'), true);
+            $programa_ids = [];
+            foreach ($programa_data as $programa) {
+                $programa_ids[] = $programa['nombre'];
             }
-
-            foreach ($programa_ids as $index => $programa_id) {
-                $programa_model = AlumnoPrograma::findOne(['id' => $programa_id]);
-                if (!$programa_model) {
-                    $programa_model = new AlumnoPrograma();
-                    $programa_model->alumno_id = $model->id;
+    
+            $existing_programas = AlumnoPrograma::findAll(['alumno_id' => $id]);
+            $existing_programa_ids = ArrayHelper::getColumn($existing_programas, 'id');
+            $programa_ids = array_map('intval', $programa_ids);
+            $existing_programa_ids = array_map('intval', $existing_programa_ids);
+            $programas_to_delete = array_diff($existing_programa_ids, $programa_ids);
+    
+            $trans = Yii::$app->db->beginTransaction();
+            try {
+                foreach ($programas_to_delete as $programa_id) {
+                    $programa_model = AlumnoPrograma::findOne(['id' => $programa_id]);
+                    if ($programa_model) {
+                        $programa_model->delete();
+                    }
                 }
-
-                $programa_model->programa_id = Yii::$app->request->post('programa')[$index];
-                $programa_model->cohort = Yii::$app->request->post('cohorte')[$index];
-                $programa_model->estado_programa_id = Yii::$app->request->post('estadopro')[$index];
-                $programa_model->estado_titulo_id = Yii::$app->request->post('estadotitu')[$index];
-                $programa_model->resolution = Yii::$app->request->post('resolution')[$index];
-                $programa_model->resolution_date = Yii::$app->request->post('fecha_resolucion')[$index];
-                $programa_model->promotion_year = Yii::$app->request->post('promotion_year')[$index];
-                $programa_model->seller = Yii::$app->request->post('seller')[$index];
-                $programa_model->charge = Yii::$app->request->post('charge')[$index];
-
-                if (!$programa_model->save()) {
-                    throw new \Exception('Failed to save AlumnoPrograma model: ' . print_r($programa_model->errors, true));
+    
+                foreach ($programa_data as $index => $programa) {
+                    $programa_id = array_key_exists('id', $programa) ? $programa['id'] : null;
+                    $programa_model = AlumnoPrograma::findOne(['id' => $programa_id]);
+                    if (!$programa_model) {
+                        $programa_model = new AlumnoPrograma();
+                        $programa_model->alumno_id = $model->id;
+                    }
+    
+                    $programa_model->programa_id = $programa['nombre'];
+                    $programa_model->cohort = Yii::$app->request->post('cohorte')[$index];
+                    $programa_model->estado_programa_id = Yii::$app->request->post('estadopro')[$index];
+                    $programa_model->estado_titulo_id = Yii::$app->request->post('estadotitu')[$index];
+                    $programa_model->resolution = Yii::$app->request->post('resolution')[$index];
+                    $programa_model->resolution_date = Yii::$app->request->post('fecha_resolucion')[$index];
+                    $programa_model->promotion_year = Yii::$app->request->post('promotion_year')[$index];
+                    $programa_model->seller = Yii::$app->request->post('seller')[$index];
+                    $programa_model->charge = Yii::$app->request->post('charge')[$index];
+    
+                    if (!$programa_model->save()) {
+                        throw new \Exception('Failed to save AlumnoPrograma model: ' . print_r($programa_model->errors, true));
+                    }
                 }
+    
+                $trans->commit();
+            } catch(\Exception $e) {
+                $trans->rollBack();
+                throw new \Exception($e);
+                // FlashMessageHelpers::createWarningMessage($e->getMessage());
+                return $this->redirect(['update']);
             }
-
-            $trans->commit();
-        } catch(\Exception $e) {
-            $trans->rollBack();
-            throw new \Exception($e);
-            // FlashMessageHelpers::createWarningMessage($e->getMessage());
-            return $this->redirect(['update']);
+    
+            return $this->redirect(['index']);
         }
-
-        return $this->redirect(['index']);
+    
+        return $this->render('update', [
+            'model' => $model,
+            'programa_model' => $programa_model,
+        ]);
     }
-
-    return $this->render('update', [
-        'model' => $model,
-        'programa_model' => $programa_model,
-    ]);
-}
 
     
 
