@@ -14,6 +14,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\Json;
+use yii\helpers\ArrayHelper;
 
 /**
  * AlumnoController implements the CRUD actions for Alumno model.
@@ -174,68 +175,59 @@ class AlumnoController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+  public function actionUpdate($id)
 {
     $model = $this->findModel($id);
     $programa_model = AlumnoPrograma::findAll(['alumno_id' => $id]);
 
     if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
-        $trans = Yii::$app->db->beginTransaction();
-        try{
-        // Actualizar programas existentes
-        $programas = Yii::$app->request->post('programa');
-        $cohorte = Yii::$app->request->post('cohorte');
-        $estado_pro = Yii::$app->request->post('estadopro');
-        $estado_titu = Yii::$app->request->post('estadotitu');
-        $resolution = Yii::$app->request->post('resolution');
-        $fecha_resolucion = Yii::$app->request->post('fecha_resolucion');
-        $promotion_year = Yii::$app->request->post('promotion_year');
-        $seller = Yii::$app->request->post('seller');
-        $charge = Yii::$app->request->post('charge');
-        $programa_ids = Yii::$app->request->post('programas-json');
-       
+        $programa_ids = json_decode(Yii::$app->request->post('programas-json'), true);
+        // add this line to check the value of $programa_ids
+        $existing_programas = AlumnoPrograma::findAll(['alumno_id' => $id]);
+        $existing_programa_ids = ArrayHelper::getColumn($existing_programas, 'id');
+        $programa_ids = array_map('intval', $programa_ids);
+        $existing_programa_ids = array_map('intval', $existing_programa_ids);
+        $programas_to_delete = array_diff($existing_programa_ids, $programa_ids);
+        
+        $programas_to_delete = array_diff($existing_programa_ids, $programa_ids);
+        
 
-        if (!empty($programas)) {
-            foreach ($programas as $index => $programa) {
-                
-                if (!empty($programa_ids[$index])) {
-                   
-                    $programa_model = AlumnoPrograma::findOne(['alumno_id' => $id]);
-                    
-                } else {
+        $trans = Yii::$app->db->beginTransaction();
+        try {
+            foreach ($programas_to_delete as $programa_id) {
+                $programa_model = AlumnoPrograma::findOne(['id' => $programa_id]);
+                $programa_model->delete();
+            }
+
+            foreach ($programa_ids as $index => $programa_id) {
+                $programa_model = AlumnoPrograma::findOne(['id' => $programa_id]);
+                if (!$programa_model) {
                     $programa_model = new AlumnoPrograma();
-                    
+                    $programa_model->alumno_id = $model->id;
                 }
-                
-                $programa_model->alumno_id = $model->id;
-                
-                $programa_model->programa_id = $programa;
-                $programa_model->cohort = $cohorte[$index];
-                
-                $programa_model->estado_programa_id = $estado_pro[$index];
-                $programa_model->estado_titulo_id = $estado_titu[$index];
-                $programa_model->resolution = $resolution[$index];
-                $programa_model->resolution_date = $fecha_resolucion[$index];
-                $programa_model->promotion_year = $promotion_year[$index];
-                $programa_model->seller = $seller[$index];
-                $programa_model->charge = $charge[$index];
-                // var_dump($programa_ids);exit;
-                $programa_model->save();
-                // $programa_model->refresh();
+
+                $programa_model->programa_id = Yii::$app->request->post('programa')[$index];
+                $programa_model->cohort = Yii::$app->request->post('cohorte')[$index];
+                $programa_model->estado_programa_id = Yii::$app->request->post('estadopro')[$index];
+                $programa_model->estado_titulo_id = Yii::$app->request->post('estadotitu')[$index];
+                $programa_model->resolution = Yii::$app->request->post('resolution')[$index];
+                $programa_model->resolution_date = Yii::$app->request->post('fecha_resolucion')[$index];
+                $programa_model->promotion_year = Yii::$app->request->post('promotion_year')[$index];
+                $programa_model->seller = Yii::$app->request->post('seller')[$index];
+                $programa_model->charge = Yii::$app->request->post('charge')[$index];
+
                 if (!$programa_model->save()) {
                     throw new \Exception('Failed to save AlumnoPrograma model: ' . print_r($programa_model->errors, true));
                 }
-                
             }
+
             $trans->commit();
-        } 
-    
-        }catch(\Exception $e){
-        $trans->rollBack();
-        throw new \Exception($e);
-        // FlashMessageHelpers::createWarningMessage($e->getMessage());
-        return $this->redirect(['update']);
-    }
+        } catch(\Exception $e) {
+            $trans->rollBack();
+            throw new \Exception($e);
+            // FlashMessageHelpers::createWarningMessage($e->getMessage());
+            return $this->redirect(['update']);
+        }
 
         return $this->redirect(['index']);
     }
@@ -245,6 +237,7 @@ class AlumnoController extends Controller
         'programa_model' => $programa_model,
     ]);
 }
+
     
 
     /**
