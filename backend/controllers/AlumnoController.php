@@ -253,10 +253,16 @@ class AlumnoController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
+        $model = $this->findModel($id);
+    
+        // delete related records in AlumnoPrograma table
+        AlumnoPrograma::deleteAll(['alumno_id' => $model->id]);
+    
+        $model->delete();
+    
         return $this->redirect(['index']);
     }
+    
 
     /**
      * Finds the Alumno model based on its primary key value.
