@@ -48,9 +48,10 @@ use yii\widgets\ActiveForm;
 <!--Script de los iconos Agregado por Nati-->
 <script src="https://kit.fontawesome.com/a24879a822.js" crossorigin="anonymous"></script>
 
+<?php
+$css = <<<CSS
 
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
+ @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
 *{
   margin:0;
   padding:0;
@@ -84,5 +85,7 @@ body{
   display: flex;
   flex-direction: column;
 }
+CSS;
 
-</style>
+$this->registerCss($css);
+
