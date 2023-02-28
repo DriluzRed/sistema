@@ -49,10 +49,8 @@ use yii\widgets\ActiveForm;
     <script type='text/javascript'>
         document.getElementById("login-form").onsubmit = function(e) {};
     </script>
-    <!--Script de los iconos Agregado por Nati-->
-    <script src="https://kit.fontawesome.com/a24879a822.js" crossorigin="anonymous"></script>
-
-
+    
+    <!-- Agregado por Nati-->
     <style>
         img {
             width: 100%;
