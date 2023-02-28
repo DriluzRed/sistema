@@ -66,8 +66,8 @@ use yii\widgets\ActiveForm;
         }
 
         .login-box {
-            width: 1050px;
-            height: 600px;
+            width: 900px;
+            height: 500px;
             position: absolute;
             top: 35%;
             left: 50%;
