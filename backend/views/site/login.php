@@ -13,8 +13,8 @@ use yii\widgets\ActiveForm;
 
 <body>
     <section class="login">
+    <!-- <div class="login-logo"><img src="../web/img/sede1.jpg" alt=""></div> -->
         <div class="login-box">
-            <div class="login-logo"></div>
             <div class="login-box-body">
                 <h3 class="login-box-msg"><b>Control de Acceso</b></h3>
                 <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
@@ -38,12 +38,12 @@ use yii\widgets\ActiveForm;
                 </div>
             </div>
             <?php ActiveForm::end(); ?>
-        
+
             <div class="right">
                 <div class="right-inductor"> <img src="../web/img/Logo Circular FOTRIEM.png" alt=""></div>
             </div>
         </div>
-      
+
     </section>
 
     <script type='text/javascript'>
@@ -59,10 +59,10 @@ use yii\widgets\ActiveForm;
         }
 
         .login {
-            height: 1000px;
+            height: 100%;
             width: 100%;
-          
             position: relative;
+            
         }
 
         .login-box {
@@ -72,11 +72,12 @@ use yii\widgets\ActiveForm;
             top: 35%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: #fff;
+            background: whitesmoke;
             border-radius: 10px;
             box-shadow: 1px 4px 22px -8px #0004;
             display: flex;
             overflow: hidden;
+            margin-top: 40%;
         }
 
         .login-box .login-box-body {
@@ -97,15 +98,16 @@ use yii\widgets\ActiveForm;
             margin-top: 60px;
             color: #fff;
         }
+
         .form-group {
-          
+
             color: #fff;
         }
-        
+
         .login-box-body {
-            background:#1f396a;
+            background: #1f396a;
         }
-    
+
 
         .right .right-inductor {
             position: absolute;
@@ -113,9 +115,9 @@ use yii\widgets\ActiveForm;
             height: 270px;
             background: #fff0;
             left: 70%;
-            top: 90px;
+            top: 80px;
             transform: translate(-50%, 0%);
-            
+
         }
 
         .top_link img {
@@ -124,4 +126,3 @@ use yii\widgets\ActiveForm;
             margin-top: -3px;
         }
     </style>
- 
