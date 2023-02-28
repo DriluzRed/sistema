@@ -95,10 +95,15 @@ use yii\widgets\ActiveForm;
             text-align: center;
             margin-bottom: 60px;
             margin-top: 60px;
+            color: #fff;
         }
-
+        .form-group {
+          
+            color: #fff;
+        }
+        
         .login-box-body {
-            background: linear-gradient(-45deg, #dcd7e0, #fff);
+            background:#1f396a;
         }
     
 
