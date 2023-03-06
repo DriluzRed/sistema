@@ -7,7 +7,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel backend\models\search\SearchProgramas */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Programas';
+$this->title = 'Módulos'; //Cambiado por Nati
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="programa-index">
@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Programa', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Crear Modulo', ['create'], ['class' => 'btn btn-success']) //Cambiado por Nati?> 
     </p>
 
     <?= GridView::widget([
