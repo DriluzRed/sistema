@@ -262,6 +262,19 @@ class AlumnoController extends Controller
     
         return $this->redirect(['index']);
     }
+    public function actionGraduados()
+    {
+        $searchModel = new SearchAlumnos();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $searchModel->estado_programa = "Graduado"; // Set the estado_titulo attribute to 2 to filter by "Graduados" status
+        $dataProvider->query->andFilterWhere(['estado_programa.desc' => $searchModel->estado_programa]);
+        return $this->render('graduados', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+    
+
     
 
     /**

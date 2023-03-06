@@ -13,8 +13,8 @@ $perfil = User::find()->where(['id' => Yii::$app->user->id])->one();
 ?>
 
 <header class="main-header navbar-azul ">
-<?php $nombre_sistema = 'Nora Ruoti & Asoc.' ?>
-    <?= Html::a('<span class="logo-mini blanco">Sys</span><span class="logo-lg blanco">' . $nombre_sistema . '</span>', Yii::$app->homeUrl, ['class' => 'logo']) ?>
+<?php $nombre_sistema = 'Facultad FOTRIEM' ?>
+    <?= Html::a('<span class="logo-mini blanco"><img src="../web/img/Logo Circular FOTRIEM.png" class="logo-side-bar"></span><span class="logo-lg blanco">' . $nombre_sistema . '</span>', Yii::$app->homeUrl, ['class' => 'logo']) ?>
     <nav class="navbar navbar-static-top navbar-azul" role="navigation">
     
         <a href="#" class="sidebar-toggle blanco" data-toggle="offcanvas" role="button">
@@ -88,6 +88,14 @@ $CSS = <<<CSS
     color: white;
     
 }
+.logo-side-bar{
+    width:50px;
+    height:50px;
+
+}
+
+
+
 
 CSS;
 

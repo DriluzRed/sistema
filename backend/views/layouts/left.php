@@ -28,7 +28,7 @@ use common\helpers\PermisosHelpers;
             echo dmstr\widgets\Menu::widget(
                 [
                     'options' => ['class' => 'sidebar-menu '],
-                    'items' => $menuItems,
+                    'items' => $itemsGeneral,
                 ]
             );
         } catch (Exception $e) {
