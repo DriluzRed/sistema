@@ -8,7 +8,9 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
-
+use backend\models\Alumno;
+use backend\models\AlumnoPrograma;
+use yii\db\Query;
 /**
  * Site controller
  */
@@ -62,7 +64,39 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $totalAlumnos = Alumno::find()->count();
+        // $totalGraduados = $query = Alumno::find();
+        $totalGraduados = Alumno::find();
+        $totalGraduados->joinWith(['alumnoProgramas' => function($query){
+            $query->andWhere(['alumno_programa.estado_programa_id' => 3]);
+        }]);
+        $totalGraduados = $totalGraduados->count();
+
+        $totalDesma = Alumno::find();
+        $totalDesma->joinWith(['alumnoProgramas' => function($query){
+            $query->andWhere(['alumno_programa.estado_programa_id' => 4]);
+        }]);
+        $totalDesma = $totalDesma->count();
+
+        $totalCulminados = Alumno::find();
+        $totalCulminados->joinWith(['alumnoProgramas' => function($query){
+            $query->andWhere(['OR', ['alumno_programa.estado_programa_id' => 3], ['alumno_programa.estado_programa_id' => 4]]);
+        }]);
+        $totalCulminados = $totalCulminados->count();
+
+        $totalInscriptos = Alumno::find();
+        $totalInscriptos->joinWith(['alumnoProgramas' => function($query){
+            $query->andWhere(['alumno_programa.estado_programa_id' => 6]);
+        }]);
+        $totalInscriptos = $totalInscriptos->count();
+
+        return $this->render('index', 
+        ['totalAlumnos'=>$totalAlumnos,
+        'totalGraduados' => $totalGraduados,
+        'totalDesma' => $totalDesma,
+        'totalCulminados' => $totalCulminados,
+        'totalInscriptos' => $totalInscriptos
+        ]);
     }
 
     /**
