@@ -4,7 +4,7 @@ use yii\widgets\Breadcrumbs;
 
 ?>
     <div class="content-wrapper">
-        <section class="content-header">
+        <section class="content-header" style="color:#00177C;">
             <?php if (isset($this->blocks['content-header'])) { ?>
                 <h1><?= $this->blocks['content-header'] ?></h1>
             <?php } else { ?>
@@ -29,7 +29,7 @@ use yii\widgets\Breadcrumbs;
             ) ?>
         </section>
 
-        <section class="content" style="background: #ffffff;">
+        <section class="content">
             <!--        --><? //= Alert::widget() ?>
             <?= $content ?>
         </section>
@@ -50,16 +50,30 @@ $anho = date('Y');
 
     <!-- Control Sidebar -->
     <!-- Add the sidebar's background. This div must be placed
-         immediately after the control sidebar -->
+    immediately after the control sidebar -->
     <div class='control-sidebar-bg'></div>
 
 
 <?php
 
 $CSS = <<<CSS
+
+.content{
+   background:#ffffff;
+    min-height:805px;
+    margin-top:1%;
+
+    /* background-image: url('../web/img/Logo-Fotriem-Blanco.png');
+   background-attachment: fixed;
+   background-position: center center;
+   background-size: cover; 
+    */
+
+}
 /*This is modifying the btn-primary colors but you could create your own .btn-something class as well*/
 .content-wrapper{
     background-color:#f1f5f9;
+
 }
 .btn-primary{
     color: #000000;
