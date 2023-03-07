@@ -89,10 +89,6 @@ $this->title = 'Sistema Libro de Inscriptos y Matriculados';
 $css = <<<CSS
 @import url("https://fonts.googleapis.com/css?family=Lato:300,400,700|Source+Sans+Pro:300,600");
 
-body {
-	font-family: "Lato", sans-serif;
-}
-
 .logo .logo {
 	display: inline-block;
 	color: #020202;
@@ -105,18 +101,24 @@ body {
     margin-left:10%;
 }
 .all .starter-stats .blok {
-	background: #d7d8d9 ;
-	width: 30%;
+    
+	background: #f1f5f9;
+    border-radius: 30px;
+    box-shadow: 5px 5px 5px #d7d8d9;
 	float: left;
-	margin: 20px 1.5%;
-	font-size: 1.1em;
+	margin-top: 50px;
+    margin-left:30px;
+    margin-right:30px;
+	font-size: 25px;
 	font-family: "Source Sans Pro", sans-serif;
 	position: relative;
+    width:25%;
+    height:150px;
 }
 
 .blok i {
 	border-radius: 50%;
-	background-color: purple;
+	background-color: #1f396a;
 	padding: 10px;
 
 	color: white;
@@ -135,7 +137,7 @@ body {
 
 .blok .no p:first-child {
 	font-weight: 700;
-	font-size: 0.8em;
+	font-size: 25px;
 	position: relative;
 	top: 8px;
 }
@@ -143,8 +145,9 @@ body {
 .blok .no p:nth-child(2) {
 	position: relative;
 	top: -10px;
-	font-size: 1.3em;
+	font-size: 50px;
 	font-weight: 700;
+    margin-left:5px;
 }
 
 .gains {
