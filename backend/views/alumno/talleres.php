@@ -8,7 +8,7 @@ use yii\helpers\Url;
 /* @var $searchModel backend\models\search\SearchAlumnos */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Alumnos';
+$this->title = 'Talleres';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="alumno-index">

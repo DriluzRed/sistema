@@ -285,6 +285,16 @@ class AlumnoController extends Controller
         ]);
     }
     
+    public function actionCarreras()
+    {
+        $searchModel = new SearchAlumnos();
+        $searchModel->programas = "Carrera"; // Set the programas attribute to "Taller"
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        return $this->render('carreras', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
 
     
 
