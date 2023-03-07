@@ -75,7 +75,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model) {
     $programas = '';
     foreach ($model->alumnoProgramas as $alumnoPrograma) {
-        if ($alumnoPrograma->estado_programa_id == 3) {
+        if ($alumnoPrograma->estado_programa_id == 3 && $alumnoPrograma->estado_programa_id == 3)  {
             $programas .= '<div class="grid-item">' . $alumnoPrograma->programa->nombre . '</div> <hr class="ache">';
         }
     }
@@ -91,7 +91,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     $cohorte = '';
                     foreach ($model->alumnoProgramas as $alumnoPrograma) 
                     {
-                        if ($alumnoPrograma->estado_programa_id == 3) {
+                        if ($alumnoPrograma->estado_programa_id == 3 && $alumnoPrograma->estado_programa_id == 3) {
                         $cohorte .= '<div class="grid-item">' . $alumnoPrograma->cohort . '</div> <hr class="ache">';
                         }
                     }
@@ -113,7 +113,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model) {
                     $promotion_year = '';
                     foreach ($model->alumnoProgramas as $alumnoPrograma) {
-                        if ($alumnoPrograma->estado_programa_id == 3) {
+                        if ($alumnoPrograma->estado_programa_id == 3 && $alumnoPrograma->estado_programa_id == 3) {
                         $promotion_year .= '<div class="grid-item">' . $alumnoPrograma->promotion_year . '</div> <hr class="ache">';
                         }
                     }
@@ -135,7 +135,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model) {
                     $estado_programa_nombre = '';
                     foreach ($model->alumnoProgramas as $alumnoPrograma) {
-                        if(isset($alumnoPrograma->estadoPrograma) && $alumnoPrograma->estadoPrograma['desc'] === "Graduado"){
+                        if(isset($alumnoPrograma->estadoPrograma) && $alumnoPrograma->estadoPrograma['desc'] === "Graduado" || $alumnoPrograma->estadoPrograma['desc'] === "Egresado"){
                             $estado_programa_nombre .= '<div class="grid-item">' . $alumnoPrograma->estadoPrograma['desc'] . '</div> <hr class="ache">';
                         }
                     }
