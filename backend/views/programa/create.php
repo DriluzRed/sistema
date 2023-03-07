@@ -5,8 +5,8 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Programa */
 
-$this->title = 'Create Programa';
-$this->params['breadcrumbs'][] = ['label' => 'Programas', 'url' => ['index']];
+$this->title = 'Agregar Modulo';
+$this->params['breadcrumbs'][] = ['label' => 'Modulos', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="programa-create">
