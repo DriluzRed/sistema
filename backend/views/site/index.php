@@ -30,7 +30,7 @@ $this->title = 'Sistema Libro de Inscriptos y Matriculados';
             <i class="fa fa-tasks"></i>
                 <div class="no">
                     <p>Alumnos Inscriptos</p>
-                    <p>0000</p>
+                    <p><?= $totalAlumnos ?></p>
                 </div>
             </div>
 
@@ -38,22 +38,14 @@ $this->title = 'Sistema Libro de Inscriptos y Matriculados';
             <i class="fa fa-tasks"></i>
                 <div class="no">
                     <p>Alumnos Graduados</p>
-                    <p>0000</p>
-                </div>
-            </div>
-
-            <div class="blok">
-            <i class="fa fa-tasks"></i>
-                <div class="no">
-                    <p>Alumnos curso</p>
-                    <p>0000</p>
+                    <p><?=$totalGraduados?></p>
                 </div>
             </div>
             <div class="blok">
             <i class="fa fa-tasks"></i>
                 <div class="no">
                     <p>Desmatriculados</p>
-                    <p>0000</p>
+                    <p><?= $totalDesma ?></p>
                 </div>
             </div>
 
@@ -61,7 +53,7 @@ $this->title = 'Sistema Libro de Inscriptos y Matriculados';
             <i class="fa fa-tasks"></i>
                 <div class="no">
                     <p>Culminados</p>
-                    <p>0000</p>
+                    <p><?= $totalCulminados ?></p>
                 </div>
             </div>
 
@@ -69,7 +61,7 @@ $this->title = 'Sistema Libro de Inscriptos y Matriculados';
             <i class="fa fa-tasks"></i>
                 <div class="no">
                     <p>Reinscriptos</p>
-                    <p >0000</p>
+                    <p ><?= $totalInscriptos ?></p>
                 </div>
             </div>
         </div>
