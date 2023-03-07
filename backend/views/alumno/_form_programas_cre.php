@@ -52,7 +52,7 @@ $estados_titu = [0 => 'Selecciona un estado del titulo'] + ArrayHelper::map(Esta
             </thead>
             <tbody>
     <tr class="programa-row">
-        <td><?= Html::dropDownList('programa[]', null, $nombres_programa, ['class' => 'form-control programa-select', 'prompt' => 'Selecciona un programa']); ?></td>
+    <td> <?= Html::dropDownList('programa[]', null, ArrayHelper::map($programas, 'id', 'nombre'), ['class' => 'form-control programa-select', 'prompt' => 'Selecciona un programa']); ?></td>
         <td><?= Html::textInput('cohorte[]', null, ['class' => 'form-control cohorte-input', 'placeholder' => 'Cohorte']); ?></td>
         <td><?= Html::dropDownList('estadopro[]', null, $estados_pro, ['class' => 'form-control estadopro-select']); ?></td>
         <td><?= Html::dropDownList('estadotitu[]', null, $estados_titu, ['class' => 'form-control estadotitu-select']); ?></td>
