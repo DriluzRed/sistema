@@ -106,40 +106,38 @@ class AlumnoController extends Controller
 
     if ($model->load(Yii::$app->request->post()) && $model->save()) {
         $trans = Yii::$app->db->beginTransaction();
-        try{
-        // Agregar programas
-        $programas = Yii::$app->request->post('programa');
-        $cohorte = Yii::$app->request->post('cohorte');
-        $estado_pro = Yii::$app->request->post('estadopro');
-        $estado_titu = Yii::$app->request->post('estadotitu');
-        $resolution = Yii::$app->request->post('resolution');
-        $fecha_resolucion = Yii::$app->request->post('fecha_resolucion');
-        $promotion_year = Yii::$app->request->post('promotion_year');
-        $seller = Yii::$app->request->post('seller');
-        $charge = Yii::$app->request->post('charge');
-
-        if (!empty($programas)) {
-            foreach ($programas as $index => $programa) {
-                $programa_model = new AlumnoPrograma();
-                $programa_model->alumno_id = $model->id;
-                $programa_model->programa_id = $programa;
-                $programa_model->cohort = $cohorte[$index];
-                $programa_model->estado_programa_id = $estado_pro[$index];
-                $programa_model->estado_titulo_id = $estado_titu[$index];
-                $programa_model->resolution = $resolution[$index];
-                $programa_model->resolution_date = $fecha_resolucion[$index];
-                $programa_model->promotion_year = $promotion_year[$index];
-                $programa_model->seller = $seller[$index];
-                $programa_model->charge = $charge[$index];
-                $programa_model->save(false);
-            }
-            if (!$programa_model->save()) {
-                throw new \Exception('Failed to save AlumnoPrograma model: ' . print_r($programa_model->errors, true));
-            }
+        try {
+            // Agregar programas
+            $programas = Yii::$app->request->post('programa');
+            $cohorte = Yii::$app->request->post('cohorte');
+            $estado_pro = Yii::$app->request->post('estadopro');
+            $estado_titu = Yii::$app->request->post('estadotitu');
+            $resolution = Yii::$app->request->post('resolution');
+            $fecha_resolucion = Yii::$app->request->post('fecha_resolucion');
+            $promotion_year = Yii::$app->request->post('promotion_year');
+            $seller = Yii::$app->request->post('seller');
+            $charge = Yii::$app->request->post('charge');
+    
+            if (!empty($programas)) {
+                foreach ($programas as $index => $programa) {
+                    $programa_model = new AlumnoPrograma();
+                    $programa_model->alumno_id = $model->id;
+                    $programa_model->programa_id = $programa;
+                    $programa_model->cohort = $cohorte[$index];
+                    $programa_model->estado_programa_id = $estado_pro[$index];
+                    $programa_model->estado_titulo_id = $estado_titu[$index];
+                    $programa_model->resolution = $resolution[$index];
+                    $programa_model->resolution_date = $fecha_resolucion[$index];
+                    $programa_model->promotion_year = $promotion_year[$index];
+                    $programa_model->seller = $seller[$index];
+                    $programa_model->charge = $charge[$index];
+                    if (!$programa_model->save(false)) {
+                        throw new \Exception('Failed to save AlumnoPrograma model: ' . print_r($programa_model->errors, true));
+                    }
+                }
             }
             $trans->commit();
-        
-            }catch(\Exception $e){
+        } catch(\Exception $e) {
             $trans->rollBack();
             throw new \Exception($e);
             // FlashMessageHelpers::createWarningMessage($e->getMessage());
@@ -147,6 +145,7 @@ class AlumnoController extends Controller
         }
         return $this->redirect(['index']);
     }
+    
 
     return $this->render('create', [
         'model' => $model,
@@ -262,6 +261,7 @@ class AlumnoController extends Controller
     
         return $this->redirect(['index']);
     }
+
     public function actionGraduados()
     {
         $searchModel = new SearchAlumnos();
