@@ -15,7 +15,7 @@ use yii\widgets\ActiveForm;
        
     </div>
     <div class="login-box-body">
-    <img src="../web/img/Logo-Fotriem-Blanco.png" alt="">
+    <img src="../web/img/logo.png" alt="">
         <h2 class="login-box-msg"><b>Control de Acceso</b></h2>
         
         <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
