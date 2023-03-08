@@ -92,6 +92,8 @@ $(document).on('click', '.eliminar-programa', function() {
 // Actualizar el valor del input oculto al guardar el formulario
 $('form').on('beforeSubmit', function() {
     var programas = [];
+    var isValid = true; // Add a variable to track the validation status
+
     $('.programa-row').each(function() {
         var programa = {
             nombre: $(this).find('.programa-select').val(),
@@ -106,9 +108,21 @@ $('form').on('beforeSubmit', function() {
         };
         programas.push(programa);
        
-   
-   
+        if (!programa.nombre) {
+            isValid = false;
+            return false; // Stop the loop if an empty value is found
+        }
     });
+    
+    if (!isValid) {
+        alert('Coloque un programa para todas las filas');
+        return false; // Prevent the form from submitting if any row has an empty value
+    }
+    
+   
+    
+    
+
     
     $('#programas-json').val(JSON.stringify(programas));
     console.log(JSON.stringify(programas))
@@ -117,3 +131,4 @@ $('form').on('beforeSubmit', function() {
 JS;
 
 $this->registerJs($script);
+?>

@@ -7,7 +7,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel backend\models\search\SearchProgramas */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Módulos'; //Cambiado por Nati
+$this->title = 'Programas'; //Cambiado por Nati
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="programa-index">
