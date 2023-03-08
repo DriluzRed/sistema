@@ -32,7 +32,18 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'nombre:ntext',
             'desc:ntext',
-            'asignaturas:ntext',
+            [
+                'label' => 'Asignaturas',
+                'attribute' => 'asignaturas',
+                'value' => function ($model) {
+                    $asignaturas = '';
+                    foreach ($model->programaAsignaturas as $programaAsignatura) {
+                        $asignaturas .= $programaAsignatura->asignatura->nombre . '<br>';
+                    }
+                    return $asignaturas;
+                },
+                'format' => 'raw',
+            ],
         ],
     ]) ?>
 
