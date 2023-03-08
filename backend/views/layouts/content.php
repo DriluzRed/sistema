@@ -3,72 +3,80 @@
 use yii\widgets\Breadcrumbs;
 
 ?>
-    <div class="content-wrapper">
-        <section class="content-header" style="color:#00177C;">
-            <?php if (isset($this->blocks['content-header'])) { ?>
-                <h1><?= $this->blocks['content-header'] ?></h1>
-            <?php } else { ?>
-                <h1>
-                    <?php
-                    if ($this->title !== null) {
-                        echo \yii\helpers\Html::encode($this->title);
-                    } else {
-                        echo \yii\helpers\Inflector::camel2words(
-                            \yii\helpers\Inflector::id2camel($this->context->module->id)
-                        );
-                        echo ($this->context->module->id !== \Yii::$app->id) ? '<small>Module</small>' : '';
-                    } ?>
-                </h1>
-            <?php } ?>
+<div class="content-wrapper">
+    <section class="content-header" >
+        <img class="logo" src="../web/img/logo fotriem.png">
+        <?php if (isset($this->blocks['content-header'])) { ?>
+            <h1><?= $this->blocks['content-header'] ?></h1>
+        <?php } else { ?>
+            <h1>
+                <?php
+                if ($this->title !== null) {
+                    echo \yii\helpers\Html::encode($this->title);
+                } else {
+                    echo \yii\helpers\Inflector::camel2words(
+                        \yii\helpers\Inflector::id2camel($this->context->module->id)
+                    );
+                    echo ($this->context->module->id !== \Yii::$app->id) ? '<small>Module</small>' : '';
+                } ?>
+            </h1>
+        <?php } ?>
 
-            <?=
-            Breadcrumbs::widget(
-                [
-                    'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-                ]
-            ) ?>
-        </section>
+        <?=
+        Breadcrumbs::widget(
+            [
+                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+            ]
+        ) ?>
+    </section>
 
-        <section class="content">
-            <!--        --><? //= Alert::widget() ?>
-            <?= $content ?>
-        </section>
-    </div>
+    <section class="content">
+        <!--        --><? //= Alert::widget() 
+                        ?>
+        <?= $content ?>
+    </section>
+</div>
 
 <?php
 $version = '1.0';
 $anho = date('Y');
 ?>
-    <footer class="main-footer">
-        <div class="pull-right hidden-xs">
-            <b>Version</b> <?= $version ?>
-        </div>
-        <strong>Copyright <?= $anho ?> <a href="http://www.driluzred.com/">DriluzRed </a></strong> Todos los derechos
-        reservados
-        | Desarrollado para <a href="http://www.driluzred.com/">FOTRIEM</a>
-    </footer>
+<footer class="main-footer">
+    <div class="pull-right hidden-xs">
+        <b>Version</b> <?= $version ?>
+    </div>
+    <strong>Copyright <?= $anho ?> <a href="http://www.driluzred.com/">DriluzRed </a></strong> Todos los derechos
+    reservados
+    | Desarrollado para <a href="http://www.driluzred.com/">FOTRIEM</a>
+</footer>
 
-    <!-- Control Sidebar -->
-    <!-- Add the sidebar's background. This div must be placed
+<!-- Control Sidebar -->
+<!-- Add the sidebar's background. This div must be placed
     immediately after the control sidebar -->
-    <div class='control-sidebar-bg'></div>
+<div class='control-sidebar-bg'></div>
 
 
 <?php
 
 $CSS = <<<CSS
-
+.content-header{
+   color:#1f396a;
+    
+}
+.content-header h1{
+    font-size: xx-large;
+    font-weight: bold;
+    
+}
+.logo {  
+    float: left; 
+    width: 100px; 
+}
+    
 .content{
-   background:#ffffff;
+    background:#ffffff;
     min-height:805px;
     margin-top:1%;
-
-    /* background-image: url('../web/img/Logo-Fotriem-Blanco.png');
-   background-attachment: fixed;
-   background-position: center center;
-   background-size: cover; 
-    */
-
 }
 /*This is modifying the btn-primary colors but you could create your own .btn-something class as well*/
 .content-wrapper{

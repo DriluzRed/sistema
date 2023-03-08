@@ -13,7 +13,7 @@ $this->title = 'Sistema Libro de Inscriptos y Matriculados';
 ?>
 
 
-    <!-- <div class="panel">
+<!-- <div class="panel">
         <i class="fa fa-bell">
             <bold>1</bold>
         </i>
@@ -22,54 +22,69 @@ $this->title = 'Sistema Libro de Inscriptos y Matriculados';
         </div>
     </div>
     -->
-    
-    <div class="all">
-        <div class="starter-stats">
-            <div class="contenedor">
+
+<div class="all">
+    <div class="starter-stats">
+        <div class="contenedor">
             <div class="blok">
-            <i class="fa fa-tasks"></i>
+                <i class="fa fa-tasks"></i>
                 <div class="no">
                     <p>Alumnos Inscriptos</p>
-                    <p><?= $totalAlumnos ?></p>
+                    <p class="counter" data-target="<?= $totalAlumnos ?>"></p>
                 </div>
             </div>
 
             <div class="blok">
-            <i class="fa fa-tasks"></i>
+                <i class="fa fa-tasks"></i>
                 <div class="no">
                     <p>Alumnos Graduados</p>
-                    <p><?=$totalGraduados?></p>
+                    <p class="counter" data-target="<?= $totalGraduados ?>"></p>
                 </div>
             </div>
             <div class="blok">
-            <i class="fa fa-tasks"></i>
+                <i class="fa fa-tasks"></i>
                 <div class="no">
                     <p>Desmatriculados</p>
-                    <p><?= $totalDesma ?></p>
+                    <p class="counter" data-target="<?= $totalDesma ?>"></p>
                 </div>
             </div>
 
             <div class="blok">
-            <i class="fa fa-tasks"></i>
+                <i class="fa fa-tasks"></i>
                 <div class="no">
                     <p>Culminados</p>
-                    <p><?= $totalCulminados ?></p>
+                    <p class="counter" data-target="<?= $totalCulminados ?>"></p>
                 </div>
             </div>
 
             <div class="blok">
-            <i class="fa fa-tasks"></i>
+                <i class="fa fa-tasks"></i>
                 <div class="no">
                     <p>Reinscriptos</p>
-                    <p ><?= $totalInscriptos ?></p>
+                    <p class="counter" data-target="<?= $totalInscriptos ?>"></p>
                 </div>
             </div>
         </div>
-        </div>
     </div>
+</div>
+<script>
+    const counters = document.querySelectorAll(".counter");
 
-    
-   
+    counters.forEach((counter) => {
+        counter.innerText = "0";
+        const updateCounter = () => {
+            const target = +counter.getAttribute("data-target");
+            const count = +counter.innerText;
+            const increment = target / 500;
+            if (count < target) {
+                counter.innerText = `${Math.ceil(count + increment)}`;
+                setTimeout(updateCounter, 1);
+            } else counter.innerText = target;
+        };
+        updateCounter();
+    });
+</script>
+
 <?php
 $css = <<<CSS
 @import url("https://fonts.googleapis.com/css?family=Lato:300,400,700|Source+Sans+Pro:300,600");
@@ -84,9 +99,6 @@ $css = <<<CSS
 .contenedor{
     margin-top:5%;
     margin-left:10%;
-   
-    
-   
 }
 .all .starter-stats .blok {
     
