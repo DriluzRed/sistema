@@ -10,14 +10,14 @@ use yii\helpers\ArrayHelper;
 /* @var $model Alumno */
 /** @var asignatura[] $asignaturas */
 
-$asignaturas = asignatura::find()->all();
+$asignaturas = Asignatura::find()->all();
 // var_dump($asignaturas);
 foreach($asignaturas as $asignatura){
     $nombres_asignatura[] = $asignatura->nombre;
 }
 
 
-$nombres_asignatura = [0 => 'Selecciona un asignatura'] + ArrayHelper::map(asignatura::find()->all(), 'id', 'nombre');
+$nombres_asignatura = [0 => 'Selecciona un asignatura'] + ArrayHelper::map(Asignatura::find()->all(), 'id', 'nombre');
 ?>
 <!-- Formulario -->
 <div class="row">
