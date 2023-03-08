@@ -175,11 +175,7 @@ $this->params['breadcrumbs'][] = $this->title;
     
     $CSS = <<<CSS
 /*This is modifying the btn-primary colors but you could create your own .btn-something class as well*/
-.ache{
-    border: 2px solid black;
-     width: 100%;
-        margin: 0;
-}
+
 .grid-item {
         height: 60px; // set a fixed height for the divs
         padding: 5px 10px;
@@ -203,7 +199,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 .ache {
   border: none;
-  border-top: 2px solid black;
+  border-top: 1px solid #d7d8d9;
   height: 1px;
   margin: 0;
   padding: 0;
