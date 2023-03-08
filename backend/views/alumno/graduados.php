@@ -43,28 +43,28 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'first_name',
                 'format' => 'raw',
                 'value' => function ($model) {
-                    return '<div class="grid-item">' . $model->first_name . '</div> <hr class="ache">';
+                    return '<div class="grid-item">' . $model->first_name . '</div> ';
                 },
             ],
             [
                 'attribute' => 'last_name',
                 'format' => 'raw',
                 'value' => function ($model) {
-                    return '<div class="grid-item">' . $model->last_name . '</div> <hr class="ache">';
+                    return '<div class="grid-item">' . $model->last_name . '</div> ';
                 },
             ],
             [
                 'attribute' => 'ci',
                 'format' => 'raw',
                 'value' => function ($model) {
-                    return '<div class="grid-item">' . $model->ci . '</div> <hr class="ache">';
+                    return '<div class="grid-item">' . $model->ci . '</div> ';
                 },
             ],
             [
                 'attribute' => 'phone',
                 'format' => 'raw',
                 'value' => function ($model) {
-                    return '<div class="grid-item">' . $model->phone . '</div> <hr class="ache">';
+                    return '<div class="grid-item">' . $model->phone . '</div> ';
                 },
             ],  
             //     'value' => 'programas.nombre',
@@ -76,7 +76,7 @@ $this->params['breadcrumbs'][] = $this->title;
     $programas = '';
     foreach ($model->alumnoProgramas as $alumnoPrograma) {
         if ($alumnoPrograma->estado_programa_id == 3 && $alumnoPrograma->estado_programa_id == 3)  {
-            $programas .= '<div class="grid-item">' . $alumnoPrograma->programa->nombre . '</div> <hr class="ache">';
+            $programas .= '<div class="grid-item">' . $alumnoPrograma->programa->nombre . '</div> ';
         }
     }
     return $programas;
@@ -92,7 +92,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     foreach ($model->alumnoProgramas as $alumnoPrograma) 
                     {
                         if ($alumnoPrograma->estado_programa_id == 3 && $alumnoPrograma->estado_programa_id == 3) {
-                        $cohorte .= '<div class="grid-item">' . $alumnoPrograma->cohort . '</div> <hr class="ache">';
+                        $cohorte .= '<div class="grid-item">' . $alumnoPrograma->cohort . '</div> ';
                         }
                     }
                     return $cohorte;
@@ -103,7 +103,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'year',
                 'format' => 'raw',
                 'value' => function ($model) {
-                    return '<div class="grid-item">' . $model->year . '</div> <hr class="ache">';
+                    return '<div class="grid-item">' . $model->year . '</div> ';
                 },
             ],  
          
@@ -114,7 +114,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     $promotion_year = '';
                     foreach ($model->alumnoProgramas as $alumnoPrograma) {
                         if ($alumnoPrograma->estado_programa_id == 3 && $alumnoPrograma->estado_programa_id == 3) {
-                        $promotion_year .= '<div class="grid-item">' . $alumnoPrograma->promotion_year . '</div> <hr class="ache">';
+                        $promotion_year .= '<div class="grid-item">' . $alumnoPrograma->promotion_year . '</div> ';
                         }
                     }
                     return $promotion_year;
@@ -126,7 +126,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'status',
                 'format' => 'raw',
                 'value' => function ($model) {
-                    return '<div class="grid-item">' . $model->status . '</div> <hr class="ache">';
+                    return '<div class="grid-item">' . $model->status . '</div> ';
                 },
             ], 
             [
@@ -136,7 +136,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     $estado_programa_nombre = '';
                     foreach ($model->alumnoProgramas as $alumnoPrograma) {
                         if(isset($alumnoPrograma->estadoPrograma) && $alumnoPrograma->estadoPrograma['desc'] === "Graduado" || $alumnoPrograma->estadoPrograma['desc'] === "Egresado"){
-                            $estado_programa_nombre .= '<div class="grid-item">' . $alumnoPrograma->estadoPrograma['desc'] . '</div> <hr class="ache">';
+                            $estado_programa_nombre .= '<div class="grid-item">' . $alumnoPrograma->estadoPrograma['desc'] . '</div> ';
                         }
                     }
                     return $estado_programa_nombre;
@@ -152,7 +152,7 @@ $this->params['breadcrumbs'][] = $this->title;
                    
                         foreach ($model->alumnoProgramas as $alumnoPrograma) {
                             if(isset($alumnoPrograma->estadoTitulo)){
-                                $estado_titulo .= '<div class="grid-item">' . $alumnoPrograma->estadoTitulo['desc'] . '</div> <hr class="ache">';
+                                $estado_titulo .= '<div class="grid-item">' . $alumnoPrograma->estadoTitulo['desc'] . '</div>';
                             }
                             
                         }

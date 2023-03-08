@@ -15,6 +15,8 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\JsExpression;
+
+
 /* @var $this yii\web\View */
 /* @var $model backend\models\Programa */
 /* @var $form yii\widgets\ActiveForm */
@@ -50,22 +52,18 @@ use yii\web\JsExpression;
                                     ],
                                 ]
                             ],
-                            [
-                                'attributes' => [
-                                    'programas' => [
-                                        'type' => Form::INPUT_RAW,
-                                        'value' => $form->field($model, 'asignaturas')->widget(Select2::className(), [
-                                            'data' => Asignatura::getAsignaturas(true),                                            'options' => ['placeholder' => 'Seleccione un Programa ...'],
-                                            'pluginOptions' => [
-                                                'allowClear' => true,
-                                                'multiple' => true,
-                                            ]
-                                        ])
-                                    ],
-                                ]
-                            ],
+                          
                         ]
                         ]);
+                        if ($model->isNewRecord){
+                            echo $this->render('_form_asignaturas_cre', ['model' => $model]);
+                         }else{
+                            echo $this->render('_form_asignaturas_up',[
+                                'model' => $model,
+                                'asignatura_model' => $asignatura_model,
+                                'form' => $form,
+                            ]);
+                         }
     ?> 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
