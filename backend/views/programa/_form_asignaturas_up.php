@@ -4,7 +4,7 @@ use yii\helpers\Json;
 use yii\helpers\Url;
 use backend\helpers\HtmlHelpers;
 
-use backend\models\asignatura;
+use backend\models\Asignatura;
 use yii\helpers\ArrayHelper;
 /* @var $form kartik\form\ActiveForm */
 /* @var $model Alumno */
