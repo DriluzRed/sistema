@@ -3,6 +3,10 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\helpers\Url;
+use yii\helpers\ArrayHelper;
+use backend\models\AlumnoPrograma;
+use backend\models\EstadoPrograma;
+use backend\models\EstadoTitulo;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\search\SearchAlumnos */
@@ -68,7 +72,13 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $cohorte;
                 },
                 'format' => 'raw',
+                'filter' => ArrayHelper::merge(['' => 'Todos los Cohortes'], ArrayHelper::map(AlumnoPrograma::find()->distinct()->select('cohort')->where(['>=', 'cohort', 2000])->orderBy('cohort')->asArray()->all(), 'cohort', 'cohort')),
+                'filterInputOptions' => ['class' => 'form-control', 'prompt' => 'Selecciona Cohorte', 'style' => 'width: 100%']
             ],
+            
+            
+            
+            
             'year:ntext',
          
             [
@@ -82,6 +92,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $promotion_year;
                 },
                 'format' => 'raw',
+             
+                'filter' => ArrayHelper::merge(['' => 'Todos los Años'], ArrayHelper::map(AlumnoPrograma::find()->distinct()->select('promotion_year')->where(['>=', 'promotion_year', 2000])->orderBy('promotion_year')->asArray()->all(), 'promotion_year', 'promotion_year')),
+                'filterInputOptions' => ['class' => 'form-control', 'prompt' => 'Selecciona el Año', 'style' => 'width: 100%']
             ],
             // 'promotion:ntext',
             'status:ntext',
@@ -99,6 +112,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $estado_programa_nombre;
                 },
                 'format' => 'raw',
+                'filter' => ArrayHelper::merge(['' => 'Todos los Estados'], ArrayHelper::map(EstadoPrograma::find()->orderBy('desc')->asArray()->all(), 'desc', 'desc')),
+                'filterInputOptions' => ['class' => 'form-control', 'prompt' => 'Selecciona el Estado', 'style' => 'width: 100%']
             ],
             [
                 'label' => 'Estado del titulo',
@@ -117,6 +132,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $estado_titulo;
                 },
                 'format' => 'raw',
+                'filter' => ArrayHelper::merge(['' => 'Todos los Estados'], ArrayHelper::map(EstadoTitulo::find()->orderBy('desc')->asArray()->all(), 'desc', 'desc')),
+                'filterInputOptions' => ['class' => 'form-control', 'prompt' => 'Selecciona el Estado', 'style' => 'width: 100%']
             ],
             ['class' => 'yii\grid\ActionColumn',
                 'options' => ['style' => 'width:100px'],
