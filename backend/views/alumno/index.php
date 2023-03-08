@@ -22,6 +22,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('Añadir nuevo alumno', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::button('Limpiar filtros', ['class' => 'btn btn-default', 'id' => 'clear-filters-btn']) ?>
+
     </p>
     <?php
     $template = '';
@@ -144,4 +146,15 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
         
     ]); ?>
+
+
+<?php
+    $clearFiltersUrl = Url::to(['index']);
+    $js = <<<JS
+        $('#clear-filters-btn').click(function() {
+            window.location.href = '{$clearFiltersUrl}';
+        });
+JS;
+    $this->registerJs($js);
+    ?>
 </div>
