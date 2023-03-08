@@ -39,12 +39,10 @@ $perfil = User::find()->where(['id' => Yii::$app->user->id])->one();
                         <!-- User image -->
                         <li class="user-header  ">
                             <?php if (Yii::$app->session->get('user') == null) ?>
-                                <img src="../web/img/avatar_neutro.png" class="user-image" alt="User Image"/>
-
-    
-                                
-                            
-                            <p>
+                                <img src="../web/img/usuario.png" class="user-image" alt="User Image"/>
+                        
+                            <p style="font-size:25px;">
+                            <small>Iniciaste sesión como</small>
                                 <?= Yii::$app->user->identity->username ?>
                                 <small>Miembro
                                     desde <?= Yii::$app->formatter->asDAte(Yii::$app->user->identity->created_at) ?></small>
@@ -52,7 +50,7 @@ $perfil = User::find()->where(['id' => Yii::$app->user->id])->one();
                         </li>
                         <!-- Menu Body -->
                         <!-- Menu Footer-->
-                        <li class="user-footer " style="background: #8aa4af">
+                        <li class="user-footer " style="background: #0f172a">
                             
                             <div class="pull-right">
                                 <?= Html::a(
@@ -78,10 +76,9 @@ $CSS = <<<CSS
 /*This is modifying the btn-primary colors but you could create your own .btn-something class as well*/
 .navbar-azul{
     background-color: #0f172a   ;
-   
 }
 .dropdown-toggle:active, .open .dropdown-toggle, .dropdown-toggle:hover, .dropdown-toggle:focus:not(:hover) {
-        background:#0f172a !important; 
+        background:#1f396a !important; 
         color:#000 !important;
     }
 .blanco{
@@ -93,8 +90,6 @@ $CSS = <<<CSS
     height:50px;
 
 }
-
-
 
 
 CSS;
