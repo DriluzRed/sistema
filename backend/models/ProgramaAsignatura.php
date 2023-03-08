@@ -30,9 +30,10 @@ class ProgramaAsignatura extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id'], 'required'],
-            [['id', 'asignatura_id', 'programa_id'], 'integer'],
-            [['id'], 'unique'],
+          
+            [[ 'asignatura_id', 'programa_id'], 'integer'],
+            [[ 'asignatura_id', 'programa_id'], 'required'],
+          
             [['asignatura_id'], 'exist', 'skipOnError' => true, 'targetClass' => Asignatura::class, 'targetAttribute' => ['asignatura_id' => 'id']],
             [['programa_id'], 'exist', 'skipOnError' => true, 'targetClass' => Programa::class, 'targetAttribute' => ['programa_id' => 'id']],
         ];
