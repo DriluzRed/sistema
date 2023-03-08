@@ -42,10 +42,34 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            'first_name:ntext',
-            'last_name:ntext',
-            'ci:ntext',
-            'phone:ntext',
+           [
+                'attribute' => 'first_name',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    return '<div class="grid-item">' . $model->first_name . '</div> ';
+                },
+            ],
+            [
+                'attribute' => 'last_name',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    return '<div class="grid-item">' . $model->last_name . '</div> ';
+                },
+            ],
+            [
+                'attribute' => 'ci',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    return '<div class="grid-item">' . $model->ci . '</div> ';
+                },
+            ],
+            [
+                'attribute' => 'phone',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    return '<div class="grid-item">' . $model->phone . '</div> ';
+                },
+            ],  
             // [
             //     'label' => 'Pais',
             //     'attribute' => 'programas',
@@ -62,6 +86,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $programas;
                 },
                 'format' => 'raw',
+                'contentOptions' => ['style' => 'border-bottom: solid 1px black;']
             ],
             [
                 'label' => 'Cohorte',
@@ -75,13 +100,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'format' => 'raw',
                 'filter' => ArrayHelper::merge(['' => 'Todos los Cohortes'], ArrayHelper::map(AlumnoPrograma::find()->distinct()->select('cohort')->where(['>=', 'cohort', 2000])->orderBy('cohort')->asArray()->all(), 'cohort', 'cohort')),
-                'filterInputOptions' => ['class' => 'form-control', 'prompt' => 'Selecciona Cohorte', 'style' => 'width: 100%']
+                'filterInputOptions' => ['class' => 'form-control', 'prompt' => 'Selecciona Cohorte', 'style' => 'width: 100%'],
+                'contentOptions' => ['style' => 'border-bottom: solid 1px black;']
             ],
-            
-            
-            
-            
-            'year:ntext',
+            [
+                'attribute' => 'year',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    return '<div class="grid-item">' . $model->year . '</div> ';
+                },
+            ], 
          
             [
                 'label' => 'Año de Promocion',
@@ -96,10 +124,17 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
              
                 'filter' => ArrayHelper::merge(['' => 'Todos los Años'], ArrayHelper::map(AlumnoPrograma::find()->distinct()->select('promotion_year')->where(['>=', 'promotion_year', 2000])->orderBy('promotion_year')->asArray()->all(), 'promotion_year', 'promotion_year')),
-                'filterInputOptions' => ['class' => 'form-control', 'prompt' => 'Selecciona el Año', 'style' => 'width: 100%']
+                'filterInputOptions' => ['class' => 'form-control', 'prompt' => 'Selecciona el Año', 'style' => 'width: 100%'],
+                'contentOptions' => ['style' => 'border-bottom: solid 1px black;']
             ],
             // 'promotion:ntext',
-            'status:ntext',
+            [
+                'attribute' => 'status',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    return '<div class="grid-item">' . $model->status . '</div> ';
+                },
+            ],
             [
                 'label' => 'Estado del programa',
                 'attribute' => 'estado_programa',
@@ -115,7 +150,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'format' => 'raw',
                 'filter' => ArrayHelper::merge(['' => 'Todos los Estados'], ArrayHelper::map(EstadoPrograma::find()->orderBy('desc')->asArray()->all(), 'desc', 'desc')),
-                'filterInputOptions' => ['class' => 'form-control', 'prompt' => 'Selecciona el Estado', 'style' => 'width: 100%']
+                'filterInputOptions' => ['class' => 'form-control', 'prompt' => 'Selecciona el Estado', 'style' => 'width: 100%'],
+                'contentOptions' => ['style' => 'border-bottom: solid 1px black;']
             ],
             [
                 'label' => 'Estado del titulo',
