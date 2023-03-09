@@ -36,6 +36,7 @@ class MainModule extends \yii\base\Module implements ModuleInterface
         array_push($items, ['label' => 'Carrera de Grado', 'url' => ['alumno/carreras'], 'icon' => 'fa fa-solid fa-book','options' =>['class'=>'tarjetas'],  'active' => \Yii::$app->controller->id == 'alumno']);
         array_push($items, ['label' => 'Talleres', 'url' => ['alumno/talleres'], 'icon' => 'fa fa-gear','options' =>['class'=>'tarjetas'],  'active' => \Yii::$app->controller->id == 'alumno']);
         array_push($items, ['label' => 'Libro de Graduados', 'url' => ['alumno/graduados'], 'icon' => 'fa fa-book','options' =>['class'=>'tarjetas'],  'active' => \Yii::$app->controller->id == 'alumno']); 
+        array_push($items, ['label' => 'Inidice de Eficiencia', 'url' => ['alumno/stats'], 'icon' => 'fa fa-book','options' =>['class'=>'tarjetas'],  'active' => \Yii::$app->controller->id == 'ide']); 
         return $items;
     }
 

@@ -301,6 +301,70 @@ class AlumnoController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+    public function actionStats($programaId = null)
+    {
+        $programaId = Yii::$app->request->get('programaId');
+        // Select the fields to display and calculate the aggregates
+        $query = AlumnoPrograma::find()
+        ->leftJoin('alumno', 'alumno.id = alumno_programa.alumno_id')
+        ->leftJoin('estado_programa', 'estado_programa.id = alumno_programa.estado_programa_id')        
+        ->select([
+            'alumno_programa.cohort',
+            'COUNT(DISTINCT alumno_programa.alumno_id) AS totalInscriptos',
+            'SUM(IF(estado_programa.desc = "desmatriculado", 1, 0)) AS totalDesmatriculados',
+            'SUM(IF(alumno.status = "activo", 1, 0)) AS totalActivos',
+            'SUM(IF(estado_programa.desc = "egresado", 1, 0)) AS totalEgresados',
+            'SUM(IF(estado_programa.desc = "graduado", 1, 0)) AS totalGraduados',
+            'SUM(IF(estado_programa.desc = "reinscripto", 1, 0)) AS totalReinscriptos',
+        ])
+        ->groupBy(['alumno_programa.cohort']);
+    
+    
+            
+            // var_dump($query);
+           
+            // exit;
+            
+        
+        if ($programaId) {
+            $query->andWhere(['alumno_programa.programa_id' => $programaId]);
+        }
+            
+        $data = $query->asArray()->all();
+
+        $totalAlumnos = 0;
+        $totalGraduados = 0;
+        $totalDesmatriculados = 0;
+        foreach ($data as &$row) {
+            // var_dump($row['totalinscriptos']);
+           
+            // exit;
+            $row['totalinscriptos'] = (int)$row['totalinscriptos'];
+            $row['totalgraduados'] = (int)$row['totalgraduados'];
+            $row['totaldesmatriculados'] = (int)$row['totaldesmatriculados'];
+            $totalAlumnos += $row['totalinscriptos'];
+            $totalGraduados += $row['totalgraduados'];
+            $totalDesmatriculados += $row['totaldesmatriculados'];
+        }
+        unset($row);
+        
+        $indiceEficienciaGraduados = $totalAlumnos > 0 ? round($totalGraduados / $totalAlumnos * 100, 2) : 0;
+        $indiceEficienciaDesmatriculados = $totalAlumnos > 0 ? round($totalDesmatriculados / $totalAlumnos * 100, 2) : 0;
+        
+       
+        $programas = ArrayHelper::map(Programa::find()->all(), 'id', 'nombre');
+        
+        return $this->render('stats', [
+            'data' => $data,
+            'totalAlumnos' => $totalAlumnos,
+            'totalGraduados' => $totalGraduados,
+            'totalDesmatriculados' => $totalDesmatriculados,
+            'indiceEficienciaGraduados' => $indiceEficienciaGraduados,
+            'indiceEficienciaDesmatriculados' => $indiceEficienciaDesmatriculados,
+            'programas' => $programas,
+            'programaId' => $programaId,
+        ]);
+    }
 
     
 
