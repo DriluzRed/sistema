@@ -57,6 +57,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
             ],
             [
+                'attribute' => 'sex',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    return '<div class="grid-item">' . $model->sex . '</div> ';
+                },
+            ],
+            [
                 'attribute' => 'ci',
                 'format' => 'raw',
                 'value' => function ($model) {

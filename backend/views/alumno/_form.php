@@ -66,6 +66,16 @@ use kartik\grid\SerialColumn;
             ],
             [
                 'attributes' => [
+                    'sex' => [
+                        'type' => Form::INPUT_TEXT,
+                        'options' => ['placeholder' => 'Sexo'],
+                        'columnOptions' => ['colspan' => '3']
+                    ],
+                ]
+            ],
+            
+            [
+                'attributes' => [
                     'country_id' => [
                         'type' => Form::INPUT_RAW,
                         'value' => $form->field($model, 'country_id')->widget(Select2::className(), [
