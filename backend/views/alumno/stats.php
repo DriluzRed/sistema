@@ -40,6 +40,14 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 </div>
+<?php
+    $totalAlumnos = 0;
+    foreach ($data as $row) {
+        $totalAlumnos += $row['totalinscriptos'];
+    }
+    $total = 10000;
+    ?>
+   
     <br>
     <?php Pjax::begin([
         'id' => 'stats-pjax-container',
@@ -61,13 +69,31 @@ $this->params['breadcrumbs'][] = $this->title;
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
 
-                    'cohort',
+                    
+                    [
+                        'attribute' => 'cohort',
+                        'value' => function ($model) {
+                            return $model['cohort'] . '-' . ($model['cohort'] + 2);
+                        },
+                        'label' => 'Cohorte',
+                    ],
                     [
                         'attribute' => 'totalgraduados',
-                        'value' => function ($model) use ($totalAlumnos) {
-                            return ($totalAlumnos > 0) ? round(($model['totalgraduados'] / $totalAlumnos) * 100, 2) . '%' : '-';
+                        'value' => function ($model) use ($total) {
+                            $totalEgresados = $model['totalegresados'] + $model['totalgraduados'];
+                            $total = $model['totalinscriptos'] + $model['totaldesmatriculados'];
+                            return ($total > 0) ? round(($totalEgresados / $total) * 100, 2) . '%' : '=';
                         },
-                        'header' => 'Índice de Eficiencia',
+                        'header' => 'Índice de Eficiencia de Graduados',
+                    ],
+                    [
+                        'attribute' => 'totaldesmatriculados',
+                        'value' => function ($model) use ($total) {
+                            $totalDesmatriculados = $model['totaldesmatriculados'];
+                            $total = $model['totalinscriptos'] + $model['totaldesmatriculados'];
+                            return ($total > 0) ? round(($totalDesmatriculados / $total) * 100, 2) . '%' : '=';
+                        },
+                        'header' => 'Índice de Deficiencia de Desercion',
                     ],
                     [
                         'attribute' => 'totalinscriptos',

@@ -310,7 +310,7 @@ class AlumnoController extends Controller
         ->leftJoin('estado_programa', 'estado_programa.id = alumno_programa.estado_programa_id')        
         ->select([
             'alumno_programa.cohort',
-            'COUNT(DISTINCT alumno_programa.alumno_id) AS totalInscriptos',
+            'COUNT(alumno_programa.alumno_id) AS totalInscriptos',
             'SUM(IF(estado_programa.desc = "desmatriculado", 1, 0)) AS totalDesmatriculados',
             'SUM(IF(alumno.status = "activo", 1, 0)) AS totalActivos',
             'SUM(IF(estado_programa.desc = "egresado", 1, 0)) AS totalEgresados',
@@ -339,9 +339,9 @@ class AlumnoController extends Controller
             // var_dump($row['totalinscriptos']);
            
             // exit;
-            $row['totalinscriptos'] = (int)$row['totalinscriptos'];
-            $row['totalgraduados'] = (int)$row['totalgraduados'];
-            $row['totaldesmatriculados'] = (int)$row['totaldesmatriculados'];
+            $row['totalinscriptos'] = (double)$row['totalinscriptos'];
+            $row['totalgraduados'] = (double)$row['totalgraduados'];
+            $row['totaldesmatriculados'] = (double)$row['totaldesmatriculados'];
             $totalAlumnos += $row['totalinscriptos'];
             $totalGraduados += $row['totalgraduados'];
             $totalDesmatriculados += $row['totaldesmatriculados'];
