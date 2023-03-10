@@ -52,6 +52,16 @@ class AlumnoController extends Controller
                         'roles' => ['alumno'],
                     ],
                     [
+                        'allow' => false,
+                        'actions' => ['delete'],
+                        'roles' => ['coordinacion'],
+                    ],
+                    [
+                        'allow' => false,
+                        'actions' => ['delete'],
+                        'roles' => ['administracion'],
+                    ],
+                    [
                         'allow'=>true,
                         'roles'=>['@']
                      ],
