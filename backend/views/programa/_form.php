@@ -26,7 +26,6 @@ use yii\web\JsExpression;
 <?php $form = ActiveForm::begin(); ?>
 
     <?php
-               
                     echo FormGrid::widget([
                         'model' => $model,
                         'form' => $form,
@@ -47,23 +46,22 @@ use yii\web\JsExpression;
                                 'attributes' => [
                                     'desc' => [
                                         'type' => Form::INPUT_TEXT,
-                                        'options' => ['placeholder' => 'Descripcion del programa'],
+                                        'options' => ['placeholder' => 'Descripción del programa'],
                                         'columnOptions' => ['colspan' => '3']
                                     ],
                                 ]
                             ],
-                          
                         ]
                         ]);
                         if ($model->isNewRecord){
                             echo $this->render('_form_asignaturas_cre', ['model' => $model]);
-                         }else{
+                        }else{
                             echo $this->render('_form_asignaturas_up',[
                                 'model' => $model,
                                 'asignatura_model' => $asignatura_model,
                                 'form' => $form,
                             ]);
-                         }
+                        }
     ?> 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

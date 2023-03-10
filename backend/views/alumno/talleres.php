@@ -16,11 +16,11 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="alumno-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+   
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Añadir nuevo alumno', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Añadir nuevo taller', ['create'], ['class' => 'btn btn-success']) ?>
         <?= Html::button('Limpiar filtros', ['class' => 'btn btn-default', 'id' => 'clear-filters-btn']) ?>
 
     </p>
