@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
     $template = '';
     $template = $template . '{view}';
     $template = $template . '{update}';
-    $template = $template . '{delete}';
+    (\Yii::$app->user->can('borrarAlumno')) ?  $template = $template . '{delete}': '';
     /** @var Alumno $model */
     echo GridView::widget([
         'tableOptions' => [

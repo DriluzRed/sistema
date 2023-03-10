@@ -11,7 +11,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use Exception;
 use yii\helpers\ArrayHelper;
-
+use yii\filters\AccessControl;
 /**
  * ProgramaController implements the CRUD actions for Programa model.
  */
@@ -23,6 +23,46 @@ class ProgramaController extends Controller
     public function behaviors()
     {
         return [
+            'access'=>[
+                'class' => AccessControl::className(),
+                'rules'=> [
+                 
+                    [
+                        'allow' => false,
+                        'actions' => ['index'],
+                        'roles' => ['alumno'],
+                    ],
+                    [
+                        'allow' => false,
+                        'actions' => ['create'],
+                        'roles' => ['alumno'],
+                    ],
+                    [
+                        'allow' => false,
+                        'actions' => ['update'],
+                        'roles' => ['alumno'],
+                    ],
+                    [
+                        'allow' => false,
+                        'actions' => ['delete'],
+                        'roles' => ['alumno'],
+                    ],
+                    [
+                        'allow' => false,
+                        'actions' => ['delete'],
+                        'roles' => ['coordinacion'],
+                    ],
+                    [
+                        'allow' => false,
+                        'actions' => ['delete'],
+                        'roles' => ['administracion'],
+                    ],
+                    [
+                        'allow'=>true,
+                        'roles'=>['@']
+                     ],
+                ]
+    ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [

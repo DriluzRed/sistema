@@ -19,8 +19,19 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Añadir nueva Asignatura', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-
-    <?= GridView::widget([
+    <?php
+     $template = '';
+     $template = $template . '{view}';
+     $template = $template . '{update}';
+     (\Yii::$app->user->can('borrarAlumno')) ?  $template = $template . '{delete}':  '';
+    
+     echo GridView::widget([
+        'tableOptions' => [
+            'class' => 'table table-striped',
+        ],
+        'options' => [
+            'class' => 'table-responsive',
+        ],
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
@@ -29,7 +40,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'nombre:ntext',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn',
+            'options' => ['style' => 'width:100px'],
+            'buttonOptions' => ['class' => 'btn btn-default'],
+            'header' => 'Acciones',
+            'template' => $template,
+        ],
         ],
     ]); ?>
     <?php Pjax::end(); ?>

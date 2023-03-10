@@ -20,7 +20,15 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Crear Modulo', ['create'], ['class' => 'btn btn-success']) //Cambiado por Nati?> 
     </p>
 
-    <?= GridView::widget([
+
+    
+    <?php
+     $template = '';
+     $template = $template . '{view}';
+     $template = $template . '{update}';
+     (\Yii::$app->user->can('borrarAlumno')) ?  $template = $template . '{delete}':  '';
+    
+     echo GridView::widget([
         'tableOptions' => [
             'class' => 'table table-striped',
         ],
@@ -47,7 +55,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'format' => 'raw',
             ],
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn',
+            'options' => ['style' => 'width:100px'],
+            'buttonOptions' => ['class' => 'btn btn-default'],
+            'header' => 'Acciones',
+            'template' => $template,
+        ],
         ],
     ]); ?>
     <?php Pjax::end(); ?>
