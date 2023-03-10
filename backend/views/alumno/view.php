@@ -33,16 +33,33 @@ $this->params['breadcrumbs'][] = $this->title;
             'first_name:ntext',
             'last_name:ntext',
             'ci:ntext',
-            'country_id',
+            [
+                'attribute' => 'country_id',
+                'value' => function ($model){
+                        return $model->pais->nombre;
+                }
+
+            ],
             'low_line_number:ntext',
             'phone:ntext',
             'email:ntext',
             'address:ntext',
             'age:ntext',
-            'programa_id',
+            [
+                'label' => 'Programas',
+                'attribute' => 'programas',
+                'value' => function ($model) {
+                    $programas = '';
+                    foreach ($model->alumnoProgramas as $alumnoPrograma) {
+                        $programas .= $alumnoPrograma->programa->nombre . '<br>';
+                    }
+                    return $programas;
+                },
+                'format' => 'raw',
+            ],
             'campus',
             'subsidiary',
-            'enrrolment_date:ntext',
+       
             'contract_number:ntext',
             'year:ntext',
             'promotion_year:ntext',
@@ -52,8 +69,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'document_back_file:ntext',
             'status:ntext',
             'study_certificate_file:ntext',
-            'finded_ips:ntext',
-            'finded_ruc:ntext',
+            
         ],
     ]) ?>
 
