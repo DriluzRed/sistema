@@ -46,8 +46,9 @@ class SearchAlumnos extends Alumno
     public function search($params)
     {
         $query = Alumno::find();
+        $total = $query->count();
         $query->joinWith(['alumnoProgramas.programa', 'alumnoProgramas.estadoPrograma','alumnoProgramas.estadoTitulo']);
-        
+
         
         // $query->joinWith(['alumnoProgramas']);
 
@@ -101,7 +102,8 @@ class SearchAlumnos extends Alumno
             ->andFilterWhere(['like', 'finded_ruc', $this->finded_ruc])
             ->andFilterWhere(['like', 'sex', $this->sex])
             ->andFilterWhere(['like', 'programa.nombre', $this->programas]);
-        
+
+        $dataProvider->totalCount = $total;
         return $dataProvider;
     }
 }

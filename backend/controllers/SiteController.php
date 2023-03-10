@@ -64,8 +64,8 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $totalAlumnos = AlumnoPrograma::find()
-    ->select('COUNT(DISTINCT alumno_id)')->count();
+        $totalAlumnos = Alumno::find()
+    ->select('COUNT(id)')->count();
         // $totalGraduados = $query = Alumno::find();
         $totalGraduados = AlumnoPrograma::find()
             ->andWhere(['estado_programa_id' => 3]);
