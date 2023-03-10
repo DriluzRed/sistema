@@ -69,6 +69,8 @@ $(document).on('click', '.eliminar-asignatura', function() {
 // Actualizar el valor del input oculto al guardar el formulario
 $('form').on('beforeSubmit', function() {
     var asignaturas = [];
+    var isValid = true; // Add a variable to track the validation status
+
     $('.asignatura-row').each(function() {
         var asignatura = {
             nombre: $(this).find('.asignatura-select').val(),
@@ -76,9 +78,17 @@ $('form').on('beforeSubmit', function() {
         };
         asignaturas.push(asignatura);
        
-   
-   
+     // Check if the value of the "asignatura" field is empty
+     if (!asignatura.nombre) {
+            isValid = false;
+            return false; // Stop the loop if an empty value is found
+        }
     });
+    
+    if (!isValid) {
+        alert('Coloque una asignatura para todas las filas');
+        return false; // Prevent the form from submitting if any row has an empty value
+    }
     
     $('#asignaturas-json').val(JSON.stringify(asignaturas));
     console.log(JSON.stringify(asignaturas))
