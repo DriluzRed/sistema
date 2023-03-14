@@ -67,9 +67,14 @@ use kartik\grid\SerialColumn;
             [
                 'attributes' => [
                     'sex' => [
-                        'type' => Form::INPUT_TEXT,
-                        'options' => ['placeholder' => 'Sexo'],
-                        'columnOptions' => ['colspan' => '3']
+                        'type' => Form::INPUT_RAW,
+                        'value' => $form->field($model, 'sex')->widget(Select2::className(), [
+                            'data' => ['Masculino' => 'Masculino', 'Femenino' => 'Femenino'],
+                            'options' => ['placeholder' => 'Seleccione un genero ...'],
+                            'pluginOptions' => [
+                                'allowClear' => true
+                            ]
+                        ])
                     ],
                 ]
             ],
@@ -179,7 +184,7 @@ use kartik\grid\SerialColumn;
 
 
 <div class="form-group">
-    <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+    <?= Html::submitButton('Guardar', ['class' => 'btn btn-success']) ?>
 </div>
 
     <?php ActiveForm::end(); ?>

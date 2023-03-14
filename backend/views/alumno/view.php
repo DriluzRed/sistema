@@ -59,16 +59,25 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'campus',
             'subsidiary',
-       
-            'contract_number:ntext',
             'year:ntext',
-            'promotion_year:ntext',
-            'born_at:ntext',
-            'promotion:ntext',
-            'document_front_file:ntext',
-            'document_back_file:ntext',
+            [
+                'label' => 'Año de Promocion',
+                'attribute' => 'promotion_year',
+                'value' => function ($model) {
+                    $promotion_year = '';
+                    foreach ($model->alumnoProgramas as $alumnoPrograma) {
+                        $promotion_year .= $alumnoPrograma->promotion_year . '<br>';
+                    }
+                    return $promotion_year;
+                },
+                'format' => 'raw',
+            ],
+            // 'born_at:ntext',
+            // 'promotion:ntext',
+            // 'document_front_file:ntext',
+            // 'document_back_file:ntext',
             'status:ntext',
-            'study_certificate_file:ntext',
+            // 'study_certificate_file:ntext',
             
         ],
     ]) ?>

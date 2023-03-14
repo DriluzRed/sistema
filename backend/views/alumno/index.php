@@ -7,7 +7,7 @@ use yii\helpers\ArrayHelper;
 use backend\models\AlumnoPrograma;
 use backend\models\EstadoPrograma;
 use backend\models\EstadoTitulo;
-
+use yii\widgets\Pjax;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\search\SearchAlumnos */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -18,8 +18,9 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="alumno-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
+    <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
+   
     <p>
         <?= Html::a('Añadir nuevo alumno', ['create'], ['class' => 'btn btn-success']) ?>
         <?= Html::button('Limpiar filtros', ['class' => 'btn btn-default', 'id' => 'clear-filters-btn']) ?>
@@ -189,7 +190,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
         
     ]); ?>
-
+<?php Pjax::end(); ?>
 
 <?php
     $clearFiltersUrl = Url::to(['index']);

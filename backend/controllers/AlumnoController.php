@@ -15,6 +15,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\Json;
 use yii\helpers\ArrayHelper;
+use common\helpers\FlashMessageHelpers;
 
 /**
  * AlumnoController implements the CRUD actions for Alumno model.
@@ -123,7 +124,14 @@ class AlumnoController extends Controller
             $estado_pro = Yii::$app->request->post('estadopro');
             $estado_titu = Yii::$app->request->post('estadotitu');
             $resolution = Yii::$app->request->post('resolution');
+            if(!empty($resolution)){
+                $resolution = 'No cuenta con resolucion';
+            }
             $fecha_resolucion = Yii::$app->request->post('fecha_resolucion');
+            if(!empty($fecha_resolucion)){
+                $fecha_resolucion = 'No cuenta con resolucion';
+            }
+            
             $promotion_year = Yii::$app->request->post('promotion_year');
             $seller = Yii::$app->request->post('seller');
             $charge = Yii::$app->request->post('charge');
@@ -142,7 +150,8 @@ class AlumnoController extends Controller
                     $programa_model->seller = $seller[$index];
                     $programa_model->charge = $charge[$index];
                     if (!$programa_model->save(false)) {
-                        throw new \Exception('Failed to save AlumnoPrograma model: ' . print_r($programa_model->errors, true));
+                        // throw new \Exception('Failed to save AlumnoPrograma model: ' . print_r($programa_model->errors, true));
+                        FlashMessageHelpers::createErrorMessage("No se ha podido agreagar el alumno.");
                     }
                 }
             }
@@ -150,10 +159,12 @@ class AlumnoController extends Controller
         } catch(\Exception $e) {
             $trans->rollBack();
             throw new \Exception($e);
-            // FlashMessageHelpers::createWarningMessage($e->getMessage());
-            return $this->redirect(['update']);
+            FlashMessageHelpers::createWarningMessage($e->getMessage());
+            return $this->redirect(['create']);
         }
+        FlashMessageHelpers::createSuccessMessage("Alumno agregado correctamente.");
         return $this->redirect(['index']);
+        
     }
     
 

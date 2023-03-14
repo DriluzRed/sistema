@@ -5,6 +5,7 @@ namespace backend\models\search;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use backend\models\Alumno;
+use backend\models\AlumnoPrograma;
 
 /**
  * SearchAlumnos represents the model behind the search form of `backend\models\Alumno`.
@@ -46,8 +47,9 @@ class SearchAlumnos extends Alumno
     public function search($params)
     {
         $query = Alumno::find();
-        $total = $query->count();
-        $query->joinWith(['alumnoProgramas.programa', 'alumnoProgramas.estadoPrograma','alumnoProgramas.estadoTitulo']);
+        
+        $query->joinWith(['alumnoProgramas.programa', 'alumnoProgramas.estadoPrograma','alumnoProgramas.estadoTitulo'])->distinct();
+        // $total = $query->count();
 
         
         // $query->joinWith(['alumnoProgramas']);
@@ -103,7 +105,7 @@ class SearchAlumnos extends Alumno
             ->andFilterWhere(['like', 'sex', $this->sex])
             ->andFilterWhere(['like', 'programa.nombre', $this->programas]);
 
-        $dataProvider->totalCount = $total;
+        // $dataProvider->totalCount = $total;
         return $dataProvider;
     }
 }

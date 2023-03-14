@@ -17,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Añadir nueva Asignatura', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Añadir nuevo Modulo', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?php
      $template = '';
