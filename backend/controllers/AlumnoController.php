@@ -55,11 +55,6 @@ class AlumnoController extends Controller
                     [
                         'allow' => false,
                         'actions' => ['delete'],
-                        'roles' => ['coordinacion'],
-                    ],
-                    [
-                        'allow' => false,
-                        'actions' => ['delete'],
                         'roles' => ['administracion'],
                     ],
                     [
@@ -280,6 +275,7 @@ class AlumnoController extends Controller
     
         $model->delete();
     
+        FlashMessageHelpers::createInfoMessage("Alumno eliminado correctamente.");
         return $this->redirect(['index']);
     }
 
