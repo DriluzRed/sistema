@@ -51,8 +51,8 @@ class SearchAlumnos extends Alumno
         $query->joinWith(['alumnoProgramas.programa', 'alumnoProgramas.estadoPrograma','alumnoProgramas.estadoTitulo'])->distinct();
         // $total = $query->count();
 
-        $programasFiltrados = []; // Aquí debes obtener los programas filtrados
-        $this->programas = $programasFiltrados;
+        // $programasFiltrados = []; // Aquí debes obtener los programas filtrados
+        // $this->programas = $programasFiltrados;
         // $query->joinWith(['alumnoProgramas']);
 
         // add conditions that should always apply here

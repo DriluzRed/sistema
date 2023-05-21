@@ -18,20 +18,22 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="alumno-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); 
     ?>
 
     <p>
         <?= Html::a('Añadir nuevo alumno', ['create'], ['class' => 'btn btn-success']) ?>
         <?= Html::button('Limpiar filtros', ['class' => 'btn btn-success', 'id' => 'clear-filters-btn']) ?>
-        <?= Html::a('Exportar a Excel', ['export-excel'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Exportar a Excel', ['export-excel'], ['class' => 'btn btn-success', 'target' => '_blank']) ?>
+
 
 
 
 
 
     </p>
+    <?php Pjax::begin(); ?>
+
     <?php
     $template = '';
     $template = $template . '{view}';
@@ -122,15 +124,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'contentOptions' => ['style' => 'border-bottom: solid 1px black;']
             ],
             [
-                'attribute' => 'year',
-                'format' => 'raw',
-                'value' => function ($model) {
-                    return '<div class="grid-item">' . $model->year . '</div> ';
-                },
-                'contentOptions' => ['style' => 'border-bottom: solid 1px black;']
-            ],
-
-            [
                 'label' => 'Año de Promocion',
                 'attribute' => 'promotion_year',
                 'value' => function ($model) {
@@ -147,14 +140,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'contentOptions' => ['style' => 'border-bottom: solid 1px black;']
             ],
             // 'promotion:ntext',
-            [
-                'attribute' => 'status',
-                'format' => 'raw',
-                'value' => function ($model) {
-                    return '<div class="grid-item">' . $model->status . '</div> ';
-                },
-                'contentOptions' => ['style' => 'border-bottom: solid 1px black;']
-            ],
+           
             [
                 'label' => 'Estado del programa',
                 'attribute' => 'estado_programa',

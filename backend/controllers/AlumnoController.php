@@ -386,21 +386,20 @@ class AlumnoController extends Controller
     }
     public function actionExportExcel()
     {
-        
         $dataProvider = Yii::$app->session->get('dataProvider');
         $searchModel = Yii::$app->session->get('searchModel');
+        // dd($searchModel);
 
         // Limpiar los datos de la sesión
 
         // Obtener el programa filtrado
-        $filtroPrograma = $searchModel->programa; // Asegúrate de que el atributo correcto se haya configurado en el modelo de búsqueda
+        // $filtroPrograma = $searchModel->programa; // Asegúrate de que el atributo correcto se haya configurado en el modelo de búsqueda
 
         // Obtener los datos filtrados y paginados del $searchModel
         $dataProvider->pagination = false; // para evitar la paginación en el Excel
         $dataProvider->setSort(false); // para evitar la ordenación en el Excel
 
         $data = $dataProvider->getModels();
-        // dd($filters);
 
 
         // echo '<pre>'; var_dump($dataProvider);exit;
@@ -408,8 +407,8 @@ class AlumnoController extends Controller
         
         // get the data from the dataProvider and create a new PHPExcel object
         $objPHPExcel = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+        // $objPHPExcel->setUseUTF8(true);
     
-        $objPHPExcel->setActiveSheetIndex(0);
         // echo '<pre>';var_dump($objPHPExcel);exit;
         $sheet = $objPHPExcel->getActiveSheet();
         // echo '<pre>';
@@ -421,9 +420,9 @@ class AlumnoController extends Controller
         $sheet->setCellValue('D1', 'Sexo');
         $sheet->setCellValue('E1', 'CI');
         $sheet->setCellValue('F1', 'Programas');
-        $sheet->setCellValue('G1', 'Estado del programa');
-        $sheet->setCellValue('H1', 'Estado del Titulo');
-        $sheet->setCellValue('I1', 'Cohorte');
+        $sheet->setCellValue('G1', 'Cohorte');
+        $sheet->setCellValue('H1', 'Estado del programa');
+        $sheet->setCellValue('I1', 'Estado del Titulo');
 
         // add more columns as needed
 
@@ -435,7 +434,8 @@ class AlumnoController extends Controller
             if (!empty($model->alumnoProgramas) && !empty($model->alumnoProgramas[0])) {
                 $alumnoPrograma = $model->alumnoProgramas[0];
                 foreach($model->alumnoProgramas as $alumnoPrograma){
-                    $extra .= $alumnoPrograma->programa->nombre;
+                    $extra .= $alumnoPrograma->programa->nombre . ", ";
+                    // break;
                 }
                 // var_dump($extra);exit;
             }
@@ -464,13 +464,19 @@ class AlumnoController extends Controller
         // clear any output that may have been sent before
         ob_end_clean();
 
-        // set the response headers for the Excel file
+        // Configurar los encabezados para la descarga del archivo
         header('Content-Type: application/vnd.ms-excel; charset=UTF-8');
         header('Content-Disposition: attachment;filename="alumnos.xlsx"');
         header('Cache-Control: max-age=0');
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Fecha en el pasado
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // Última fecha de modificación a la hora actual
+        header('Cache-Control: no-store, no-cache, must-revalidate'); // Control de almacenamiento en caché
+        header('Cache-Control: post-check=0, pre-check=0', false);
+        header('Pragma: no-cache');
 
         // write the Excel file to output
         $objWriter = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($objPHPExcel, 'Xlsx');
+        
         $objWriter->save('php://output');
 
         exit();

@@ -37,7 +37,7 @@ class AlumnoPrograma extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['alumno_id', 'programa_id', 'cohort', 'estado_programa_id', 'estado_titulo_id', 'resolution', 'resolution_date', 'promotion_year', 'seller', 'charge'], 'required'],
+            [['alumno_id'], 'required'],
             [['alumno_id', 'programa_id', 'cohort'], 'integer'],
             [['resolution', 'estado_programa_id', 'resolution_date', 'promotion_year', 'seller', 'charge', 'estado_titulo_id'], 'string'],
             [['alumno_id'], 'exist', 'skipOnError' => true, 'targetClass' => Alumno::className(), 'targetAttribute' => ['alumno_id' => 'id']],
