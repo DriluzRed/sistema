@@ -127,14 +127,7 @@ class AlumnoController extends Controller
             $estado_pro = Yii::$app->request->post('estadopro');
             $estado_titu = Yii::$app->request->post('estadotitu');
             $resolution = Yii::$app->request->post('resolution');
-            if(!empty($resolution)){
-                $resolution = 'No cuenta con resolucion';
-            }
             $fecha_resolucion = Yii::$app->request->post('fecha_resolucion');
-            if(!empty($fecha_resolucion)){
-                $fecha_resolucion = 'No cuenta con resolucion';
-            }
-            
             $promotion_year = Yii::$app->request->post('promotion_year');
             $seller = Yii::$app->request->post('seller');
             $charge = Yii::$app->request->post('charge');
