@@ -19,19 +19,26 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-   
+    <?php // echo $this->render('_search', ['model' => $searchModel]); 
+    ?>
+
     <p>
         <?= Html::a('Añadir nuevo alumno', ['create'], ['class' => 'btn btn-success']) ?>
-        <?= Html::button('Limpiar filtros', ['class' => 'btn btn-default', 'id' => 'clear-filters-btn']) ?>
+        <?= Html::button('Limpiar filtros', ['class' => 'btn btn-success', 'id' => 'clear-filters-btn']) ?>
+        <?= Html::a('Exportar a Excel', ['export-excel'], ['class' => 'btn btn-success']) ?>
+
+
+
+
 
     </p>
     <?php
     $template = '';
     $template = $template . '{view}';
     $template = $template . '{update}';
-    (\Yii::$app->user->can('borrarAlumno')) ?  $template = $template . '{delete}':  '';
+    (\Yii::$app->user->can('borrarAlumno')) ?  $template = $template . '{delete}' :  '';
     /** @var Alumno $model */
+    
     echo GridView::widget([
         'tableOptions' => [
             'class' => 'table table-striped',
@@ -39,16 +46,18 @@ $this->params['breadcrumbs'][] = $this->title;
         'options' => [
             'class' => 'table-responsive',
         ],
+
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-           [
+            [
                 'attribute' => 'first_name',
                 'format' => 'raw',
                 'value' => function ($model) {
                     return '<div class="grid-item">' . $model->first_name . '</div> ';
                 },
+                'contentOptions' => ['style' => 'border-bottom: solid 1px black;']
             ],
             [
                 'attribute' => 'last_name',
@@ -56,6 +65,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model) {
                     return '<div class="grid-item">' . $model->last_name . '</div> ';
                 },
+                'contentOptions' => ['style' => 'border-bottom: solid 1px black;']
             ],
             [
                 'attribute' => 'sex',
@@ -63,6 +73,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model) {
                     return '<div class="grid-item">' . $model->sex . '</div> ';
                 },
+                'contentOptions' => ['style' => 'border-bottom: solid 1px black;']
             ],
             [
                 'attribute' => 'ci',
@@ -70,6 +81,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model) {
                     return '<div class="grid-item">' . $model->ci . '</div> ';
                 },
+                'contentOptions' => ['style' => 'border-bottom: solid 1px black;']
             ],
             [
                 'attribute' => 'phone',
@@ -77,24 +89,22 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model) {
                     return '<div class="grid-item">' . $model->phone . '</div> ';
                 },
-            ],  
-            // [
-            //     'label' => 'Pais',
-            //     'attribute' => 'programas',
-            //     'value' => 'programas.nombre',
-            // ],
+                'contentOptions' => ['style' => 'border-bottom: solid 1px black;']
+            ],
             [
                 'label' => 'Programas',
                 'attribute' => 'programas',
                 'value' => function ($model) {
                     $programas = '';
                     foreach ($model->alumnoProgramas as $alumnoPrograma) {
-                        $programas .= $alumnoPrograma->programa->nombre . '<br>';
+                        $programas .=  '<strong>' . $alumnoPrograma->programa->nombre . '</strong>' . '<br>';
                     }
                     return $programas;
                 },
                 'format' => 'raw',
-                'contentOptions' => ['style' => 'border-bottom: solid 1px black;']
+                'contentOptions' => [
+                    'style' => 'border-bottom: solid 1px black; white-space: nowrap; width: 200px;'
+                ]
             ],
             [
                 'label' => 'Cohorte',
@@ -102,7 +112,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model) {
                     $cohorte = '';
                     foreach ($model->alumnoProgramas as $alumnoPrograma) {
-                        $cohorte .= $alumnoPrograma->cohort . '<br>';
+                        $cohorte .=  '<strong>' . $alumnoPrograma->cohort .  '</strong>' . '<br>';
                     }
                     return $cohorte;
                 },
@@ -117,8 +127,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model) {
                     return '<div class="grid-item">' . $model->year . '</div> ';
                 },
-            ], 
-         
+                'contentOptions' => ['style' => 'border-bottom: solid 1px black;']
+            ],
+
             [
                 'label' => 'Año de Promocion',
                 'attribute' => 'promotion_year',
@@ -130,7 +141,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $promotion_year;
                 },
                 'format' => 'raw',
-             
+
                 'filter' => ArrayHelper::merge(['' => 'Todos los Años'], ArrayHelper::map(AlumnoPrograma::find()->distinct()->select('promotion_year')->where(['>=', 'promotion_year', 2000])->orderBy('promotion_year')->asArray()->all(), 'promotion_year', 'promotion_year')),
                 'filterInputOptions' => ['class' => 'form-control', 'prompt' => 'Selecciona el Año', 'style' => 'width: 100%'],
                 'contentOptions' => ['style' => 'border-bottom: solid 1px black;']
@@ -142,6 +153,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model) {
                     return '<div class="grid-item">' . $model->status . '</div> ';
                 },
+                'contentOptions' => ['style' => 'border-bottom: solid 1px black;']
             ],
             [
                 'label' => 'Estado del programa',
@@ -149,10 +161,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model) {
                     $estado_programa_nombre = '';
                     foreach ($model->alumnoProgramas as $alumnoPrograma) {
-                        if(isset($alumnoPrograma->estadoPrograma)){
+                        if (isset($alumnoPrograma->estadoPrograma)) {
                             $estado_programa_nombre .= $alumnoPrograma->estadoPrograma['desc'] . '<br>';
                         }
-                        
                     }
                     return $estado_programa_nombre;
                 },
@@ -166,33 +177,37 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'estado_titulo',
                 'value' => function ($model) {
                     $estado_titulo = '';
-                   
-                        foreach ($model->alumnoProgramas as $alumnoPrograma) {
-                            if(isset($alumnoPrograma->estadoTitulo)){
-                                $estado_titulo .= $alumnoPrograma->estadoTitulo['desc'] . '<br>';
-                            }
-                            
+
+                    foreach ($model->alumnoProgramas as $alumnoPrograma) {
+                        if (isset($alumnoPrograma->estadoTitulo)) {
+                            $estado_titulo .= $alumnoPrograma->estadoTitulo['desc'] . '<br>';
                         }
-                      
+                    }
+
 
                     return $estado_titulo;
                 },
+
                 'format' => 'raw',
                 'filter' => ArrayHelper::merge(['' => 'Todos los Estados'], ArrayHelper::map(EstadoTitulo::find()->orderBy('desc')->asArray()->all(), 'desc', 'desc')),
-                'filterInputOptions' => ['class' => 'form-control', 'prompt' => 'Selecciona el Estado', 'style' => 'width: 100%']
+                'filterInputOptions' => ['class' => 'form-control', 'prompt' => 'Selecciona el Estado', 'style' => 'width: 100%'],
+                'contentOptions' => ['style' => 'border-bottom: solid 1px black;']
             ],
-            ['class' => 'yii\grid\ActionColumn',
+
+            [
+                'class' => 'yii\grid\ActionColumn',
                 'options' => ['style' => 'width:100px'],
                 'buttonOptions' => ['class' => 'btn btn-default'],
                 'header' => 'Acciones',
                 'template' => $template,
+
             ],
         ],
-        
-    ]); ?>
-<?php Pjax::end(); ?>
 
-<?php
+    ]); ?>
+    <?php Pjax::end(); ?>
+
+    <?php
     $clearFiltersUrl = Url::to(['index']);
     $js = <<<JS
         $('#clear-filters-btn').click(function() {

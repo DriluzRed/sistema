@@ -2,7 +2,7 @@
 
 namespace backend\models;
 use backend\models\Pais;
-
+use yii\db\ActiveRecord;
 use Yii;
 
 /**

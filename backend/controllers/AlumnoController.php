@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use Yii;
 use backend\models\Alumno;
+use yii\data\ActiveDataProvider;
 use backend\models\AlumnoPrograma;
 use backend\models\EstadoPrograma;
 use backend\models\EstadoTitulo;
@@ -13,9 +14,13 @@ use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\helpers\Json;
 use yii\helpers\ArrayHelper;
 use common\helpers\FlashMessageHelpers;
+use yii\web\Response;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use kartik\export\ExportMenu;
+
 
 /**
  * AlumnoController implements the CRUD actions for Alumno model.
@@ -81,6 +86,9 @@ class AlumnoController extends Controller
         $searchModel = new SearchAlumnos();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+        Yii::$app->session->set('dataProvider', $dataProvider);
+        Yii::$app->session->set('searchModel', $searchModel);
+        
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -302,6 +310,7 @@ class AlumnoController extends Controller
         $searchModel = new SearchAlumnos();
         $searchModel->programas = "Taller"; // Set the programas attribute to "Taller"
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        // echo '<pre>';var_dump($dataProvider);
         return $this->render('talleres', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -335,13 +344,6 @@ class AlumnoController extends Controller
             'SUM(IF(estado_programa.desc = "reinscripto", 1, 0)) AS totalReinscriptos',
         ])
         ->groupBy(['alumno_programa.cohort']);
-    
-    
-            
-            // var_dump($query);
-           
-            // exit;
-            
         
         if ($programaId) {
             $query->andWhere(['alumno_programa.programa_id' => $programaId]);
@@ -382,9 +384,102 @@ class AlumnoController extends Controller
             'programaId' => $programaId,
         ]);
     }
+    public function actionExportExcel()
+    {
+        
+        $dataProvider = Yii::$app->session->get('dataProvider');
+        $searchModel = Yii::$app->session->get('searchModel');
 
+        // Limpiar los datos de la sesión
+
+        // Obtener el programa filtrado
+        $filtroPrograma = $searchModel->programa; // Asegúrate de que el atributo correcto se haya configurado en el modelo de búsqueda
+
+        // Obtener los datos filtrados y paginados del $searchModel
+        $dataProvider->pagination = false; // para evitar la paginación en el Excel
+        $dataProvider->setSort(false); // para evitar la ordenación en el Excel
+
+        $data = $dataProvider->getModels();
+        // dd($filters);
+
+
+        // echo '<pre>'; var_dump($dataProvider);exit;
+
+        
+        // get the data from the dataProvider and create a new PHPExcel object
+        $objPHPExcel = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
     
+        $objPHPExcel->setActiveSheetIndex(0);
+        // echo '<pre>';var_dump($objPHPExcel);exit;
+        $sheet = $objPHPExcel->getActiveSheet();
+        // echo '<pre>';
+        // var_dump($sheet);exit;
+        // set the column headers
+        $sheet->setCellValue('A1', 'ID');
+        $sheet->setCellValue('B1', 'Nombre');
+        $sheet->setCellValue('C1', 'Apellido');
+        $sheet->setCellValue('D1', 'Sexo');
+        $sheet->setCellValue('E1', 'CI');
+        $sheet->setCellValue('F1', 'Programas');
+        $sheet->setCellValue('G1', 'Estado del programa');
+        $sheet->setCellValue('H1', 'Estado del Titulo');
+        $sheet->setCellValue('I1', 'Cohorte');
 
+        // add more columns as needed
+
+        // loop through the dataProvider and add the rows
+        $row = 2;
+        foreach ($data as $model) {
+            $alumnoPrograma = '';
+            $extra = '';
+            if (!empty($model->alumnoProgramas) && !empty($model->alumnoProgramas[0])) {
+                $alumnoPrograma = $model->alumnoProgramas[0];
+                foreach($model->alumnoProgramas as $alumnoPrograma){
+                    $extra .= $alumnoPrograma->programa->nombre;
+                }
+                // var_dump($extra);exit;
+            }
+            
+            $sheet->setCellValue('A' . $row, strval($model->id));
+            $sheet->setCellValue('B' . $row, $model->first_name);
+            $sheet->setCellValue('C' . $row, $model->last_name);
+            $sheet->setCellValue('D' . $row, $model->sex);
+            $sheet->setCellValue('E' . $row, $model->ci);
+            if (!empty($alumnoPrograma)) {
+                $sheet->setCellValue('F' . $row, $extra);
+                $sheet->setCellValue('G' . $row, strval($alumnoPrograma->cohort));
+
+                if (!empty($alumnoPrograma) && !empty($alumnoPrograma->estadoPrograma)) {
+                    $sheet->setCellValue('H' . $row, $alumnoPrograma->estadoPrograma['desc']);
+                }
+                if (!empty($alumnoPrograma) && !empty($alumnoPrograma->estadoTitulo)) {
+                    $sheet->setCellValue('I' . $row, $alumnoPrograma->estadoTitulo['desc']);
+                }
+            }
+
+            // add more columns as needed
+            $row++;
+        }
+
+        // clear any output that may have been sent before
+        ob_end_clean();
+
+        // set the response headers for the Excel file
+        header('Content-Type: application/vnd.ms-excel; charset=UTF-8');
+        header('Content-Disposition: attachment;filename="alumnos.xlsx"');
+        header('Cache-Control: max-age=0');
+
+        // write the Excel file to output
+        $objWriter = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($objPHPExcel, 'Xlsx');
+        $objWriter->save('php://output');
+
+        exit();
+        Yii::$app->session->remove('dataProvider');
+        Yii::$app->session->remove('searchModel');
+
+        }
+
+   
     /**
      * Finds the Alumno model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
@@ -397,7 +492,7 @@ class AlumnoController extends Controller
         if (($model = Alumno::findOne($id)) !== null) {
             return $model;
         }
-
+        
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

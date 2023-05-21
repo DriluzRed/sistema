@@ -48,7 +48,15 @@ return [
             ],
 
         ],
-        'gridview' => ['class' => 'kartik\grid\Module']
+        'gridview' => [
+            'class' => 'kartik\grid\Module',
+            // other module settings
+        ],
+        'export' => [
+            'class' => 'kartik\export\ExportMenu',
+            'asDropdown' => false,
+        ],
+        
     ],
     'components' => [
         'request' => [
