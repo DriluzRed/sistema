@@ -33,10 +33,10 @@ class AlumnoController extends Controller
     public function behaviors()
     {
         return [
-            'access'=>[
+            'access' => [
                 'class' => AccessControl::className(),
-                'rules'=> [
-                 
+                'rules' => [
+
                     [
                         'allow' => false,
                         'actions' => ['index'],
@@ -63,11 +63,11 @@ class AlumnoController extends Controller
                         'roles' => ['administracion'],
                     ],
                     [
-                        'allow'=>true,
-                        'roles'=>['@']
-                     ],
+                        'allow' => true,
+                        'roles' => ['@']
+                    ],
                 ]
-    ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -88,7 +88,7 @@ class AlumnoController extends Controller
 
         Yii::$app->session->set('dataProvider', $dataProvider);
         Yii::$app->session->set('searchModel', $searchModel);
-        
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -114,75 +114,74 @@ class AlumnoController extends Controller
      * @return mixed
      */
     public function actionCreate()
-{
-    $model = new Alumno();
+    {
+        $model = new Alumno();
 
 
-    if ($model->load(Yii::$app->request->post()) && $model->save()) {
-        $trans = Yii::$app->db->beginTransaction();
-        try {
-            // Agregar programas
-            $programas = Yii::$app->request->post('programa');
-            $cohorte = Yii::$app->request->post('cohorte');
-            $estado_pro = Yii::$app->request->post('estadopro');
-            $estado_titu = Yii::$app->request->post('estadotitu');
-            $resolution = Yii::$app->request->post('resolution');
-            $fecha_resolucion = Yii::$app->request->post('fecha_resolucion');
-            $promotion_year = Yii::$app->request->post('promotion_year');
-            $seller = Yii::$app->request->post('seller');
-            $charge = Yii::$app->request->post('charge');
-    
-            if (!empty($programas)) {
-                foreach ($programas as $index => $programa) {
-                    $programa_model = new AlumnoPrograma();
-                    $programa_model->alumno_id = $model->id;
-                    $programa_model->programa_id = $programa;
-                    $programa_model->cohort = $cohorte[$index];
-                    $programa_model->estado_programa_id = $estado_pro[$index];
-                    $programa_model->estado_titulo_id = $estado_titu[$index];
-                    $programa_model->resolution = $resolution[$index];
-                    $programa_model->resolution_date = $fecha_resolucion[$index];
-                    $programa_model->promotion_year = $promotion_year[$index];
-                    $programa_model->seller = $seller[$index];
-                    $programa_model->charge = $charge[$index];
-                    if (!$programa_model->save(false)) {
-                        // throw new \Exception('Failed to save AlumnoPrograma model: ' . print_r($programa_model->errors, true));
-                        FlashMessageHelpers::createErrorMessage("No se ha podido agreagar el alumno.");
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $trans = Yii::$app->db->beginTransaction();
+            try {
+                // Agregar programas
+                $programas = Yii::$app->request->post('programa');
+                $cohorte = Yii::$app->request->post('cohorte');
+                $estado_pro = Yii::$app->request->post('estadopro');
+                $estado_titu = Yii::$app->request->post('estadotitu');
+                $resolution = Yii::$app->request->post('resolution');
+                $fecha_resolucion = Yii::$app->request->post('fecha_resolucion');
+                $promotion_year = Yii::$app->request->post('promotion_year');
+                $seller = Yii::$app->request->post('seller');
+                $charge = Yii::$app->request->post('charge');
+
+                if (!empty($programas)) {
+                    foreach ($programas as $index => $programa) {
+                        $programa_model = new AlumnoPrograma();
+                        $programa_model->alumno_id = $model->id;
+                        $programa_model->programa_id = $programa;
+                        $programa_model->cohort = $cohorte[$index];
+                        $programa_model->estado_programa_id = $estado_pro[$index];
+                        $programa_model->estado_titulo_id = $estado_titu[$index];
+                        $programa_model->resolution = $resolution[$index];
+                        $programa_model->resolution_date = $fecha_resolucion[$index];
+                        $programa_model->promotion_year = $promotion_year[$index];
+                        $programa_model->seller = $seller[$index];
+                        $programa_model->charge = $charge[$index];
+                        if (!$programa_model->save(false)) {
+                            // throw new \Exception('Failed to save AlumnoPrograma model: ' . print_r($programa_model->errors, true));
+                            FlashMessageHelpers::createErrorMessage("No se ha podido agreagar el alumno.");
+                        }
                     }
                 }
+                $trans->commit();
+            } catch (\Exception $e) {
+                $trans->rollBack();
+                throw new \Exception($e);
+                FlashMessageHelpers::createWarningMessage($e->getMessage());
+                return $this->redirect(['create']);
             }
-            $trans->commit();
-        } catch(\Exception $e) {
-            $trans->rollBack();
-            throw new \Exception($e);
-            FlashMessageHelpers::createWarningMessage($e->getMessage());
-            return $this->redirect(['create']);
+            FlashMessageHelpers::createSuccessMessage("Alumno agregado correctamente.");
+            return $this->redirect(['index']);
         }
-        FlashMessageHelpers::createSuccessMessage("Alumno agregado correctamente.");
-        return $this->redirect(['index']);
-        
+
+
+        return $this->render('create', [
+            'model' => $model,
+
+        ]);
     }
-    
+    //     public function actionAgregarPrograma($alumno_id)
+    // {
+    //     $model = new AlumnoPrograma();
 
-    return $this->render('create', [
-        'model' => $model,
+    //     if ($model->load(Yii::$app->request->post()) && $model->save()) {
+    //         Yii::$app->session->setFlash('success', 'El programa se ha agregado exitosamente.');
+    //         return $this->redirect(['view', 'id' => $alumno_id]);
+    //     }
 
-    ]);
-}
-//     public function actionAgregarPrograma($alumno_id)
-// {
-//     $model = new AlumnoPrograma();
-
-//     if ($model->load(Yii::$app->request->post()) && $model->save()) {
-//         Yii::$app->session->setFlash('success', 'El programa se ha agregado exitosamente.');
-//         return $this->redirect(['view', 'id' => $alumno_id]);
-//     }
-
-//     return $this->render('agregar_programa', [
-//         'model' => $model,
-//         'alumno_id' => $alumno_id,
-//     ]);
-// }
+    //     return $this->render('agregar_programa', [
+    //         'model' => $model,
+    //         'alumno_id' => $alumno_id,
+    //     ]);
+    // }
 
     /**
      * Updates an existing Alumno model.
@@ -194,22 +193,26 @@ class AlumnoController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $programa_model = AlumnoPrograma::findAll(['alumno_id' => $id]);
-    
-        if ($model->load(Yii::$app->request->post()) && $model->save(false)) {
+        $programa_models = AlumnoPrograma::findAll(['alumno_id' => $id]);
+
+        if (empty($programa_models)) {
+            $programa_models[] = new AlumnoPrograma();
+        }
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $programa_data = json_decode(Yii::$app->request->post('programas-json'), true);
             $programa_ids = [];
             foreach ($programa_data as $programa) {
                 $programa_ids[] = $programa['nombre'];
             }
-    
+
             $existing_programas = AlumnoPrograma::findAll(['alumno_id' => $id]);
             $existing_programa_ids = ArrayHelper::getColumn($existing_programas, 'id');
             $programa_ids = array_map('intval', $programa_ids);
             $existing_programa_ids = array_map('intval', $existing_programa_ids);
             $programas_to_delete = array_diff($existing_programa_ids, $programa_ids);
-    
-            $trans = Yii::$app->db->beginTransaction();
+
+            $transaction = Yii::$app->db->beginTransaction();
             try {
                 foreach ($programas_to_delete as $programa_id) {
                     $programa_model = AlumnoPrograma::findOne(['id' => $programa_id]);
@@ -217,7 +220,7 @@ class AlumnoController extends Controller
                         $programa_model->delete();
                     }
                 }
-    
+
                 foreach ($programa_data as $index => $programa) {
                     $programa_id = array_key_exists('id', $programa) ? $programa['id'] : null;
                     $programa_model = AlumnoPrograma::findOne(['id' => $programa_id]);
@@ -225,7 +228,7 @@ class AlumnoController extends Controller
                         $programa_model = new AlumnoPrograma();
                         $programa_model->alumno_id = $model->id;
                     }
-    
+
                     $programa_model->programa_id = $programa['nombre'];
                     $programa_model->cohort = Yii::$app->request->post('cohorte')[$index];
                     $programa_model->estado_programa_id = Yii::$app->request->post('estadopro')[$index];
@@ -235,30 +238,31 @@ class AlumnoController extends Controller
                     $programa_model->promotion_year = Yii::$app->request->post('promotion_year')[$index];
                     $programa_model->seller = Yii::$app->request->post('seller')[$index];
                     $programa_model->charge = Yii::$app->request->post('charge')[$index];
-    
+
                     if (!$programa_model->save()) {
                         throw new \Exception('Failed to save AlumnoPrograma model: ' . print_r($programa_model->errors, true));
                     }
                 }
-    
-                $trans->commit();
-            } catch(\Exception $e) {
-                $trans->rollBack();
+
+                $transaction->commit();
+
+                return $this->redirect(['index']);
+            } catch (\Exception $e) {
+                $transaction->rollBack();
                 throw new \Exception($e);
                 // FlashMessageHelpers::createWarningMessage($e->getMessage());
-                return $this->redirect(['update']);
+                return $this->redirect(['update', 'id' => $model->id]);
             }
-    
-            return $this->redirect(['index']);
         }
-    
+
         return $this->render('update', [
             'model' => $model,
-            'programa_model' => $programa_model,
+            'programa_model' => $programa_models,
         ]);
     }
 
-    
+
+
 
     /**
      * Deletes an existing Alumno model.
@@ -270,12 +274,12 @@ class AlumnoController extends Controller
     public function actionDelete($id)
     {
         $model = $this->findModel($id);
-    
+
         // delete related records in AlumnoPrograma table
         AlumnoPrograma::deleteAll(['alumno_id' => $model->id]);
-    
+
         $model->delete();
-    
+
         FlashMessageHelpers::createInfoMessage("Alumno eliminado correctamente.");
         return $this->redirect(['index']);
     }
@@ -285,19 +289,20 @@ class AlumnoController extends Controller
         $searchModel = new SearchAlumnos();
         $searchModel->estado_programa = "Graduado";
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        
+
         // Add filter to search for "Egresado" state as well
-        $dataProvider->query->andFilterWhere(['or', 
+        $dataProvider->query->andFilterWhere([
+            'or',
             ['estado_programa.desc' => $searchModel->estado_programa],
             ['estado_programa.desc' => 'Egresado'],
         ]);
-        
+
         return $this->render('graduados', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
-    
+
     public function actionTalleres()
     {
         $searchModel = new SearchAlumnos();
@@ -309,7 +314,7 @@ class AlumnoController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
-    
+
     public function actionCarreras()
     {
         $searchModel = new SearchAlumnos();
@@ -325,23 +330,23 @@ class AlumnoController extends Controller
         $programaId = Yii::$app->request->get('programaId');
         // Select the fields to display and calculate the aggregates
         $query = AlumnoPrograma::find()
-        ->leftJoin('alumno', 'alumno.id = alumno_programa.alumno_id')
-        ->leftJoin('estado_programa', 'estado_programa.id = alumno_programa.estado_programa_id')        
-        ->select([
-            'alumno_programa.cohort',
-            'COUNT(alumno_programa.alumno_id) AS totalInscriptos',
-            'SUM(IF(estado_programa.desc = "desmatriculado", 1, 0)) AS totalDesmatriculados',
-            'SUM(IF(alumno.status = "activo", 1, 0)) AS totalActivos',
-            'SUM(IF(estado_programa.desc = "egresado", 1, 0)) AS totalEgresados',
-            'SUM(IF(estado_programa.desc = "graduado", 1, 0)) AS totalGraduados',
-            'SUM(IF(estado_programa.desc = "reinscripto", 1, 0)) AS totalReinscriptos',
-        ])
-        ->groupBy(['alumno_programa.cohort']);
-        
+            ->leftJoin('alumno', 'alumno.id = alumno_programa.alumno_id')
+            ->leftJoin('estado_programa', 'estado_programa.id = alumno_programa.estado_programa_id')
+            ->select([
+                'alumno_programa.cohort',
+                'COUNT(alumno_programa.alumno_id) AS totalInscriptos',
+                'SUM(IF(estado_programa.desc = "desmatriculado", 1, 0)) AS totalDesmatriculados',
+                'SUM(IF(alumno.status = "activo", 1, 0)) AS totalActivos',
+                'SUM(IF(estado_programa.desc = "egresado", 1, 0)) AS totalEgresados',
+                'SUM(IF(estado_programa.desc = "graduado", 1, 0)) AS totalGraduados',
+                'SUM(IF(estado_programa.desc = "reinscripto", 1, 0)) AS totalReinscriptos',
+            ])
+            ->groupBy(['alumno_programa.cohort']);
+
         if ($programaId) {
             $query->andWhere(['alumno_programa.programa_id' => $programaId]);
         }
-            
+
         $data = $query->asArray()->all();
 
         $totalAlumnos = 0;
@@ -349,23 +354,23 @@ class AlumnoController extends Controller
         $totalDesmatriculados = 0;
         foreach ($data as &$row) {
             // var_dump($row['totalinscriptos']);
-           
+
             // exit;
-            $row['totalinscriptos'] = (double)$row['totalinscriptos'];
-            $row['totalgraduados'] = (double)$row['totalgraduados'];
-            $row['totaldesmatriculados'] = (double)$row['totaldesmatriculados'];
+            $row['totalinscriptos'] = (float)$row['totalinscriptos'];
+            $row['totalgraduados'] = (float)$row['totalgraduados'];
+            $row['totaldesmatriculados'] = (float)$row['totaldesmatriculados'];
             $totalAlumnos += $row['totalinscriptos'];
             $totalGraduados += $row['totalgraduados'];
             $totalDesmatriculados += $row['totaldesmatriculados'];
         }
         unset($row);
-        
+
         $indiceEficienciaGraduados = $totalAlumnos > 0 ? round($totalGraduados / $totalAlumnos * 100, 2) : 0;
         $indiceEficienciaDesmatriculados = $totalAlumnos > 0 ? round($totalDesmatriculados / $totalAlumnos * 100, 2) : 0;
-        
-       
+
+
         $programas = ArrayHelper::map(Programa::find()->all(), 'id', 'nombre');
-        
+
         return $this->render('stats', [
             'data' => $data,
             'totalAlumnos' => $totalAlumnos,
@@ -379,34 +384,17 @@ class AlumnoController extends Controller
     }
     public function actionExportExcel()
     {
-        $dataProvider = Yii::$app->session->get('dataProvider');
         $searchModel = Yii::$app->session->get('searchModel');
-        // dd($searchModel);
-
-        // Limpiar los datos de la sesión
-
-        // Obtener el programa filtrado
-        // $filtroPrograma = $searchModel->programa; // Asegúrate de que el atributo correcto se haya configurado en el modelo de búsqueda
-
-        // Obtener los datos filtrados y paginados del $searchModel
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $dataProvider->pagination = false; // para evitar la paginación en el Excel
         $dataProvider->setSort(false); // para evitar la ordenación en el Excel
-
         $data = $dataProvider->getModels();
 
-
-        // echo '<pre>'; var_dump($dataProvider);exit;
-
-        
-        // get the data from the dataProvider and create a new PHPExcel object
+        // Crear el objeto Spreadsheet
         $objPHPExcel = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
-        // $objPHPExcel->setUseUTF8(true);
-    
-        // echo '<pre>';var_dump($objPHPExcel);exit;
         $sheet = $objPHPExcel->getActiveSheet();
-        // echo '<pre>';
-        // var_dump($sheet);exit;
-        // set the column headers
+
+        // Establecer los encabezados de las columnas
         $sheet->setCellValue('A1', 'ID');
         $sheet->setCellValue('B1', 'Nombre');
         $sheet->setCellValue('C1', 'Apellido');
@@ -417,22 +405,20 @@ class AlumnoController extends Controller
         $sheet->setCellValue('H1', 'Estado del programa');
         $sheet->setCellValue('I1', 'Estado del Titulo');
 
-        // add more columns as needed
-
-        // loop through the dataProvider and add the rows
+        // Recorrer los datos y agregar las filas
         $row = 2;
         foreach ($data as $model) {
             $alumnoPrograma = '';
             $extra = '';
             if (!empty($model->alumnoProgramas) && !empty($model->alumnoProgramas[0])) {
                 $alumnoPrograma = $model->alumnoProgramas[0];
-                foreach($model->alumnoProgramas as $alumnoPrograma){
-                    $extra .= $alumnoPrograma->programa->nombre . ", ";
-                    // break;
+                foreach ($model->alumnoProgramas as $alumnoPrograma) {
+                    if (!empty($alumnoPrograma->programa)) {
+                        $extra .= $alumnoPrograma->programa->nombre . ", ";
+                    }
                 }
-                // var_dump($extra);exit;
             }
-            
+
             $sheet->setCellValue('A' . $row, strval($model->id));
             $sheet->setCellValue('B' . $row, $model->first_name);
             $sheet->setCellValue('C' . $row, $model->last_name);
@@ -450,11 +436,10 @@ class AlumnoController extends Controller
                 }
             }
 
-            // add more columns as needed
             $row++;
         }
 
-        // clear any output that may have been sent before
+        // Limpiar cualquier salida que se haya enviado anteriormente
         ob_end_clean();
 
         // Configurar los encabezados para la descarga del archivo
@@ -467,18 +452,15 @@ class AlumnoController extends Controller
         header('Cache-Control: post-check=0, pre-check=0', false);
         header('Pragma: no-cache');
 
-        // write the Excel file to output
+        // Guardar el archivo Excel en la salida
         $objWriter = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($objPHPExcel, 'Xlsx');
-        
         $objWriter->save('php://output');
 
         exit();
-        Yii::$app->session->remove('dataProvider');
-        Yii::$app->session->remove('searchModel');
+    }
 
-        }
 
-   
+
     /**
      * Finds the Alumno model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
@@ -491,7 +473,7 @@ class AlumnoController extends Controller
         if (($model = Alumno::findOne($id)) !== null) {
             return $model;
         }
-        
+
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 }
