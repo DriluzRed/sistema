@@ -145,20 +145,15 @@ use kartik\grid\SerialColumn;
             ],
             [
                 'attributes' => [
-                    'campus' => [
-                        'type' => Form::INPUT_TEXT,
-                        'options' => ['placeholder' => 'Sede'],
-                        'columnOptions' => ['colspan' => '3']
-                    ],
-                ]
-            ],
-
-            [
-                'attributes' => [
                     'subsidiary' => [
-                        'type' => Form::INPUT_TEXT,
-                        'options' => ['placeholder' => 'Filial'],
-                        'columnOptions' => ['colspan' => '3']
+                        'type' => Form::INPUT_RAW,
+                        'value' => $form->field($model, 'subsidiary')->widget(Select2::className(), [
+                            'data' => ['ASU' => 'ASU', 'CDE' => 'CDE'],
+                            'options' => ['placeholder' => 'Seleccione una filial ...'],
+                            'pluginOptions' => [
+                                'allowClear' => true
+                            ]
+                        ]),
                     ],
                 ]
             ],

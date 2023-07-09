@@ -7,6 +7,7 @@ use yii\helpers\ArrayHelper;
 use backend\models\AlumnoPrograma;
 use backend\models\EstadoPrograma;
 use backend\models\EstadoTitulo;
+use backend\models\Alumno;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\search\SearchAlumnos */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -160,7 +161,21 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'format' => 'raw',
             ],
-            
+            [
+                'attribute' => 'subsidiary',
+                'label' => 'Sede',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    $sede = '';
+                    foreach ($model as $_model) {
+                        $sede .=  '<strong>' . $model->subsidiary . '</strong>' . '<br>';
+                    }
+                    return '<div class="grid-item">' . $model->subsidiary . '</div> ';
+                },
+                'filter' => ArrayHelper::map(Alumno::find()->distinct()->select('subsidiary')->where(['not', ['subsidiary' => null]])->orderBy('subsidiary')->asArray()->all(), 'subsidiary', 'subsidiary'),
+                'filterInputOptions' => ['class' => 'form-control', 'prompt' => 'Selecciona Filial', 'type' => 'text'],
+                'contentOptions' => ['style' => 'border-bottom: solid 1px black;']
+            ],
             [
                 'label' => 'Estado del titulo',
                 'attribute' => 'estado_titulo',

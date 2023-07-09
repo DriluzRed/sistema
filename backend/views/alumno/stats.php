@@ -45,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
     foreach ($data as $row) {
         $totalAlumnos += $row['totalinscriptos'];
     }
-    $total = 10000;
+    $total = 0;
     ?>
    
     <br>

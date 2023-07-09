@@ -65,7 +65,11 @@ class Alumno extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            
             [['ci','first_name', 'last_name'], 'required'],
+            ['ci', 'filter', 'filter' => function ($value) {
+                return preg_replace('/[.,]/', '', $value);
+            }],
             [['id'], 'integer'],
             [['first_name', 'last_name', 'ci', 'sex','enrrolment_date', 'low_line_number', 'phone', 'email', 'address', 'age', 'contract_number', 'year',  'born_at', 'promotion', 'document_front_file', 'document_back_file', 'status', 'study_certificate_file', 'finded_ips', 'finded_ruc', 'campus', 'subsidiary'], 'string'],
             [['first_name', 'last_name', 'ci','sex','enrrolment_date', 'low_line_number', 'phone', 'email', 'address', 'age', 'contract_number', 'year',  'born_at', 'promotion', 'document_front_file', 'document_back_file', 'status', 'study_certificate_file', 'finded_ips', 'finded_ruc', 'programas', 'country_id', 'cohorte'], 'safe'],
@@ -112,6 +116,7 @@ class Alumno extends \yii\db\ActiveRecord
             'resolution_date' => 'Año de Resolucion',
             'estado_programa_id' => 'Estado del programa',
             'estado_titulo_id' => 'Estado del titulo',
+            'country' => 'Pais',
         ];
     }
 

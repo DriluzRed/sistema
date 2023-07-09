@@ -34,8 +34,9 @@ class Programa extends \yii\db\ActiveRecord
         return [
             [['id'], 'integer'],
             [['nombre', 'desc', ], 'string'],
+            [['nombre'], 'required'],
             [['asignaturas',],'safe'],
-            [['id'. 'nombre'], 'unique'],
+            [['id', 'nombre'], 'unique'],
         ];
     }
 

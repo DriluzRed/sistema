@@ -34,6 +34,7 @@ class Asignatura extends \yii\db\ActiveRecord
 
             [['id'], 'integer'],
             [['nombre', 'desc'], 'string'],
+            [['nombre'], 'required'],
             [['id', 'nombre'], 'unique'],
         ];
     }

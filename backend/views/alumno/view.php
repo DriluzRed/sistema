@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Alumno */
 
-$this->title = $model->first_name . $model->last_name;
+$this->title = $model->first_name . ' ' . $model->last_name;
 $this->params['breadcrumbs'][] = ['label' => 'Alumnos', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
@@ -20,66 +20,76 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Eliminar', ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
+                'confirm' => '¿Estás seguro de que quieres eliminar este elemento?',
                 'method' => 'post',
             ],
         ]) ?>
     </p>
 
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'first_name:ntext',
-            'last_name:ntext',
-            'ci:ntext',
-            [
-                'attribute' => 'country_id',
-                'value' => function ($model){
-                        return $model->pais->nombre;
-                }
-
-            ],
-            'low_line_number:ntext',
-            'phone:ntext',
-            'email:ntext',
-            'address:ntext',
-            'age:ntext',
-            [
-                'label' => 'Programas',
-                'attribute' => 'programas',
-                'value' => function ($model) {
-                    $programas = '';
-                    foreach ($model->alumnoProgramas as $alumnoPrograma) {
-                        $programas .= $alumnoPrograma->programa->nombre . '<br>';
-                    }
-                    return $programas;
-                },
-                'format' => 'raw',
-            ],
-            'campus',
-            'subsidiary',
-            'year:ntext',
-            [
-                'label' => 'Año de Promocion',
-                'attribute' => 'promotion_year',
-                'value' => function ($model) {
-                    $promotion_year = '';
-                    foreach ($model->alumnoProgramas as $alumnoPrograma) {
-                        $promotion_year .= $alumnoPrograma->promotion_year . '<br>';
-                    }
-                    return $promotion_year;
-                },
-                'format' => 'raw',
-            ],
-            // 'born_at:ntext',
-            // 'promotion:ntext',
-            // 'document_front_file:ntext',
-            // 'document_back_file:ntext',
-            'status:ntext',
-            // 'study_certificate_file:ntext',
-            
-        ],
-    ]) ?>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">Información básica</div>
+                <div class="panel-body">
+                    <?= DetailView::widget([
+                        'model' => $model,
+                        'attributes' => [
+                            'id',
+                            'first_name:ntext',
+                            'last_name:ntext',
+                            'ci:ntext',
+                            [
+                                'attribute' => 'country_id',
+                                'value' => function ($model) {
+                                    return $model->pais->nombre;
+                                },
+                            ],
+                            'low_line_number:ntext',
+                            'phone:ntext',
+                            'email:ntext',
+                            'address:ntext',
+                            'age:ntext',
+                        ],
+                    ]) ?>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">Programas y Cohortes</div>
+                <div class="panel-body">
+                    <?= DetailView::widget([
+                        'model' => $model,
+                        'attributes' => [
+                            [
+                                'label' => 'Programas',
+                                'value' => function ($model) {
+                                    $programas = '';
+                                    foreach ($model->alumnoProgramas as $alumnoPrograma) {
+                                        $programas .= '<div class="grid-item">' . $alumnoPrograma->programa->nombre . ' <strong>(Cohorte: ' . $alumnoPrograma->cohort . ')</strong>' . '</div> ';
+                                    }
+                                    return $programas;
+                                },
+                                'format' => 'raw',
+                            ],
+                        ],
+                    ]) ?>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">Detalles adicionales</div>
+                <div class="panel-body">
+                    <?= DetailView::widget([
+                        'model' => $model,
+                        'attributes' => [
+                            'subsidiary',
+                            'year:ntext',
+                            'status:ntext',
+                        ],
+                    ]) ?>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>

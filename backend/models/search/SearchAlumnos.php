@@ -23,8 +23,8 @@ class SearchAlumnos extends Alumno
     public function rules()
     {
         return [
-            [['id', 'country_id', 'campus', 'subsidiary'], 'integer'],
-            [['first_name', 'last_name', 'ci', 'low_line_number', 'phone', 'email', 'address', 'age', 'enrollment_date','programas','cohorte', 'estado_programa', 'estado_titulo', 'contract_number', 'year', 'promotion_year', 'born_at', 'promotion', 'document_front_file', 'document_back_file', 'status', 'study_certificate_file', 'finded_ips', 'finded_ruc', 'sex', 'created_at', 'updated_at'], 'safe'],
+            [['id', 'country_id', 'campus'], 'integer'],
+            [['first_name', 'last_name', 'ci', 'low_line_number', 'phone', 'email', 'address', 'age', 'enrollment_date','programas','cohorte', 'estado_programa', 'estado_titulo', 'contract_number', 'year', 'promotion_year', 'born_at', 'promotion', 'document_front_file', 'document_back_file', 'status', 'study_certificate_file', 'finded_ips', 'finded_ruc', 'sex', 'created_at', 'updated_at', 'subsidiary'], 'safe'],
         ];
     }
 
@@ -74,7 +74,6 @@ class SearchAlumnos extends Alumno
             'id' => $this->id,
             'country_id' => $this->country_id,
             'campus' => $this->campus,
-            'subsidiary' => $this->subsidiary,
             // 'programa_id' => $this->programa_id,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
@@ -104,6 +103,7 @@ class SearchAlumnos extends Alumno
             ->andFilterWhere(['like', 'finded_ips', $this->finded_ips])
             ->andFilterWhere(['like', 'finded_ruc', $this->finded_ruc])
             ->andFilterWhere(['like', 'sex', $this->sex])
+            ->andFilterWhere(['like', 'subsidiary', $this->subsidiary])
             ->andFilterWhere(['like', 'programa.nombre', $this->programas]);
 
         // $dataProvider->totalCount = $total;

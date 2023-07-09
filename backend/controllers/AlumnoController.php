@@ -147,19 +147,20 @@ class AlumnoController extends Controller
                         $programa_model->charge = $charge[$index];
                         if (!$programa_model->save(false)) {
                             // throw new \Exception('Failed to save AlumnoPrograma model: ' . print_r($programa_model->errors, true));
-                            FlashMessageHelpers::createErrorMessage("No se ha podido agreagar el alumno.");
+                            FlashMessageHelpers::createErrorMessage("No se ha podido editar el alumno. Verifique los programas ingresados.");
                         }
                     }
                 }
                 $trans->commit();
+                FlashMessageHelpers::createSuccessMessage("Alumno agregado correctamente.");
+                return $this->redirect(['index']);
             } catch (\Exception $e) {
                 $trans->rollBack();
                 throw new \Exception($e);
                 FlashMessageHelpers::createWarningMessage($e->getMessage());
                 return $this->redirect(['create']);
             }
-            FlashMessageHelpers::createSuccessMessage("Alumno agregado correctamente.");
-            return $this->redirect(['index']);
+          
         }
 
 
@@ -240,17 +241,17 @@ class AlumnoController extends Controller
                     $programa_model->charge = Yii::$app->request->post('charge')[$index];
 
                     if (!$programa_model->save()) {
-                        throw new \Exception('Failed to save AlumnoPrograma model: ' . print_r($programa_model->errors, true));
+                        FlashMessageHelpers::createErrorMessage("No se ha podido editar el alumno. Verifique los programas ingresados.");
                     }
                 }
 
                 $transaction->commit();
-
+                FlashMessageHelpers::createSuccessMessage("Alumno actualizado correctamente.");
                 return $this->redirect(['index']);
             } catch (\Exception $e) {
                 $transaction->rollBack();
                 throw new \Exception($e);
-                // FlashMessageHelpers::createWarningMessage($e->getMessage());
+                FlashMessageHelpers::createWarningMessage($e->getMessage());
                 return $this->redirect(['update', 'id' => $model->id]);
             }
         }
@@ -337,7 +338,9 @@ class AlumnoController extends Controller
                 'COUNT(alumno_programa.alumno_id) AS totalInscriptos',
                 'SUM(IF(estado_programa.desc = "desmatriculado", 1, 0)) AS totalDesmatriculados',
                 'SUM(IF(alumno.status = "activo", 1, 0)) AS totalActivos',
+                'SUM(IF(alumno.status = "inactivo", 1, 0)) AS totalInactivos',
                 'SUM(IF(estado_programa.desc = "egresado", 1, 0)) AS totalEgresados',
+                
                 'SUM(IF(estado_programa.desc = "graduado", 1, 0)) AS totalGraduados',
                 'SUM(IF(estado_programa.desc = "reinscripto", 1, 0)) AS totalReinscriptos',
             ])
@@ -352,20 +355,26 @@ class AlumnoController extends Controller
         $totalAlumnos = 0;
         $totalGraduados = 0;
         $totalDesmatriculados = 0;
-        foreach ($data as &$row) {
+        $totalActivos = 0;
+        $totalInactivos = 0;
+        foreach ($data as $row) {
             // var_dump($row['totalinscriptos']);
 
             // exit;
             $row['totalinscriptos'] = (float)$row['totalinscriptos'];
             $row['totalgraduados'] = (float)$row['totalgraduados'];
             $row['totaldesmatriculados'] = (float)$row['totaldesmatriculados'];
+            $row['totalactivos'] = (float)$row['totalactivos'];
+            $row['totalinactivos'] = (float)$row['totalinactivos'];
             $totalAlumnos += $row['totalinscriptos'];
             $totalGraduados += $row['totalgraduados'];
             $totalDesmatriculados += $row['totaldesmatriculados'];
+            $totalActivos += $row['totalactivos'];
+            $totalInactivos += $row['totalinactivos'];
         }
         unset($row);
 
-        $indiceEficienciaGraduados = $totalAlumnos > 0 ? round($totalGraduados / $totalAlumnos * 100, 2) : 0;
+        $indiceEficienciaGraduados = $totalAlumnos > 0 && $totalActivos > 0 ? round($totalGraduados / $totalActivos * 100, 2) : 0;
         $indiceEficienciaDesmatriculados = $totalAlumnos > 0 ? round($totalDesmatriculados / $totalAlumnos * 100, 2) : 0;
 
 

@@ -7,6 +7,7 @@ use yii\helpers\ArrayHelper;
 use backend\models\AlumnoPrograma;
 use backend\models\EstadoPrograma;
 use backend\models\EstadoTitulo;
+use backend\models\Alumno;
 use yii\widgets\Pjax;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\search\SearchAlumnos */
@@ -105,8 +106,23 @@ $this->params['breadcrumbs'][] = $this->title;
                 },
                 'format' => 'raw',
                 'contentOptions' => [
-                    'style' => 'border-bottom: solid 1px black; white-space: nowrap; width: 200px;'
+                    'style' => 'border-bottom: solid 1px black; width: 100%;'
                 ]
+            ],
+            [
+                'attribute' => 'subsidiary',
+                'label' => 'Sede',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    $sede = '';
+                    foreach ($model as $_model) {
+                        $sede .=  '<strong>' . $model->subsidiary . '</strong>' . '<br>';
+                    }
+                    return '<div class="grid-item">' . $model->subsidiary . '</div> ';
+                },
+                'filter' => ArrayHelper::map(Alumno::find()->distinct()->select('subsidiary')->where(['not', ['subsidiary' => null]])->orderBy('subsidiary')->asArray()->all(), 'subsidiary', 'subsidiary'),
+                'filterInputOptions' => ['class' => 'form-control', 'prompt' => 'Selecciona Filial', 'style' => 'width: 100%', 'type' => 'text'],
+                'contentOptions' => ['style' => 'border-bottom: solid 1px black; width: 100%;']
             ],
             [
                 'label' => 'Cohorte',

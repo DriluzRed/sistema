@@ -7,6 +7,7 @@ use yii\helpers\ArrayHelper;
 use backend\models\AlumnoPrograma;
 use backend\models\EstadoPrograma;
 use backend\models\EstadoTitulo;
+use backend\models\Alumno;
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\search\SearchAlumnos */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -17,7 +18,8 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="alumno-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); 
+    ?>
 
     <p>
         <?= Html::a('Añadir nuevo alumno', ['create'], ['class' => 'btn btn-success']) ?>
@@ -27,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
     $template = '';
     $template = $template . '{view}';
     $template = $template . '{update}';
-    (\Yii::$app->user->can('borrarAlumno')) ?    $template = $template . '{delete}': '';
+    (\Yii::$app->user->can('borrarAlumno')) ?    $template = $template . '{delete}' : '';
     /** @var Alumno $model */
     echo GridView::widget([
         'tableOptions' => [
@@ -64,7 +66,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     return '<div class="grid-item">' . $model->sex . '</div> ';
                 },
             ],
-            
+
             [
                 'attribute' => 'ci',
                 'format' => 'raw',
@@ -78,22 +80,22 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model) {
                     return '<div class="grid-item">' . $model->phone . '</div> ';
                 },
-            ],  
+            ],
             //     'value' => 'programas.nombre',
             // ],
             [
                 'label' => 'Programas',
                 'attribute' => 'programas',
                 'value' => function ($model) {
-    $programas = '';
-    foreach ($model->alumnoProgramas as $alumnoPrograma) {
-        if (strpos($alumnoPrograma->programa->nombre, 'Carrera') !== false) {
-            $programas .= '<div class="grid-item">' . $alumnoPrograma->programa->nombre . '</div> ';
-        }
-    }
-    return $programas;
-},
-
+                    $programas = '';
+                    foreach ($model->alumnoProgramas as $alumnoPrograma) {
+                        if (strpos($alumnoPrograma->programa->nombre, 'Carrera') !== false) {
+                            $programas .= '<div class="grid-item">' . $alumnoPrograma->programa->nombre . '</div> ';
+                        }
+                    }
+                    return $programas;
+                },
+                'options' => ['style' => 'width: 100px;'],
                 'format' => 'raw',
             ],
             [
@@ -101,10 +103,9 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'cohorte',
                 'value' => function ($model) {
                     $cohorte = '';
-                    foreach ($model->alumnoProgramas as $alumnoPrograma) 
-                    {
+                    foreach ($model->alumnoProgramas as $alumnoPrograma) {
                         if (strpos($alumnoPrograma->programa->nombre, 'Carrera') !== false) {
-                        $cohorte .= '<div class="grid-item">' . $alumnoPrograma->cohort . '</div> ';
+                            $cohorte .= '<div class="grid-item">' . $alumnoPrograma->cohort . '</div> ';
                         }
                     }
                     return $cohorte;
@@ -119,8 +120,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model) {
                     return '<div class="grid-item">' . $model->year . '</div> ';
                 },
-            ],  
-         
+            ],
+
             [
                 'label' => 'Año de Promocion',
                 'attribute' => 'promotion_year',
@@ -128,7 +129,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     $promotion_year = '';
                     foreach ($model->alumnoProgramas as $alumnoPrograma) {
                         if (strpos($alumnoPrograma->programa->nombre, 'Carrera') !== false) {
-                        $promotion_year .= '<div class="grid-item">' . $alumnoPrograma->promotion_year . '</div> ';
+                            $promotion_year .= '<div class="grid-item">' . $alumnoPrograma->promotion_year . '</div> ';
                         }
                     }
                     return $promotion_year;
@@ -144,14 +145,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function ($model) {
                     return '<div class="grid-item">' . $model->status . '</div> ';
                 },
-            ], 
+            ],
             [
                 'label' => 'Estado del programa',
                 'attribute' => 'estado_programa',
                 'value' => function ($model) {
                     $estado_programa_nombre = '';
                     foreach ($model->alumnoProgramas as $alumnoPrograma) {
-                        if(isset($alumnoPrograma->estadoPrograma) && strpos($alumnoPrograma->programa->nombre, 'Carrera') !== false){
+                        if (isset($alumnoPrograma->estadoPrograma) && strpos($alumnoPrograma->programa->nombre, 'Carrera') !== false) {
                             $estado_programa_nombre .= '<div class="grid-item">' . $alumnoPrograma->estadoPrograma['desc'] . '</div> ';
                         }
                     }
@@ -161,20 +162,34 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter' => ArrayHelper::merge(['' => 'Todos los Estados'], ArrayHelper::map(EstadoPrograma::find()->orderBy('desc')->asArray()->all(), 'desc', 'desc')),
                 'filterInputOptions' => ['class' => 'form-control', 'prompt' => 'Selecciona el Estado', 'style' => 'width: 100%']
             ],
-            
+            [
+                'attribute' => 'subsidiary',
+                'label' => 'Sede',
+                'format' => 'raw',
+                'value' => function ($model) {
+                    $sede = '';
+                    foreach ($model as $_model) {
+                        $sede .=  '<strong>' . $model->subsidiary . '</strong>' . '<br>';
+                    }
+                    return '<div class="grid-item">' . $model->subsidiary . '</div> ';
+                },
+                'filter' => ArrayHelper::map(Alumno::find()->distinct()->select('subsidiary')->where(['not', ['subsidiary' => null]])->orderBy('subsidiary')->asArray()->all(), 'subsidiary', 'subsidiary'),
+                'filterInputOptions' => ['class' => 'form-control', 'prompt' => 'Selecciona Filial', 'type' => 'text'],
+                'contentOptions' => ['style' => 'border-bottom: solid 1px black;']
+            ],
+
             [
                 'label' => 'Estado del titulo',
                 'attribute' => 'estado_titulo',
                 'value' => function ($model) {
                     $estado_titulo = '';
-                   
-                        foreach ($model->alumnoProgramas as $alumnoPrograma) {
-                            if(isset($alumnoPrograma->estadoTitulo)){
-                                $estado_titulo .= '<div class="grid-item">' . $alumnoPrograma->estadoTitulo['desc'] . '</div> ';
-                            }
-                            
+
+                    foreach ($model->alumnoProgramas as $alumnoPrograma) {
+                        if (isset($alumnoPrograma->estadoTitulo)) {
+                            $estado_titulo .= '<div class="grid-item">' . $alumnoPrograma->estadoTitulo['desc'] . '</div> ';
                         }
-                      
+                    }
+
 
                     return $estado_titulo;
                 },
@@ -182,17 +197,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 'filter' => ArrayHelper::merge(['' => 'Todos los Estados'], ArrayHelper::map(EstadoTitulo::find()->orderBy('desc')->asArray()->all(), 'desc', 'desc')),
                 'filterInputOptions' => ['class' => 'form-control', 'prompt' => 'Selecciona el Estado', 'style' => 'width: 100%']
             ],
-            ['class' => 'yii\grid\ActionColumn',
+            [
+                'class' => 'yii\grid\ActionColumn',
                 'options' => ['style' => 'width:100px'],
                 'buttonOptions' => ['class' => 'btn btn-default'],
                 'header' => 'Acciones',
                 'template' => $template,
             ],
         ],
-        
-    ]); 
-    
-    
+
+    ]);
+
+
     $CSS = <<<CSS
 /*This is modifying the btn-primary colors but you could create your own .btn-something class as well*/
 
@@ -228,12 +244,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
 CSS;
 
-$this->registerCss($CSS);
+    $this->registerCss($CSS);
 
-    
+
     ?>
 
-<?php
+    <?php
     $clearFiltersUrl = Url::to(['index']);
     $js = <<<JS
         $('#clear-filters-btn').click(function() {
@@ -243,5 +259,3 @@ JS;
     $this->registerJs($js);
     ?>
 </div>
-
-
